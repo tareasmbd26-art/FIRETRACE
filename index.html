@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 FireTrace</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        :root {
+            --bg-main: #f0f2f5;
+            --bg-sidebar: #ffffff;
+            --bg-panel: #f7f8fa;
+            --bg-card: #ffffff;
+            --bg-hover: #f0f2f5;
+            --bg-selected: #e3e8f0;
+            --border-color: #dde1e9;
+            --text-primary: #1a1c23;
+            --text-secondary: #5a6070;
+            --text-muted: #9aa0ae;
+            --color-dashboard: #5c6bc0;
+            --color-clientes: #00897b;
+            --color-intervenciones: #e53935;
+            --color-correctivos: #f4511e;
+            --color-agenda: #8e24aa;
+            --color-proyectos: #039be5;
+            --color-historial: #43a047;
+            --success: #43a047;
+            --warning: #fb8c00;
+            --danger: #e53935;
+            --info: #039be5;
+        }
+        [data-theme="dark"] {
+            --bg-main: #1a1c23;
+            --bg-sidebar: #252830;
+            --bg-panel: #2d313c;
+            --bg-card: #252830;
+            --bg-hover: #353a47;
+            --bg-selected: #404654;
+            --border-color: #404654;
+            --text-primary: #e8eaed;
+            --text-secondary: #9aa0ae;
+            --text-muted: #6b7280;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-main); color: var(--text-primary); font-size: 14px; transition: background 0.3s, color 0.3s; }
+        .app { display: flex; min-height: 100vh; }
+        .sidebar { width: 220px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); position: fixed; height: 100vh; display: flex; flex-direction: column; transition: background 0.3s; }
+        .logo { padding: 20px; font-size: 20px; font-weight: 700; color: var(--danger); border-bottom: 1px solid var(--border-color); }
+        .logo span { color: var(--text-primary); }
+        .user-info { padding: 15px 20px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; }
+        .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--color-clientes); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+        .user-name { font-size: 13px; font-weight: 500; }
+        .user-role { font-size: 11px; color: var(--text-muted); }
+        .nav-menu { flex: 1; padding: 10px 0; }
+        .nav-item { display: flex; align-items: center; padding: 12px 20px; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent; color: var(--text-secondary); }
+        .nav-item:hover { background: var(--bg-hover); }
+        .nav-item.active { background: var(--bg-panel); color: var(--text-primary); font-weight: 600; }
+        .nav-item .accent { width: 3px; height: 24px; margin-right: 12px; border-radius: 2px; }
+        .nav-item.dashboard .accent { background: var(--color-dashboard); }
+        .nav-item.clientes .accent { background: var(--color-clientes); }
+        .nav-item.intervenciones .accent { background: var(--color-intervenciones); }
+        .nav-item.correctivos .accent { background: var(--color-correctivos); }
+        .nav-item.agenda .accent { background: var(--color-agenda); }
+        .nav-item.proyectos .accent { background: var(--color-proyectos); }
+        .nav-item.historial .accent { background: var(--color-historial); }
+        .settings-btn { padding: 15px 20px; border-top: 1px solid var(--border-color); cursor: pointer; display: flex; align-items: center; gap: 10px; color: var(--text-secondary); transition: all 0.2s; }
+        .settings-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .main-content { flex: 1; margin-left: 220px; padding: 20px 30px; }
+        .locked-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin-left: 0; padding: 40px; text-align: center; }
+        .locked-screen .logo { font-size: 32px; margin-bottom: 30px; border: none; padding: 0; }
+        .locked-form { background: var(--bg-card); padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+        .locked-form h2 { margin-bottom: 20px; color: var(--text-primary); }
+        .locked-form input { width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 15px; background: var(--bg-main); color: var(--text-primary); font-size: 14px; }
+        .locked-form input:focus { outline: none; border-color: var(--color-clientes); }
+        .locked-form .btn { width: 100%; padding: 12px; margin-top: 10px; }
+        .toolbar { background: var(--bg-card); padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; box-shadow: 0 1px 3px rgba(0,0,0,0.08); transition: background 0.3s; }
+        .toolbar.dashboard { border-top: 3px solid var(--color-dashboard); }
+        .toolbar.clientes { border-top: 3px solid var(--color-clientes); }
+        .toolbar.intervenciones { border-top: 3px solid var(--color-intervenciones); }
+        .toolbar.correctivos { border-top: 3px solid var(--color-correctivos); }
+        .toolbar.agenda { border-top: 3px solid var(--color-agenda); }
+        .toolbar.proyectos { border-top: 3px solid var(--color-proyectos); }
+        .toolbar.historial { border-top: 3px solid var(--color-historial); }
+        .btn { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-size: 14px; font-family: inherit; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: var(--color-dashboard); color: #fff; }
+        .btn-clientes { background: var(--color-clientes); color: #fff; }
+        .btn-intervenciones { background: var(--color-intervenciones); color: #fff; }
+        .btn-correctivos { background: var(--color-correctivos); color: #fff; }
+        .btn-agenda { background: var(--color-agenda); color: #fff; }
+        .btn-proyectos { background: var(--color-proyectos); color: #fff; }
+        .btn-historial { background: var(--color-historial); color: #fff; }
+        .btn-secondary { background: var(--bg-panel); border: 1px solid var(--border-color); color: var(--text-primary); }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn:hover { opacity: 0.9; }
+        .search-input { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; width: 250px; font-family: inherit; font-size: 14px; background: var(--bg-card); color: var(--text-primary); }
+        .search-input:focus { outline: none; border-color: var(--color-dashboard); }
+        select { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit; font-size: 14px; background: var(--bg-card); color: var(--text-primary); cursor: pointer; }
+        .data-table { width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .data-table th { background: var(--bg-panel); padding: 12px 15px; text-align: left; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--border-color); transition: background 0.3s; }
+        .data-table td { padding: 10px 15px; border-bottom: 1px solid var(--border-color); transition: background 0.3s, color 0.3s; }
+        .data-table tr:nth-child(even) { background: var(--bg-hover); }
+        .data-table tr:nth-child(odd) { background: var(--bg-card); }
+        .data-table tr:hover { background: var(--bg-selected); cursor: pointer; }
+        .data-table tr.selected { background: var(--bg-selected); }
+        .data-table tr.priority-alta { background: #ffebee; }
+        [data-theme="dark"] .data-table tr.priority-alta { background: #4a2020; }
+        .table-container { overflow-x: auto; border-radius: 8px; background: var(--bg-card); box-shadow: 0 1px 3px rgba(0,0,0,0.08); transition: background 0.3s; }
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .card { background: var(--bg-card); padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); transition: background 0.3s; }
+        .card .card-label { color: var(--text-secondary); font-size: 13px; margin-bottom: 5px; }
+        .card .card-value { font-size: 28px; font-weight: 700; }
+        .card.dashboard .card-value { color: var(--color-dashboard); }
+        .card.clientes .card-value { color: var(--color-clientes); }
+        .card.intervenciones .card-value { color: var(--color-intervenciones); }
+        .card.correctivos .card-value { color: var(--color-correctivos); }
+        .card.agenda .card-value { color: var(--color-agenda); }
+        .status-badge { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+        .status-operativo { background: #e8f5e9; color: var(--success); }
+        .status-en-falla { background: #ffebee; color: var(--danger); }
+        .status-pendiente { background: #fff3e0; color: var(--warning); }
+        .status-completado { background: #e8f5e9; color: var(--success); }
+        .status-proceso { background: #e3f2fd; color: var(--info); }
+        .status-activo { background: #e8f5e9; color: var(--success); }
+        .status-inactivo { background: var(--bg-panel); color: var(--text-muted); }
+        .status-alta { background: #ffebee; color: var(--danger); font-weight: 600; }
+        .status-media { background: #fff3e0; color: var(--warning); }
+        .status-baja { background: #e3f2fd; color: var(--info); }
+        .status-hoy { background: #fff9c4; color: #f57f17; font-weight: 600; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: var(--bg-card); border-radius: 12px; width: 90%; max-width: 600px; max-height: 90vh; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.2); transition: background 0.3s; }
+        .modal-header { padding: 15px 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 16px; color: #fff; }
+        .modal-header.dashboard { background: var(--color-dashboard); }
+        .modal-header.clientes { background: var(--color-clientes); }
+        .modal-header.intervenciones { background: var(--color-intervenciones); }
+        .modal-header.correctivos { background: var(--color-correctivos); }
+        .modal-header.agenda { background: var(--color-agenda); }
+        .modal-header.proyectos { background: var(--color-proyectos); }
+        .modal-header.historial { background: var(--color-historial); }
+        .modal-header.settings { background: var(--text-secondary); }
+        .modal-close { background: none; border: none; color: inherit; font-size: 20px; cursor: pointer; padding: 5px; opacity: 0.8; }
+        .modal-body { padding: 20px; max-height: calc(90vh - 130px); overflow-y: auto; }
+        .modal-footer { padding: 15px 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; color: var(--text-secondary); }
+        .form-group label.required::after { content: ' *'; color: var(--danger); }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit; font-size: 14px; background: var(--bg-card); color: var(--text-primary); }
+        .form-group textarea { min-height: 80px; resize: vertical; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 2000; }
+        .toast { padding: 12px 20px; border-radius: 8px; margin-top: 10px; color: #fff; font-weight: 500; animation: slideIn 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .toast.success { background: var(--success); }
+        .toast.error { background: var(--danger); }
+        .toast.warning { background: var(--warning); }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .confirm-modal .modal { max-width: 400px; }
+        .confirm-modal .modal-header { background: var(--danger); color: #fff; }
+        .chart-container { background: var(--bg-card); padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 20px; transition: background 0.3s; }
+        .chart-title { font-weight: 600; margin-bottom: 15px; color: var(--text-primary); }
+        .progress-bar { height: 8px; background: var(--bg-selected); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--color-proyectos); border-radius: 4px; transition: width 0.3s; }
+        .sub-panel { margin-top: 20px; }
+        .sub-panel-title { font-weight: 600; margin-bottom: 10px; color: var(--text-primary); display: flex; align-items: center; gap: 10px; }
+        .hidden { display: none !important; }
+        .action-btns { display: flex; gap: 5px; }
+        .action-btns .btn { padding: 5px 10px; font-size: 12px; }
+        .empty-state { text-align: center; padding: 40px; color: var(--text-muted); }
+        .settings-section { margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px solid var(--border-color); }
+        .settings-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .settings-section h3 { font-size: 14px; color: var(--text-secondary); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .theme-options { display: flex; gap: 10px; }
+        .theme-option { padding: 10px 20px; border: 2px solid var(--border-color); border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+        .theme-option:hover { border-color: var(--color-dashboard); }
+        .theme-option.active { border-color: var(--color-dashboard); background: var(--bg-selected); }
+        .theme-icon { width: 20px; height: 20px; border-radius: 50%; }
+        .theme-icon.light { background: linear-gradient(135deg, #ffd700 50%, #87ceeb 50%); }
+        .theme-icon.dark { background: #1a1c23; }
+        .theme-icon.system { background: linear-gradient(135deg, #1a1c23 50%, #87ceeb 50%); }
+        .bulk-actions { background: var(--bg-panel); padding: 10px 15px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px; }
+        .bulk-actions.hidden { display: none; }
+        .bulk-actions span { font-weight: 500; color: var(--text-secondary); }
+        .badge-selected { background: var(--color-proyectos); color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+        .editable-cell { padding: 6px 8px; border: 1px solid transparent; border-radius: 4px; cursor: text; min-width: 50px; display: block; }
+        .editable-cell:hover { border-color: var(--border-color); background: var(--bg-hover); }
+        .editable-cell select { width: 100%; padding: 4px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-card); color: var(--text-primary); font-size: 13px; cursor: pointer; }
+        .checkbox-cell { width: 40px; text-align: center; }
+        .row-checkbox { width: 18px; height: 18px; cursor: pointer; accent-color: var(--color-proyectos); }
+        .selectable-row.selected { background: var(--bg-selected) !important; }
+    </style>
+</head>
+<body>
+    <div class="app" id="app">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">🔥 Fire<span>Trace</span></div>
+            <div class="user-info" id="userInfo" style="display:none;">
+                <div class="user-avatar" id="userAvatar">--</div>
+                <div>
+                    <div class="user-name" id="userName">Usuario</div>
+                    <div class="user-role">Conectado</div>
+                </div>
+            </div>
+            <nav class="nav-menu" id="navMenu">
+                <div class="nav-item dashboard active" data-module="dashboard"><div class="accent"></div>📊 Dashboard</div>
+                <div class="nav-item clientes" data-module="clientes"><div class="accent"></div>👥 Clientes</div>
+                <div class="nav-item intervenciones" data-module="intervenciones"><div class="accent"></div>🔧 Intervenciones</div>
+                <div class="nav-item correctivos" data-module="correctivos"><div class="accent"></div>⚠️ Correctivos</div>
+                <div class="nav-item agenda" data-module="agenda"><div class="accent"></div>📅 Agenda</div>
+                <div class="nav-item proyectos" data-module="proyectos"><div class="accent"></div>📁 Proyectos</div>
+                <div class="nav-item historial" data-module="historial"><div class="accent"></div>📜 Historial</div>
+            </nav>
+            <div class="settings-btn" onclick="openSettingsModal()">⚙️ Opciones</div>
+        </aside>
+        <main class="main-content" id="mainContent"></main>
+    </div>
+
+    <div class="locked-screen" id="lockedScreen">
+        <div class="logo">🔥 Fire<span>Trace</span></div>
+        <div style="font-size:64px;margin-bottom:20px;">🔒</div>
+        <div class="locked-form">
+            <h2>Iniciar Sesión</h2>
+            <input type="text" id="loginNombre" placeholder="Nombre">
+            <input type="text" id="loginApellido" placeholder="Apellido">
+            <button class="btn btn-clientes" onclick="iniciarSesion()">Iniciar Sesión</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('loadBackup').click()" style="margin-top:10px;">📂 Cargar Respaldo</button>
+            <input type="file" id="loadBackup" accept=".json" style="display:none" onchange="cargarRespaldo(event)">
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent"></div>
+    </div>
+
+    <div class="modal-overlay confirm-modal" id="confirmModal">
+        <div class="modal">
+            <div class="modal-header">⚠️ Confirmar</div>
+            <div class="modal-body" id="confirmMessage"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeConfirmModal()">Cancelar</button>
+                <button class="btn btn-danger" id="confirmBtn" onclick="confirmAction()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        const STORAGE_KEYS = {
+            clientes: 'firtrace_clientes', equipos: 'firtrace_equipos',
+            intervenciones: 'firtrace_intervenciones', correctivos: 'firtrace_correctivos',
+            agenda: 'firtrace_agenda', proyectos: 'firtrace_proyectos',
+            cotizaciones: 'firtrace_cotizaciones', actividades: 'firtrace_actividades',
+            counters: 'firtrace_counters', session: 'firtrace_session', theme: 'firtrace_theme'
+        };
+
+        const TIPOS_EQUIPO = ["Detector de humo","Detector de calor","Detector de llama","Central de detección","Panel de alarma","Módulo de control","Módulo de monitoreo","Rociador","Supresor","Lazo/Nodo","Otro"];
+        const TIPOS_FALLA = ["Falla eléctrica","Falla de sensor","Falla de comunicación","Falla de software/firmware","Daño físico","Suciedad/obstrucción","Falsa alarma recurrente","Sin alimentación","Batería agotada","Corrosión","Humedad/agua","Falla de zona","Otro"];
+        const TIPOS_INTERVENCION = ["Correctivo","Preventivo","Inspección","Instalación","Diagnóstico"];
+        const ESTADOS_EQUIPO = ["Operativo","En falla","Pendiente revisión","Fuera de servicio","Reemplazado"];
+        const PRIORIDADES = ["Alta","Media","Baja"];
+        const ESTADOS_CORRECTIVO = ["Pendiente","En proceso","Cerrado"];
+        const ESTADOS_AGENDA = ["Pendiente","Confirmado","Completado","Cancelado"];
+        const ESTADOS_ACTIVIDAD = ["Pendiente","En proceso","Completado","Pausado"];
+
+        let currentModule = 'dashboard', editingId = null, currentUser = null;
+        let selectedActividades = new Set(), selectedProyecto = null, selectedCotizacion = null;
+        let confirmCallback = null;
+
+        function getData(key) { const d = localStorage.getItem(STORAGE_KEYS[key]); return d ? JSON.parse(d) : []; }
+        function setData(key, data) { localStorage.setItem(STORAGE_KEYS[key], JSON.stringify(data)); }
+        function getNextId(key) { let c = getData('counters') || {}; c[key] = (c[key]||0)+1; setData('counters',c); return c[key]; }
+        function formatDate(ds) { if(!ds) return ''; return new Date(ds).toLocaleDateString('es-ES'); }
+        function getDateDaysAgo(d) { const dt = new Date(); dt.setDate(dt.getDate()+d); return dt.toISOString().split('T')[0]; }
+
+        function showToast(msg, type='success') {
+            const t = document.createElement('div');
+            t.className = `toast ${type}`; t.textContent = msg;
+            document.getElementById('toastContainer').appendChild(t);
+            setTimeout(() => t.remove(), 3000);
+        }
+
+        function openModal(html) { document.getElementById('modalContent').innerHTML = html; document.getElementById('modalOverlay').classList.add('active'); }
+        function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); editingId = null; }
+        function showConfirm(msg, cb) { document.getElementById('confirmMessage').innerHTML = msg + '<br><br><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;"><input type="checkbox" id="saveSessionCheck"> Guardar sesión antes de cerrar</label>'; confirmCallback = cb; document.getElementById('confirmModal').classList.add('active'); }
+        function closeConfirmModal() { document.getElementById('confirmModal').classList.remove('active'); confirmCallback = null; }
+        function confirmAction() { if(confirmCallback) confirmCallback(); closeConfirmModal(); }
+        function getClienteNombre(id) { const c = getData('clientes').find(x => x.id==id); return c ? c.nombre : 'N/A'; }
+
+        function applyTheme(t) {
+            if(t==='dark') document.documentElement.setAttribute('data-theme','dark');
+            else if(t==='light') document.documentElement.removeAttribute('data-theme');
+            else { if(window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.setAttribute('data-theme','dark'); else document.documentElement.removeAttribute('data-theme'); }
+        }
+        function initTheme() { const t = localStorage.getItem(STORAGE_KEYS.theme) || 'system'; applyTheme(t); return t; }
+
+        function openSettingsModal() {
+            const ct = localStorage.getItem(STORAGE_KEYS.theme) || 'system';
+            openModal(`
+                <div class="modal-header settings">⚙️ Opciones<button class="modal-close" onclick="closeModal()">✕</button></div>
+                <div class="modal-body">
+                    ${currentUser ? `<div class="settings-section"><h3>👤 Usuario</h3><div style="display:flex;align-items:center;gap:15px;padding:10px 0;"><div class="user-avatar" style="width:50px;height:50px;font-size:20px;">${currentUser.nombre[0]}${currentUser.apellido[0]}</div><div><div style="font-weight:600;font-size:16px;">${currentUser.nombre} ${currentUser.apellido}</div><div style="color:var(--text-muted);font-size:13px;">Conectado</div></div></div><button class="btn btn-danger" onclick="cerrarSesion()">🚪 Cerrar Sesión</button></div>` : ''}
+                    <div class="settings-section"><h3>🎨 Tema Visual</h3><div class="theme-options"><div class="theme-option ${ct==='light'?'active':''}" onclick="setTheme('light')"><div class="theme-icon light"></div><span>Claro</span></div><div class="theme-option ${ct==='dark'?'active':''}" onclick="setTheme('dark')"><div class="theme-icon dark"></div><span>Oscuro</span></div><div class="theme-option ${ct==='system'?'active':''}" onclick="setTheme('system')"><div class="theme-icon system"></div><span>Sistema</span></div></div></div>
+                    <div class="settings-section"><h3>💾 Respaldo</h3><button class="btn btn-success" onclick="guardarRespaldo()">💾 Descargar .json</button><button class="btn btn-secondary" onclick="document.getElementById('loadBackupSettings').click()" style="margin-left:10px;">📂 Cargar</button><input type="file" id="loadBackupSettings" accept=".json" style="display:none" onchange="cargarRespaldoSettings(event)"></div>
+                    <div class="settings-section"><h3>⚠️ Zona de Peligro</h3><button class="btn btn-danger" onclick="showConfirm('¿Eliminar TODOS los datos?',()=>{Object.keys(STORAGE_KEYS).forEach(k=>{if(k!=='session'&&k!=='theme')localStorage.removeItem(STORAGE_KEYS[k])});renderModule(currentModule);showToast('Datos eliminados','warning');})">🗑️ Eliminar Todo</button></div>
+                </div>`);
+        }
+        function setTheme(t) { localStorage.setItem(STORAGE_KEYS.theme,t); applyTheme(t); openSettingsModal(); }
+
+        function guardarRespaldo() {
+            const data = { clientes:getData('clientes'),equipos:getData('equipos'),intervenciones:getData('intervenciones'),correctivos:getData('correctivos'),agenda:getData('agenda'),proyectos:getData('proyectos'),cotizaciones:getData('cotizaciones'),actividades:getData('actividades'),counters:getData('counters'),fechaRespaldo:new Date().toISOString() };
+            const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `FireTrace_Backup_${getDateDaysAgo(0)}.json`; a.click();
+            showToast('Respaldo descargado');
+        }
+
+        function processBackupFile(file, autoLogin=false) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if(data.clientes) setData('clientes',data.clientes);
+                    if(data.equipos) setData('equipos',data.equipos);
+                    if(data.intervenciones) setData('intervenciones',data.intervenciones);
+                    if(data.correctivos) setData('correctivos',data.correctivos);
+                    if(data.agenda) setData('agenda',data.agenda);
+                    if(data.proyectos) setData('proyectos',data.proyectos);
+                    if(data.cotizaciones) setData('cotizaciones',data.cotizaciones);
+                    if(data.actividades) setData('actividades',data.actividades);
+                    if(data.counters) setData('counters',data.counters);
+                    if(autoLogin) iniciarSesionDirecto('Invitado','Respaldo');
+                    closeModal(); renderModule(currentModule);
+                    showToast('Respaldo cargado');
+                } catch(err) { showToast('Error al cargar respaldo','error'); }
+            };
+            reader.readAsText(file);
+        }
+        function cargarRespaldo(e) { if(e.target.files[0]) processBackupFile(e.target.files[0],true); e.target.value=''; }
+        function cargarRespaldoSettings(e) { if(e.target.files[0]) processBackupFile(e.target.files[0],true); e.target.value=''; }
+
+        function iniciarSesion() {
+            const nom = document.getElementById('loginNombre').value.trim();
+            const ape = document.getElementById('loginApellido').value.trim();
+            if(!nom || !ape) { showToast('Ingrese nombre y apellido','error'); return; }
+            iniciarSesionDirecto(nom, ape);
+        }
+
+        function iniciarSesionDirecto(nom, ape) {
+            currentUser = { nombre:nom, apellido:ape, loginTime:new Date().toISOString() };
+            localStorage.setItem(STORAGE_KEYS.session, JSON.stringify(currentUser));
+            document.getElementById('lockedScreen').style.display = 'none';
+            document.getElementById('app').style.display = 'flex';
+            document.getElementById('userInfo').style.display = 'flex';
+            document.getElementById('userAvatar').textContent = `${nom[0]}${ape[0]}`;
+            document.getElementById('userName').textContent = `${nom} ${ape}`;
+            generarDatosIniciales();
+            renderModule(currentModule);
+            showToast(`Bienvenido, ${nom} ${ape}`);
+        }
+
+        function cerrarSesion() {
+            showConfirm('¿Desea guardar la sesión antes de cerrar?', () => {
+                guardarRespaldo();
+                doLogout();
+            });
+        }
+
+        function doLogout() {
+            currentUser = null;
+            localStorage.removeItem(STORAGE_KEYS.session);
+            Object.keys(STORAGE_KEYS).forEach(k => { if(k!=='session'&&k!=='theme') localStorage.removeItem(STORAGE_KEYS[k]); });
+            document.getElementById('app').style.display = 'none';
+            document.getElementById('lockedScreen').style.display = 'flex';
+            document.getElementById('loginNombre').value = '';
+            document.getElementById('loginApellido').value = '';
+            closeModal();
+            showToast('Sesión cerrada');
+        }
+
+        function generarDatosIniciales() {
+            if(getData('clientes').length > 0) return;
+            const cli = [{id:1,nombre:'Hospital Central',contacto:'Dr. García',telefono:'555-0101',email:'contacto@hospitalcentral.com',direccion:'Av. Principal 123',notas:'Cliente prioritario 24/7',activo:true,creado:'2024-01-15'},{id:2,nombre:'Centro Comercial Norte',contacto:'Sra. López',telefono:'555-0102',email:'seguridad@nortecentro.com',direccion:'Blvd. Norte 456',notas:'Sistema ampliado',activo:true,creado:'2024-02-20'},{id:3,nombre:'Fábrica Tech',contacto:'Ing. Martínez',telefono:'555-0103',email:'mantenimiento@techfab.com',direccion:'Zona Industrial Lote 12',notas:'Inspección trimestral',activo:true,creado:'2024-03-10'},{id:4,nombre:'Hotel Majestic',contacto:'Gerente Pérez',telefono:'555-0104',email:'admin@hotelmajestic.com',direccion:'Calle Turística 789',notas:'Sistema de rociadores',activo:true,creado:'2024-04-05'}];
+            const eq = [{id:1,cliente_id:1,tipo:'Central de detección',marca:'Notifier',modelo:'NFS-320',numero_serie:'N320-2024-001',ubicacion:'Sala de control',zona:'A',lazo:'1',nodo:'01',estado:'Operativo',fecha_instalacion:'2022-05-15',notas:''},{id:2,cliente_id:1,tipo:'Detector de humo',marca:'System Sensor',modelo:'1551',numero_serie:'SS1551-001',ubicacion:'Piso 2',zona:'B',lazo:'2',nodo:'05',estado:'Operativo',fecha_instalacion:'2022-05-15',notas:''},{id:3,cliente_id:2,tipo:'Panel de alarma',marca:'Honeywell',modelo:'Notifier NFS-640',numero_serie:'N640-2023-015',ubicacion:'Cuarto eléctrico',zona:'Principal',lazo:'1',nodo:'01',estado:'En falla',fecha_instalacion:'2023-08-20',notas:'Falla intermitente'},{id:4,cliente_id:2,tipo:'Detector de calor',marca:'System Sensor',modelo:'5601',numero_serie:'SS5601-003',ubicacion:'Restaurantes',zona:'C',lazo:'3',nodo:'02',estado:'Operativo',fecha_instalacion:'2023-08-20',notas:''},{id:5,cliente_id:3,tipo:'Rociador',marca:'Tyco',modelo:'TY3501',numero_serie:'TY3501-007',ubicacion:'Nave producción',zona:'A',lazo:'1',nodo:'03',estado:'Operativo',fecha_instalacion:'2021-03-10',notas:''},{id:6,cliente_id:3,tipo:'Módulo de control',marca:'Silent Knight',modelo:'SK-555',numero_serie:'SK555-010',ubicacion:'Oficina',zona:'B',lazo:'2',nodo:'01',estado:'Pendiente revisión',fecha_instalacion:'2023-01-15',notas:''},{id:7,cliente_id:4,tipo:'Detector de humo',marca:'Hochiki',modelo:'SLK-62',numero_serie:'HK62-004',ubicacion:'Pisos 3-8',zona:'Hoteles',lazo:'4',nodo:'06',estado:'Operativo',fecha_instalacion:'2024-01-20',notas:''},{id:8,cliente_id:4,tipo:'Supresor',marca:'Kidde',modelo:'KN-400',numero_serie:'KD400-002',ubicacion:'Cocina',zona:'C',lazo:'5',nodo:'01',estado:'Operativo',fecha_instalacion:'2024-01-20',notas:''}];
+            const ints = [{id:1,equipo_id:3,cliente_id:2,fecha:getDateDaysAgo(2),tipo:'Correctivo',tipo_falla:'Falla de comunicación',descripcion_falla:'Panel no comunica',accion_tomada:'Reemplazo de tarjeta',materiales:'Tarjeta COM-232',tiempo_minutos:120,tecnico:'Juan Pérez',estado:'Completado',observaciones:'Problema resuelto',creado:getDateDaysAgo(2)},{id:2,equipo_id:6,cliente_id:3,fecha:getDateDaysAgo(5),tipo:'Preventivo',tipo_falla:'',descripcion_falla:'',accion_tomada:'Inspección y limpieza',materiales:'',tiempo_minutos:60,tecnico:'Carlos López',estado:'Completado',observaciones:'Equipo OK',creado:getDateDaysAgo(5)},{id:3,equipo_id:2,cliente_id:1,fecha:getDateDaysAgo(10),tipo:'Inspección',tipo_falla:'',descripcion_falla:'',accion_tomada:'Prueba de sensibilidad',materiales:'',tiempo_minutos:45,tecnico:'Juan Pérez',estado:'Completado',observaciones:'Detector operativo',creado:getDateDaysAgo(10)},{id:4,equipo_id:1,cliente_id:1,fecha:getDateDaysAgo(15),tipo:'Diagnóstico',tipo_falla:'',descripcion_falla:'Revisión general',accion_tomada:'Pruebas de lazos',materiales:'',tiempo_minutos:90,tecnico:'Carlos López',estado:'Completado',observaciones:'Sistema OK',creado:getDateDaysAgo(15)},{id:5,equipo_id:5,cliente_id:3,fecha:getDateDaysAgo(20),tipo:'Correctivo',tipo_falla:'Falla de zona',descripcion_falla:'Zona 3 sin respuesta',accion_tomada:'Reemplazo de rociador',materiales:'Rociador repuesto',tiempo_minutos:150,tecnico:'Juan Pérez',estado:'Completado',observaciones:'Zona restaurada',creado:getDateDaysAgo(20)}];
+            const corr = [{id:1,equipo_id:3,cliente_id:2,fecha_apertura:getDateDaysAgo(7),fecha_cierre:getDateDaysAgo(2),prioridad:'Alta',descripcion:'Panel sin comunicación',estado:'Cerrado',tecnico_asignado:'Juan Pérez',notas:'Resuelto'},{id:2,equipo_id:6,cliente_id:3,fecha_apertura:getDateDaysAgo(3),fecha_cierre:'',prioridad:'Media',descripcion:'Módulo requiere revisión',estado:'En proceso',tecnico_asignado:'Carlos López',notas:'Pendiente repuesto'},{id:3,equipo_id:4,cliente_id:2,fecha_apertura:getDateDaysAgo(1),fecha_cierre:'',prioridad:'Baja',descripcion:'Detector con sensibilidad baja',estado:'Pendiente',tecnico_asignado:'Juan Pérez',notas:''}];
+            const age = [{id:1,cliente_id:1,fecha:getDateDaysAgo(-1),hora:'09:00',tipo:'Inspección',descripcion:'Inspección trimestral',estado:'Pendiente',notas:''},{id:2,cliente_id:2,fecha:getDateDaysAgo(-2),hora:'14:00',tipo:'Mantenimiento',descripcion:'Mantenimiento preventivo',estado:'Confirmado',notas:''},{id:3,cliente_id:3,fecha:getDateDaysAgo(-3),hora:'10:00',tipo:'Reparación',descripcion:'Revisión módulo',estado:'Pendiente',notas:'Traer repuesto'},{id:4,cliente_id:4,fecha:getDateDaysAgo(0),hora:'11:00',tipo:'Inspección',descripcion:'Inspección anual',estado:'Confirmado',notas:''},{id:5,cliente_id:1,fecha:getDateDaysAgo(5),hora:'15:00',tipo:'Capacitación',descripcion:'Capacitación personal',estado:'Pendiente',notas:''}];
+            const proy = [{id:1,cliente_id:1,nombre:'Ampliación Sistema Hospital',descripcion:'Instalación 20 detectores',fecha_inicio:'2024-06-01',fecha_fin:'2024-08-31',estado:'En proceso',notas:'Proyecto prioritario'},{id:2,cliente_id:2,nombre:'Modernización Centro Comercial',descripcion:'Reemplazo de panel',fecha_inicio:'2024-09-01',fecha_fin:'2024-12-31',estado:'Pendiente',notas:''}];
+            const cots = [{id:1,proyecto_id:1,numero:'COT-001',descripcion:'Materiales y equipos'},{id:2,proyecto_id:1,numero:'COT-002',descripcion:'Mano de obra'},{id:3,proyecto_id:1,numero:'COT-003',descripcion:'Pruebas y certificación'},{id:4,proyecto_id:2,numero:'COT-001',descripcion:'Evaluación y diseño'}];
+            const acts = [{id:1,cotizacion_id:1,descripcion:'Compra de detectores',estado:'Completado',numero_reporte:'R-001',notas:'',orden:1},{id:2,cotizacion_id:1,descripcion:'Instalación cableado',estado:'Completado',numero_reporte:'R-002',notas:'',orden:2},{id:3,cotizacion_id:1,descripcion:'Colocación detectores',estado:'En proceso',numero_reporte:'',notas:'En curso',orden:3},{id:4,cotizacion_id:2,descripcion:'Contratación técnicos',estado:'Completado',numero_reporte:'R-003',notas:'',orden:1},{id:5,cotizacion_id:2,descripcion:'Instalación física',estado:'Pendiente',numero_reporte:'',notas:'',orden:2},{id:6,cotizacion_id:3,descripcion:'Pruebas funcionamiento',estado:'Pendiente',numero_reporte:'',notas:'',orden:1},{id:7,cotizacion_id:3,descripcion:'Certificación',estado:'Pendiente',numero_reporte:'',notas:'',orden:2}];
+            setData('clientes',cli); setData('equipos',eq); setData('intervenciones',ints); setData('correctivos',corr); setData('agenda',age); setData('proyectos',proy); setData('cotizaciones',cots); setData('actividades',acts); setData('counters',{clientes:4,equipos:8,intervenciones:5,correctivos:3,agenda:5,proyectos:2,cotizaciones:4,actividades:7});
+        }
+
+        function checkSession() {
+            const ss = localStorage.getItem(STORAGE_KEYS.session);
+            initTheme();
+            if(ss) {
+                currentUser = JSON.parse(ss);
+                document.getElementById('lockedScreen').style.display = 'none';
+                document.getElementById('app').style.display = 'flex';
+                document.getElementById('userInfo').style.display = 'flex';
+                document.getElementById('userAvatar').textContent = `${currentUser.nombre[0]}${currentUser.apellido[0]}`;
+                document.getElementById('userName').textContent = `${currentUser.nombre} ${currentUser.apellido}`;
+                generarDatosIniciales();
+                renderModule(currentModule);
+            } else {
+                document.getElementById('app').style.display = 'none';
+                document.getElementById('lockedScreen').style.display = 'flex';
+            }
+        }
+
+        function navigateTo(mod) { currentModule = mod; document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active')); document.querySelector(`.nav-item.${mod}`).classList.add('active'); renderModule(mod); }
+        function renderModule(mod) { const main = document.getElementById('mainContent'); switch(mod) { case 'dashboard': renderDashboard(main); break; case 'clientes': renderClientes(main); break; case 'intervenciones': renderIntervenciones(main); break; case 'correctivos': renderCorrectivos(main); break; case 'agenda': renderAgenda(main); break; case 'proyectos': renderProyectos(main); break; case 'historial': renderHistorial(main); break; } }
+
+        function renderDashboard(c) {
+            const cli = getData('clientes'), eq = getData('equipos'), ints = getData('intervenciones'), corr = getData('correctivos'), age = getData('agenda');
+            const today = getDateDaysAgo(0);
+            const intsMes = ints.filter(i => new Date(i.fecha).getMonth() === new Date().getMonth()).length;
+            const corrAb = corr.filter(c => c.estado !== 'Cerrado').length;
+            const evtHoy = age.filter(a => a.fecha === today).length;
+            const proxEvt = age.filter(a => a.fecha >= today).sort((a,b) => a.fecha.localeCompare(b.fecha)).slice(0,5);
+            const corrAbiert = corr.filter(c => c.estado !== 'Cerrado').sort((a,b) => b.fecha_apertura.localeCompare(a.fecha_apertura)).slice(0,5);
+            const ultInts = [...ints].sort((a,b) => b.fecha.localeCompare(a.fecha)).slice(0,5);
+            const mesesL = [], intsPM = [];
+            for(let i=5;i>=0;i--){const d=new Date();d.setMonth(d.getMonth()-i);mesesL.push(d.toLocaleDateString('es-ES',{month:'short'}));intsPM.push(ints.filter(x=>new Date(x.fecha).getMonth()===d.getMonth()&&new Date(x.fecha).getFullYear()===d.getFullYear()).length);}
+            c.innerHTML = `<div class="toolbar dashboard"><h2>📊 Dashboard</h2></div><div class="cards-grid"><div class="card dashboard"><div class="card-label">Total Clientes</div><div class="card-value">${cli.length}</div></div><div class="card dashboard"><div class="card-label">Total Equipos</div><div class="card-value">${eq.length}</div></div><div class="card dashboard"><div class="card-label">Intervenciones del Mes</div><div class="card-value">${intsMes}</div></div><div class="card dashboard"><div class="card-label">Correctivos Abiertos</div><div class="card-value">${corrAb}</div></div><div class="card dashboard"><div class="card-label">Eventos de Hoy</div><div class="card-value">${evtHoy}</div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;"><div><div class="table-container" style="margin-bottom:20px;"><h3 style="padding:15px;border-bottom:1px solid var(--border-color);">📅 Próximos Eventos</h3><table class="data-table"><thead><tr><th>Fecha</th><th>Cliente</th><th>Descripción</th><th>Estado</th></tr></thead><tbody>${proxEvt.length?proxEvt.map(e=>`<tr><td>${formatDate(e.fecha)}</td><td>${getClienteNombre(e.cliente_id)}</td><td>${e.descripcion}</td><td><span class="status-badge status-${e.estado==='Completado'?'completado':e.estado==='Confirmado'?'proceso':'pendiente'}">${e.estado}</span></td></tr>`).join(''):'<tr><td colspan="4" class="empty-state">Sin eventos</td></tr>'}</tbody></table></div><div class="table-container"><h3 style="padding:15px;border-bottom:1px solid var(--border-color);">⚠️ Correctivos Abiertos</h3><table class="data-table"><thead><tr><th>Fecha</th><th>Cliente</th><th>Descripción</th><th>Prioridad</th></tr></thead><tbody>${corrAbiert.length?corrAbiert.map(co=>`<tr class="priority-${co.prioridad.toLowerCase()}"><td>${formatDate(co.fecha_apertura)}</td><td>${getClienteNombre(co.cliente_id)}</td><td>${co.descripcion.substring(0,30)}...</td><td><span class="status-badge status-${co.prioridad.toLowerCase()}">${co.prioridad}</span></td></tr>`).join(''):'<tr><td colspan="4" class="empty-state">Sin correctivos</td></tr>'}</tbody></table></div></div><div><div class="table-container" style="margin-bottom:20px;"><h3 style="padding:15px;border-bottom:1px solid var(--border-color);">🔧 Últimas Intervenciones</h3><table class="data-table"><thead><tr><th>Fecha</th><th>Cliente</th><th>Tipo</th><th>Técnico</th></tr></thead><tbody>${ultInts.map(i=>`<tr><td>${formatDate(i.fecha)}</td><td>${getClienteNombre(i.cliente_id)}</td><td>${i.tipo}</td><td>${i.tecnico}</td></tr>`).join('')}</tbody></table></div><div class="chart-container"><div class="chart-title">Intervenciones por Mes</div><canvas id="chartIntervenciones" height="200"></canvas></div></div></div>`;
+            setTimeout(() => { new Chart(document.getElementById('chartIntervenciones'),{type:'bar',data:{labels:mesesL,datasets:[{label:'Intervenciones',data:intsPM,backgroundColor:'#5c6bc0',borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}}}}); }, 100);
+        }
+
+        function renderClientes(c) {
+            const cli = getData('clientes'), eq = getData('equipos');
+            c.innerHTML = `<div class="toolbar clientes"><h2>👥 Clientes</h2><div style="flex:1"></div><input type="text" class="search-input" id="searchCli" placeholder="Buscar..."><button class="btn btn-clientes" onclick="openClienteModal()">+ Nuevo</button></div><div class="table-container"><table class="data-table" id="tblCli"><thead><tr><th>ID</th><th>Nombre</th><th>Contacto</th><th>Teléfono</th><th>Email</th><th>Equipos</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>${cli.map(c=>`<tr><td>${c.id}</td><td><strong>${c.nombre}</strong></td><td>${c.contacto}</td><td>${c.telefono}</td><td>${c.email}</td><td>${eq.filter(e=>e.cliente_id==c.id).length}</td><td><span class="status-badge status-${c.activo?'activo':'inactivo'}">${c.activo?'Activo':'Inactivo'}</span></td><td class="action-btns"><button class="btn btn-secondary" onclick="editCliente(${c.id})">✏️</button><button class="btn btn-danger" onclick="deleteCliente(${c.id})">🗑️</button><button class="btn btn-clientes" onclick="openEquiposModal(${c.id})">🔧</button><button class="btn btn-historial" onclick="openHistorialClienteModal(${c.id})">📋</button></td></tr>`).join('')}</tbody></table></div>`;
+            document.getElementById('searchCli').addEventListener('input', e => { document.querySelectorAll('#tblCli tbody tr').forEach(r => r.style.display = r.textContent.toLowerCase().includes(e.target.value.toLowerCase()) ? '' : 'none'); });
+        }
+
+        function openClienteModal(cli=null) {
+            editingId = cli ? cli.id : null;
+            openModal(`<div class="modal-header clientes">${cli?'✏️ Editar':'➕ Nuevo'} Cliente<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="form-group"><label class="required">Nombre</label><input type="text" id="cliNombre" value="${cli?.nombre||''}"></div><div class="form-row"><div class="form-group"><label>Contacto</label><input type="text" id="cliContacto" value="${cli?.contacto||''}"></div><div class="form-group"><label>Teléfono</label><input type="text" id="cliTelefono" value="${cli?.telefono||''}"></div></div><div class="form-row"><div class="form-group"><label>Email</label><input type="email" id="cliEmail" value="${cli?.email||''}"></div><div class="form-group"><label>Estado</label><select id="cliActivo"><option value="true" ${cli?.activo!==false?'selected':''}>Activo</option><option value="false" ${cli?.activo===false?'selected':''}>Inactivo</option></select></div></div><div class="form-group"><label>Dirección</label><input type="text" id="cliDireccion" value="${cli?.direccion||''}"></div><div class="form-group"><label>Notas</label><textarea id="cliNotas">${cli?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-clientes" onclick="saveCliente()">Guardar</button></div>`);
+        }
+        function editCliente(id) { const c = getData('clientes').find(x=>x.id==id); if(c) openClienteModal(c); }
+        function saveCliente() {
+            const nom = document.getElementById('cliNombre').value.trim();
+            if(!nom) { showToast('El nombre es requerido','error'); return; }
+            const cli = getData('clientes');
+            const data = {nombre:nom,contacto:document.getElementById('cliContacto').value,telefono:document.getElementById('cliTelefono').value,email:document.getElementById('cliEmail').value,direccion:document.getElementById('cliDireccion').value,notas:document.getElementById('cliNotas').value,activo:document.getElementById('cliActivo').value==='true',creado:new Date().toISOString().split('T')[0]};
+            if(editingId) { const idx=cli.findIndex(x=>x.id==editingId); data.id=editingId; data.creado=cli[idx].creado; cli[idx]=data; } else { data.id=getNextId('clientes'); cli.push(data); }
+            setData('clientes',cli); closeModal(); showToast(editingId?'Cliente actualizado':'Cliente creado'); renderClientes(document.getElementById('mainContent'));
+        }
+        function deleteCliente(id) {
+            showConfirm('¿Eliminar este cliente y todos sus datos?', () => {
+                ['clientes','equipos','intervenciones','correctivos','agenda','proyectos'].forEach(k => { if(k==='clientes') setData(k,getData(k).filter(x=>x.id!=id)); else setData(k,getData(k).filter(x=>x.cliente_id!=id)); });
+                showToast('Cliente eliminado','warning'); renderClientes(document.getElementById('mainContent'));
+            });
+        }
+
+        function openEquiposModal(clienteId) {
+            const cliente = getData('clientes').find(x=>x.id==clienteId);
+            const eqs = getData('equipos').filter(e=>e.cliente_id==clienteId);
+            openModal(`<div class="modal-header clientes">🔧 Equipos de ${cliente.nombre}<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div style="margin-bottom:15px;"><button class="btn btn-clientes" onclick="openEquipoModal(null,${clienteId})">+ Nuevo Equipo</button></div><table class="data-table"><thead><tr><th>ID</th><th>Tipo</th><th>Marca/Modelo</th><th>Serie</th><th>Ubicación</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>${eqs.length?eqs.map(e=>`<tr><td>${e.id}</td><td>${e.tipo}</td><td>${e.marca} ${e.modelo}</td><td>${e.numero_serie}</td><td>${e.ubicacion}</td><td><span class="status-badge status-${e.estado==='Operativo'?'operativo':e.estado==='En falla'?'en-falla':'pendiente'}">${e.estado}</span></td><td class="action-btns"><button class="btn btn-secondary" onclick="editEquipo(${e.id},${clienteId})">✏️</button><button class="btn btn-danger" onclick="deleteEquipo(${e.id},${clienteId})">🗑️</button></td></tr>`).join(''):'<tr><td colspan="7" class="empty-state">Sin equipos</td></tr>'}</tbody></table></div>`);
+        }
+        function openEquipoModal(eq=null, clienteId) {
+            openModal(`<div class="modal-header clientes">${eq?'✏️ Editar':'➕ Nuevo'} Equipo<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="form-row"><div class="form-group"><label>Tipo</label><select id="eqTipo">${TIPOS_EQUIPO.map(t=>`<option value="${t}" ${eq?.tipo===t?'selected':''}>${t}</option>`).join('')}</select></div><div class="form-group"><label>Marca</label><input type="text" id="eqMarca" value="${eq?.marca||''}"></div></div><div class="form-row"><div class="form-group"><label>Modelo</label><input type="text" id="eqModelo" value="${eq?.modelo||''}"></div><div class="form-group"><label>Nº Serie</label><input type="text" id="eqSerie" value="${eq?.numero_serie||''}"></div></div><div class="form-row"><div class="form-group"><label>Ubicación</label><input type="text" id="eqUbicacion" value="${eq?.ubicacion||''}"></div><div class="form-group"><label>Zona</label><input type="text" id="eqZona" value="${eq?.zona||''}"></div></div><div class="form-row"><div class="form-group"><label>Estado</label><select id="eqEstado">${ESTADOS_EQUIPO.map(e=>`<option value="${e}" ${eq?.estado===e?'selected':''}>${e}</option>`).join('')}</select></div><div class="form-group"><label>Fecha Instalación</label><input type="date" id="eqFecha" value="${eq?.fecha_instalacion||''}"></div></div><div class="form-group"><label>Notas</label><textarea id="eqNotas">${eq?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-clientes" onclick="saveEquipo(${clienteId})">Guardar</button></div>`);
+        }
+        function editEquipo(id,clienteId) { const eq=getData('equipos').find(x=>x.id==id); if(eq) openEquipoModal(eq,clienteId); }
+        function saveEquipo(clienteId) {
+            const eqs = getData('equipos');
+            const data = {cliente_id:clienteId,tipo:document.getElementById('eqTipo').value,marca:document.getElementById('eqMarca').value,modelo:document.getElementById('eqModelo').value,numero_serie:document.getElementById('eqSerie').value,ubicacion:document.getElementById('eqUbicacion').value,zona:document.getElementById('eqZona').value,estado:document.getElementById('eqEstado').value,fecha_instalacion:document.getElementById('eqFecha').value,notas:document.getElementById('eqNotas').value,lazo:'',nodo:''};
+            if(editingId) { data.id=editingId; const idx=eqs.findIndex(x=>x.id==editingId); eqs[idx]=data; } else { data.id=getNextId('equipos'); eqs.push(data); }
+            setData('equipos',eqs); closeModal(); showToast(editingId?'Equipo actualizado':'Equipo creado'); openEquiposModal(clienteId);
+        }
+        function deleteEquipo(id,clienteId) { showConfirm('¿Eliminar?',()=>{setData('equipos',getData('equipos').filter(x=>x.id!=id));openEquiposModal(clienteId);showToast('Eliminado','warning');}); }
+
+        function openHistorialClienteModal(clienteId) {
+            const cliente = getData('clientes').find(x=>x.id==clienteId);
+            const ints = getData('intervenciones').filter(i=>i.cliente_id==clienteId);
+            openModal(`<div class="modal-header clientes">📋 Historial de ${cliente.nombre}<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body">${ints.length?`<table class="data-table"><thead><tr><th>Fecha</th><th>Tipo</th><th>Técnico</th><th>Estado</th><th>Observaciones</th></tr></thead><tbody>${ints.map(i=>`<tr><td>${formatDate(i.fecha)}</td><td>${i.tipo}</td><td>${i.tecnico}</td><td><span class="status-badge status-${i.estado==='Completado'?'completado':'pendiente'}">${i.estado}</span></td><td>${i.observaciones||'-'}</td></tr>`).join('')}</tbody></table>`:'<div class="empty-state">Sin intervenciones</div>'}</div>`);
+        }
+
+        function renderIntervenciones(c) {
+            const ints = getData('intervenciones'), cli = getData('clientes'), eq = getData('equipos');
+            c.innerHTML = `<div class="toolbar intervenciones"><h2>🔧 Intervenciones</h2><div style="flex:1"></div><select id="fCl"><option value="">Todos</option>${cli.map(c=>`<option value="${c.id}">${c.nombre}</option>`).join('')}</select><select id="fTi"><option value="">Tipos</option>${TIPOS_INTERVENCION.map(t=>`<option value="${t}">${t}</option>`).join('')}</select><input type="text" class="search-input" id="sInt" placeholder="Buscar..."><button class="btn btn-intervenciones" onclick="openIntervencionModal()">+ Nueva</button></div><div class="table-container"><table class="data-table" id="tblInt"><thead><tr><th>ID</th><th>Fecha</th><th>Cliente</th><th>Tipo</th><th>Equipo</th><th>Técnico</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>${ints.map(i=>{const eq2=eq.find(x=>x.id==i.equipo_id);return`<tr><td>${i.id}</td><td>${formatDate(i.fecha)}</td><td>${getClienteNombre(i.cliente_id)}</td><td>${i.tipo}</td><td>${eq2?eq2.tipo:'N/A'}</td><td>${i.tecnico}</td><td><span class="status-badge status-${i.estado==='Completado'?'completado':'pendiente'}">${i.estado}</span></td><td class="action-btns"><button class="btn btn-secondary" onclick="editIntervencion(${i.id})">✏️</button><button class="btn btn-danger" onclick="deleteIntervencion(${i.id})">🗑️</button></td></tr>`;}).join('')}</tbody></table></div>`;
+            document.getElementById('fCl').addEventListener('change',fInt); document.getElementById('fTi').addEventListener('change',fInt); document.getElementById('sInt').addEventListener('input',fInt);
+        }
+        function fInt() {
+            const cl=document.getElementById('fCl').value,ti=document.getElementById('fTi').value,sr=document.getElementById('sInt').value.toLowerCase();
+            document.querySelectorAll('#tblInt tbody tr').forEach(r=>{const t=r.textContent.toLowerCase();r.style.display=(!cl||t.includes(getClienteNombre(cl).toLowerCase()))&&(!ti||t.includes(ti.toLowerCase()))&&(!sr||t.includes(sr))?'':'none';});
+        }
+        function openIntervencionModal(i=null) {
+            const cli=getData('clientes'), eq=getData('equipos'); editingId=i?i.id:null;
+            const eqFilt = i?.cliente_id?eq.filter(e=>e.cliente_id==i.cliente_id):[];
+            openModal(`<div class="modal-header intervenciones">${i?'✏️ Editar':'➕ Nueva'} Intervención<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="form-row"><div class="form-group"><label class="required">Cliente</label><select id="iCli" onchange="fEqInt()"><option value="">Seleccionar</option>${cli.map(c=>`<option value="${c.id}" ${i?.cliente_id==c.id?'selected':''}>${c.nombre}</option>`).join('')}</select></div><div class="form-group"><label class="required">Equipo</label><select id="iEq"><option value="">Seleccionar</option>${eqFilt.map(e=>`<option value="${e.id}" ${i?.equipo_id==e.id?'selected':''}>${e.tipo} - ${e.numero_serie}</option>`).join('')}</select></div></div><div class="form-row"><div class="form-group"><label>Fecha</label><input type="date" id="iFecha" value="${i?.fecha||getDateDaysAgo(0)}"></div><div class="form-group"><label>Tipo</label><select id="iTipo">${TIPOS_INTERVENCION.map(t=>`<option value="${t}" ${i?.tipo===t?'selected':''}>${t}</option>`).join('')}</select></div></div><div class="form-row"><div class="form-group"><label>Técnico</label><input type="text" id="iTec" value="${i?.tecnico||''}"></div><div class="form-group"><label>Tipo Falla</label><select id="iFalla"><option value="">N/A</option>${TIPOS_FALLA.map(t=>`<option value="${t}" ${i?.tipo_falla===t?'selected':''}>${t}</option>`).join('')}</select></div></div><div class="form-group"><label>Descripción Falla</label><textarea id="iDesc">${i?.descripcion_falla||''}</textarea></div><div class="form-group"><label>Acción Tomada</label><textarea id="iAcc">${i?.accion_tomada||''}</textarea></div><div class="form-row"><div class="form-group"><label>Materiales</label><input type="text" id="iMat" value="${i?.materiales||''}"></div><div class="form-group"><label>Tiempo (min)</label><input type="number" id="iTiempo" value="${i?.tiempo_minutos||''}"></div></div><div class="form-row"><div class="form-group"><label>Estado</label><select id="iEst"><option value="Completado" ${i?.estado==='Completado'?'selected':''}>Completado</option><option value="En proceso" ${i?.estado==='En proceso'?'selected':''}>En proceso</option><option value="Pendiente" ${i?.estado==='Pendiente'?'selected':''}>Pendiente</option></select></div><div class="form-group"><label>Observaciones</label><input type="text" id="iObs" value="${i?.observaciones||''}"></div></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-intervenciones" onclick="saveIntervencion()">Guardar</button></div>`);
+        }
+        function fEqInt() {
+            const cid=document.getElementById('iCli').value,eq=getData('equipos');
+            document.getElementById('iEq').innerHTML='<option value="">Seleccionar</option>'+eq.filter(e=>e.cliente_id==cid).map(e=>`<option value="${e.id}">${e.tipo} - ${e.numero_serie}</option>`).join('');
+        }
+        function editIntervencion(id) { const i=getData('intervenciones').find(x=>x.id==id); if(i) openIntervencionModal(i); }
+        function saveIntervencion() {
+            const cid=document.getElementById('iCli').value,eqid=document.getElementById('iEq').value,fecha=document.getElementById('iFecha').value;
+            if(!cid||!eqid||!fecha) { showToast('Complete los campos','error'); return; }
+            const ints=getData('intervenciones');
+            const data={cliente_id:parseInt(cid),equipo_id:parseInt(eqid),fecha,tipo:document.getElementById('iTipo').value,tipo_falla:document.getElementById('iFalla').value,descripcion_falla:document.getElementById('iDesc').value,accion_tomada:document.getElementById('iAcc').value,materiales:document.getElementById('iMat').value,tiempo_minutos:parseInt(document.getElementById('iTiempo').value)||0,tecnico:document.getElementById('iTec').value,estado:document.getElementById('iEst').value,observaciones:document.getElementById('iObs').value,creado:new Date().toISOString().split('T')[0]};
+            if(editingId) { data.id=editingId; const idx=ints.findIndex(x=>x.id==editingId); data.creado=ints[idx].creado; ints[idx]=data; } else { data.id=getNextId('intervenciones'); ints.push(data); }
+            setData('intervenciones',ints); closeModal(); showToast(editingId?'Actualizado':'Creado'); renderIntervenciones(document.getElementById('mainContent'));
+        }
+        function deleteIntervencion(id) { showConfirm('¿Eliminar?',()=>{setData('intervenciones',getData('intervenciones').filter(x=>x.id!=id));renderIntervenciones(document.getElementById('mainContent'));showToast('Eliminado','warning');}); }
+
+        function renderCorrectivos(c) {
+            const corr=getData('correctivos'), cli=getData('clientes'), eq=getData('equipos');
+            c.innerHTML = `<div class="toolbar correctivos"><h2>⚠️ Correctivos</h2><div style="flex:1"></div><select id="fCorrCli"><option value="">Clientes</option>${cli.map(c=>`<option value="${c.id}">${c.nombre}</option>`).join('')}</select><select id="fCorrPri"><option value="">Prioridades</option>${PRIORIDADES.map(p=>`<option value="${p}">${p}</option>`).join('')}</select><button class="btn btn-correctivos" onclick="openCorrectivoModal()">+ Nuevo</button></div><div class="table-container"><table class="data-table" id="tblCorr"><thead><tr><th>ID</th><th>Fecha</th><th>Cliente</th><th>Equipo</th><th>Prioridad</th><th>Estado</th><th>Días</th><th>Técnico</th><th>Acciones</th></tr></thead><tbody>${corr.map(co=>{const eq2=eq.find(x=>x.id==co.equipo_id);const dias=co.estado==='Cerrado'?'-':Math.ceil((new Date()-new Date(co.fecha_apertura))/(1000*60*60*24));return`<tr class="priority-${co.prioridad.toLowerCase()}"><td>${co.id}</td><td>${formatDate(co.fecha_apertura)}</td><td>${getClienteNombre(co.cliente_id)}</td><td>${eq2?eq2.tipo:'N/A'}</td><td><span class="status-badge status-${co.prioridad.toLowerCase()}">${co.prioridad}</span></td><td><span class="status-badge status-${co.estado==='Cerrado'?'completado':co.estado==='En proceso'?'proceso':'pendiente'}">${co.estado}</span></td><td>${dias}</td><td>${co.tecnico_asignado}</td><td class="action-btns"><button class="btn btn-secondary" onclick="editCorrectivo(${co.id})">✏️</button><button class="btn btn-danger" onclick="deleteCorrectivo(${co.id})">🗑️</button></td></tr>`;}).join('')}</tbody></table></div>`;
+            document.getElementById('fCorrCli').addEventListener('change',fCorr); document.getElementById('fCorrPri').addEventListener('change',fCorr);
+        }
+        function fCorr() {
+            const cl=document.getElementById('fCorrCli').value,pr=document.getElementById('fCorrPri').value;
+            document.querySelectorAll('#tblCorr tbody tr').forEach(r=>{const t=r.textContent.toLowerCase();r.style.display=(!cl||t.includes(getClienteNombre(cl).toLowerCase()))&&(!pr||t.includes(pr.toLowerCase()))?'':'none';});
+        }
+        function openCorrectivoModal(co=null) {
+            const cli=getData('clientes'), eq=getData('equipos'); editingId=co?co.id:null;
+            const eqFilt=co?.cliente_id?eq.filter(e=>e.cliente_id==co.cliente_id):[];
+            openModal(`<div class="modal-header correctivos">${co?'✏️ Editar':'➕ Nuevo'} Correctivo<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="form-row"><div class="form-group"><label class="required">Cliente</label><select id="cCli" onchange="fEqCorr()"><option value="">Seleccionar</option>${cli.map(c=>`<option value="${c.id}" ${co?.cliente_id==c.id?'selected':''}>${c.nombre}</option>`).join('')}</select></div><div class="form-group"><label class="required">Equipo</label><select id="cEq"><option value="">Seleccionar</option>${eqFilt.map(e=>`<option value="${e.id}" ${co?.equipo_id==e.id?'selected':''}>${e.tipo} - ${e.numero_serie}</option>`).join('')}</select></div></div><div class="form-row"><div class="form-group"><label>Fecha Apertura</label><input type="date" id="cFechA" value="${co?.fecha_apertura||getDateDaysAgo(0)}"></div><div class="form-group"><label>Fecha Cierre</label><input type="date" id="cFechC" value="${co?.fecha_cierre||''}"></div></div><div class="form-row"><div class="form-group"><label>Prioridad</label><select id="cPri">${PRIORIDADES.map(p=>`<option value="${p}" ${co?.prioridad===p?'selected':''}>${p}</option>`).join('')}</select></div><div class="form-group"><label>Estado</label><select id="cEst">${ESTADOS_CORRECTIVO.map(e=>`<option value="${e}" ${co?.estado===e?'selected':''}>${e}</option>`).join('')}</select></div></div><div class="form-group"><label>Técnico</label><input type="text" id="cTec" value="${co?.tecnico_asignado||''}"></div><div class="form-group"><label>Descripción</label><textarea id="cDesc">${co?.descripcion||''}</textarea></div><div class="form-group"><label>Notas</label><textarea id="cNotas">${co?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-correctivos" onclick="saveCorrectivo()">Guardar</button></div>`);
+        }
+        function fEqCorr() { const cid=document.getElementById('cCli').value,eq=getData('equipos'); document.getElementById('cEq').innerHTML='<option value="">Seleccionar</option>'+eq.filter(e=>e.cliente_id==cid).map(e=>`<option value="${e.id}">${e.tipo} - ${e.numero_serie}</option>`).join(''); }
+        function editCorrectivo(id) { const co=getData('correctivos').find(x=>x.id==id); if(co) openCorrectivoModal(co); }
+        function saveCorrectivo() {
+            const cid=document.getElementById('cCli').value,eqid=document.getElementById('cEq').value,fA=document.getElementById('cFechA').value;
+            if(!cid||!eqid||!fA) { showToast('Complete los campos','error'); return; }
+            const corr=getData('correctivos');
+            const data={cliente_id:parseInt(cid),equipo_id:parseInt(eqid),fecha_apertura:fA,fecha_cierre:document.getElementById('cFechC').value,prioridad:document.getElementById('cPri').value,descripcion:document.getElementById('cDesc').value,estado:document.getElementById('cEst').value,tecnico_asignado:document.getElementById('cTec').value,notas:document.getElementById('cNotas').value};
+            if(editingId) { data.id=editingId; const idx=corr.findIndex(x=>x.id==editingId); corr[idx]=data; } else { data.id=getNextId('correctivos'); corr.push(data); }
+            setData('correctivos',corr); closeModal(); showToast(editingId?'Actualizado':'Creado'); renderCorrectivos(document.getElementById('mainContent'));
+        }
+        function deleteCorrectivo(id) { showConfirm('¿Eliminar?',()=>{setData('correctivos',getData('correctivos').filter(x=>x.id!=id));renderCorrectivos(document.getElementById('mainContent'));showToast('Eliminado','warning');}); }
+
+        function renderAgenda(c) {
+            const age=getData('agenda'), cli=getData('clientes'), today=getDateDaysAgo(0);
+            c.innerHTML = `<div class="toolbar agenda"><h2>📅 Agenda</h2><div style="flex:1"></div><input type="date" id="fAgeFecha" value="${today}"><select id="fAgeEst"><option value="">Estados</option>${ESTADOS_AGENDA.map(e=>`<option value="${e}">${e}</option>`).join('')}</select><button class="btn btn-agenda" onclick="openAgendaModal()">+ Nuevo</button></div><div class="table-container"><table class="data-table" id="tblAge"><thead><tr><th>ID</th><th>Fecha</th><th>Hora</th><th>Cliente</th><th>Tipo</th><th>Descripción</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>${age.map(a=>`<tr class="${a.fecha===today?'status-hoy':''}"><td>${a.id}</td><td><strong>${formatDate(a.fecha)}</strong>${a.fecha===today?' <span class="status-badge status-hoy">HOY</span>':''}</td><td>${a.hora||'-'}</td><td>${getClienteNombre(a.cliente_id)}</td><td>${a.tipo}</td><td>${a.descripcion}</td><td><span class="status-badge status-${a.estado==='Completado'?'completado':a.estado==='Confirmado'?'proceso':a.estado==='Cancelado'?'inactivo':'pendiente'}">${a.estado}</span></td><td class="action-btns"><button class="btn btn-secondary" onclick="editAgenda(${a.id})">✏️</button><button class="btn btn-danger" onclick="deleteAgenda(${a.id})">🗑️</button></td></tr>`).join('')}</tbody></table></div>`;
+            document.getElementById('fAgeFecha').addEventListener('change',fAge); document.getElementById('fAgeEst').addEventListener('change',fAge);
+        }
+        function fAge() {
+            const f=document.getElementById('fAgeFecha').value,e=document.getElementById('fAgeEst').value;
+            document.querySelectorAll('#tblAge tbody tr').forEach(r=>{const t=r.textContent.toLowerCase();r.style.display=(!f||r.innerHTML.includes(formatDate(f)))&&(!e||t.includes(e.toLowerCase()))?'':'none';});
+        }
+        function openAgendaModal(a=null) {
+            const cli=getData('clientes'); editingId=a?a.id:null;
+            openModal(`<div class="modal-header agenda">${a?'✏️ Editar':'➕ Nuevo'} Evento<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="form-row"><div class="form-group"><label class="required">Cliente</label><select id="aCli"><option value="">Seleccionar</option>${cli.map(c=>`<option value="${c.id}" ${a?.cliente_id==c.id?'selected':''}>${c.nombre}</option>`).join('')}</select></div><div class="form-group"><label class="required">Fecha</label><input type="date" id="aFecha" value="${a?.fecha||getDateDaysAgo(0)}"></div></div><div class="form-row"><div class="form-group"><label>Hora</label><input type="time" id="aHora" value="${a?.hora||''}"></div><div class="form-group"><label>Tipo</label><select id="aTipo"><option value="Inspección" ${a?.tipo==='Inspección'?'selected':''}>Inspección</option><option value="Mantenimiento" ${a?.tipo==='Mantenimiento'?'selected':''}>Mantenimiento</option><option value="Reparación" ${a?.tipo==='Reparación'?'selected':''}>Reparación</option><option value="Capacitación" ${a?.tipo==='Capacitación'?'selected':''}>Capacitación</option><option value="Otro" ${a?.tipo==='Otro'?'selected':''}>Otro</option></select></div></div><div class="form-group"><label>Estado</label><select id="aEst">${ESTADOS_AGENDA.map(ee=>`<option value="${ee}" ${a?.estado===ee?'selected':''}>${ee}</option>`).join('')}</select></div><div class="form-group"><label>Descripción</label><textarea id="aDesc">${a?.descripcion||''}</textarea></div><div class="form-group"><label>Notas</label><textarea id="aNotas">${a?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-agenda" onclick="saveAgenda()">Guardar</button></div>`);
+        }
+        function editAgenda(id) { const a=getData('agenda').find(x=>x.id==id); if(a) openAgendaModal(a); }
+        function saveAgenda() {
+            const cid=document.getElementById('aCli').value,fecha=document.getElementById('aFecha').value;
+            if(!cid||!fecha) { showToast('Complete los campos','error'); return; }
+            const age=getData('agenda');
+            const data={cliente_id:parseInt(cid),fecha,hora:document.getElementById('aHora').value,tipo:document.getElementById('aTipo').value,descripcion:document.getElementById('aDesc').value,estado:document.getElementById('aEst').value,notas:document.getElementById('aNotas').value};
+            if(editingId) { data.id=editingId; const idx=age.findIndex(x=>x.id==editingId); age[idx]=data; } else { data.id=getNextId('agenda'); age.push(data); }
+            setData('agenda',age); closeModal(); showToast(editingId?'Actualizado':'Creado'); renderAgenda(document.getElementById('mainContent'));
+        }
+        function deleteAgenda(id) { showConfirm('¿Eliminar?',()=>{setData('agenda',getData('agenda').filter(x=>x.id!=id));renderAgenda(document.getElementById('mainContent'));showToast('Eliminado','warning');}); }
+
+        function renderProyectos(c) {
+            const proy=getData('proyectos'), cli=getData('clientes'), cots=getData('cotizaciones'), acts=getData('actividades');
+            const proyProgreso=proy.map(p=>{const cs=cots.filter(x=>x.proyecto_id==p.id);let tA=0,cA=0;cs.forEach(cot=>{const as=acts.filter(a=>a.cotizacion_id==cot.id);tA+=as.length;cA+=as.filter(a=>a.estado==='Completado').length;});const prog=tA>0?Math.round((cA/tA)*100):0;return{...p,progreso:prog};});
+            c.innerHTML=`<div class="toolbar proyectos"><h2>📁 Proyectos</h2><div style="flex:1"></div><button class="btn btn-proyectos" onclick="openProyectoModal()">+ Nuevo</button></div><div class="table-container" style="margin-bottom:20px;"><table class="data-table"><thead><tr><th>ID</th><th>Cliente</th><th>Nombre</th><th>Inicio</th><th>Fin</th><th>Estado</th><th>Progreso</th><th>Acciones</th></tr></thead><tbody>${proyProgreso.map(p=>`<tr onclick="selProy(${p.id})" style="cursor:pointer" class="${selectedProyecto==p.id?'selected':''}"><td>${p.id}</td><td>${getClienteNombre(p.cliente_id)}</td><td><strong>${p.nombre}</strong></td><td>${formatDate(p.fecha_inicio)}</td><td>${formatDate(p.fecha_fin)}</td><td><span class="status-badge status-${p.estado==='Completado'?'completado':p.estado==='En proceso'?'proceso':p.estado==='Cancelado'?'inactivo':'pendiente'}">${p.estado}</span></td><td><div style="display:flex;align-items:center;gap:10px;"><div class="progress-bar" style="width:100px;"><div class="progress-fill" style="width:${p.progreso}%"></div></div><span>${p.progreso}%</span></div></td><td class="action-btns"><button class="btn btn-secondary" onclick="event.stopPropagation();editProyecto(${p.id})">✏️</button><button class="btn btn-danger" onclick="event.stopPropagation();deleteProyecto(${p.id})">🗑️</button></td></tr>`).join('')}</tbody></table></div><div id="proyDetail" class="${selectedProyecto?'':'hidden'}"><div class="table-container"><div style="padding:15px;border-bottom:1px solid var(--border-color);"><strong>Cotizaciones</strong><button class="btn btn-proyectos" style="float:right;" onclick="openCotizacionModal()">+ Nueva Cotización</button></div><div id="cotsList" style="padding:15px;">${selectedProyecto?renderCots(selectedProyecto):''}</div></div><div id="actsDetail" class="${selectedCotizacion?'':'hidden'}"><div class="sub-panel"><div class="sub-panel-title">📋 Actividades: <span id="selCotLabel"></span><div style="flex:1"></div><button class="btn btn-success" onclick="document.getElementById('impExcel').click()">📥 Importar Excel</button><input type="file" id="impExcel" accept=".xlsx,.xls" style="display:none" onchange="importActsExcel(event)"><button class="btn btn-proyectos" onclick="openActividadModal()">+ Nueva</button></div><div class="bulk-actions ${selectedActividades.size>0?'':'hidden'}" id="bulkAct"><span><span class="badge-selected">${selectedActividades.size}</span> seleccionados</span><select id="bulkEst" onchange="applyBulkEst()"><option value="">Cambiar estado...</option>${ESTADOS_ACTIVIDAD.map(e=>`<option value="${e}">${e}</option>`).join('')}</select><button class="btn btn-secondary" onclick="clearSel()">Limpiar</button></div><div class="table-container"><table class="data-table" id="tblActs"><thead><tr><th class="checkbox-cell"><input type="checkbox" class="row-checkbox" id="selAll" onchange="toggleSelAll()"></th><th>ID</th><th>ACTIVIDAD</th><th>ESTADO</th><th>N° REPORTE</th><th>NOTAS</th><th>Acciones</th></tr></thead><tbody id="actsBody">${selectedCotizacion?renderActs(selectedCotizacion):''}</tbody></table></div></div></div></div>`;
+        }
+
+        function renderCots(proyId) {
+            const cots=getData('cotizaciones').filter(x=>x.proyecto_id==proyId), acts=getData('actividades');
+            if(!cots.length) return '<div class="empty-state">Sin cotizaciones</div>';
+            return cots.map(cot=>{const as=acts.filter(a=>a.cotizacion_id==cot.id);const comp=as.filter(a=>a.estado==='Completado').length;const prog=as.length?Math.round((comp/as.length)*100):0;return`<div style="padding:10px;margin-bottom:10px;background:var(--bg-panel);border-radius:6px;cursor:pointer;" onclick="selCot(${cot.id})" class="${selectedCotizacion==cot.id?'selected':''}"><div style="display:flex;justify-content:space-between;align-items:center;"><div><strong>${cot.numero}</strong> - ${cot.descripcion}<span style="color:var(--text-muted);margin-left:10px;">(${as.length} actividades)</span></div><div class="action-btns"><button class="btn btn-secondary" onclick="event.stopPropagation();editCotizacion(${cot.id})">✏️</button><button class="btn btn-danger" onclick="event.stopPropagation();deleteCotizacion(${cot.id})">🗑️</button></div></div><div style="margin-top:8px;"><div class="progress-bar"><div class="progress-fill" style="width:${prog}%"></div></div><span style="font-size:12px;color:var(--text-muted);">${prog}% completado</span></div></div>`;}).join('');
+        }
+
+        function renderActs(cotId) {
+            const acts=getData('actividades').filter(a=>a.cotizacion_id==cotId).sort((a,b)=>a.orden-b.orden);
+            if(!acts.length) return '<tr><td colspan="7" class="empty-state">Sin actividades</td></tr>';
+            return acts.map(a=>`<tr class="selectable-row${selectedActividades.has(a.id)?' selected':''}" data-row-id="${a.id}"><td class="checkbox-cell"><input type="checkbox" class="row-checkbox" ${selectedActividades.has(a.id)?'checked':''} onclick="toggleSel(${a.id})"></td><td>${a.id}</td><td>${a.descripcion}</td><td><div class="editable-cell"><select onchange="updateAct(${a.id},'estado',this.value)" style="width:100%;">${ESTADOS_ACTIVIDAD.map(e=>`<option value="${e}" ${a.estado===e?'selected':''}>${e}</option>`).join('')}</select></div></td><td><div class="editable-cell" onclick="startEdit(this,${a.id},'numero_reporte')">${a.numero_reporte||'-'}</div></td><td><div class="editable-cell" onclick="startEdit(this,${a.id},'notas')">${a.notas||'-'}</div></td><td class="action-btns"><button class="btn btn-secondary" onclick="editActividad(${a.id})">✏️</button><button class="btn btn-danger" onclick="deleteActividad(${a.id})">🗑️</button></td></tr>`).join('');
+        }
+
+        function toggleSel(id,evt) { 
+            if(evt) evt.stopPropagation(); 
+            if(selectedActividades.has(id)) { 
+                selectedActividades.delete(id); 
+            } else { 
+                selectedActividades.add(id); 
+            }
+            updateBulkUI(); 
+            // Actualizar checkboxes y filas
+            document.querySelectorAll('#tblActs tbody tr').forEach(r=>{
+                const checkbox = r.querySelector('.row-checkbox');
+                const rowId = parseInt(r.dataset.rowId || r.querySelector('td:nth-child(2)')?.textContent);
+                if(checkbox && rowId) {
+                    checkbox.checked = selectedActividades.has(rowId);
+                    r.classList.toggle('selected', selectedActividades.has(rowId));
+                }
+            });
+        }
+        
+        function toggleSelAll() { 
+            const sa = document.getElementById('selAll')?.checked; 
+            if(sa === undefined) return;
+            const acts = getData('actividades').filter(a => a.cotizacion_id == selectedCotizacion); 
+            if(sa) { 
+                acts.forEach(a => selectedActividades.add(a.id)); 
+            } else { 
+                selectedActividades.clear(); 
+            }
+            document.querySelectorAll('#tblActs tbody tr').forEach(r=>{
+                const checkbox = r.querySelector('.row-checkbox');
+                if(checkbox) {
+                    checkbox.checked = sa;
+                    r.classList.toggle('selected', sa);
+                }
+            }); 
+            updateBulkUI(); 
+        }
+        
+        function updateBulkUI() { 
+            const ba = document.getElementById('bulkAct'); 
+            if(ba) {
+                if(selectedActividades.size === 0) {
+                    ba.classList.add('hidden');
+                } else {
+                    ba.classList.remove('hidden');
+                    const b = ba.querySelector('.badge-selected'); 
+                    if(b) b.textContent = selectedActividades.size; 
+                }
+            }
+        }
+        
+        function applyBulkEst() { 
+            const est = document.getElementById('bulkEst').value; 
+            if(!est) return; 
+            const acts = getData('actividades'); 
+            selectedActividades.forEach(id => {
+                const idx = acts.findIndex(a => a.id == id); 
+                if(idx !== -1) acts[idx].estado = est;
+            }); 
+            setData('actividades', acts); 
+            document.getElementById('bulkEst').value = ''; 
+            selectedActividades.clear(); 
+            document.getElementById('actsBody').innerHTML = renderActs(selectedCotizacion); 
+            updateBulkUI(); 
+            showToast('Estados actualizados'); 
+        }
+        
+        function clearSel() { 
+            selectedActividades.clear(); 
+            document.querySelectorAll('#tblActs tbody tr').forEach(r => {
+                r.classList.remove('selected');
+                const checkbox = r.querySelector('.row-checkbox');
+                if(checkbox) checkbox.checked = false;
+            }); 
+            const selAll = document.getElementById('selAll');
+            if(selAll) selAll.checked = false;
+            updateBulkUI(); 
+            showToast('Selección limpiada');
+        }
+
+        function startEdit(cell,id,campo) {
+            if(cell.querySelector('input')) return;
+            const val=cell.textContent==='-'?'':cell.textContent;
+            const inp=document.createElement('input'); inp.type='text'; inp.value=val;
+            inp.style.cssText='width:100%;padding:4px 8px;border:1px solid var(--color-proyectos);border-radius:4px;background:var(--bg-card);color:var(--text-primary);font-size:13px;';
+            inp.addEventListener('blur',()=>saveEdit(inp,id,campo));
+            inp.addEventListener('keydown',e=>{if(e.key==='Enter')saveEdit(inp,id,campo);if(e.key==='Escape')cell.textContent=val||'-';});
+            cell.textContent=''; cell.appendChild(inp); inp.focus();
+        }
+        function saveEdit(inp,id,campo) {
+            const val=inp.value.trim();
+            const acts=getData('actividades'); const idx=acts.findIndex(a=>a.id==id);
+            if(idx!==-1) { acts[idx][campo]=val; setData('actividades',acts); }
+            inp.parentElement.textContent=val||'-'; showToast('Actualizado');
+        }
+        function updateAct(id,campo,valor) {
+            const acts=getData('actividades'); const idx=acts.findIndex(a=>a.id==id);
+            if(idx!==-1) { acts[idx][campo]=valor; setData('actividades',acts); showToast('Estado actualizado'); }
+        }
+
+        function selProy(id) { selectedProyecto=id; selectedCotizacion=null; selectedActividades.clear(); renderProyectos(document.getElementById('mainContent')); }
+        function selCot(id) { selectedCotizacion=id; selectedActividades.clear(); const cot=getData('cotizaciones').find(x=>x.id==id); document.getElementById('selCotLabel').textContent=`${cot.numero} - ${cot.descripcion}`; document.getElementById('actsDetail').classList.remove('hidden'); document.getElementById('actsBody').innerHTML=renderActs(id); updateBulkUI(); }
+
+        function importActsExcel(evt) {
+            const file = evt.target.files[0]; 
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const wb = XLSX.read(data, {type: 'array'});
+                    const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {header: 1});
+                    
+                    // Obtener headers (primera fila)
+                    const headers = rows[0] || [];
+                    
+                    // Buscar índices de columnas (buscar por nombre exacto o parcial)
+                    const findColIndex = (names) => {
+                        for(let i = 0; i < headers.length; i++) {
+                            const h = String(headers[i] || '').toUpperCase().trim();
+                            for(const name of names) {
+                                if(h.includes(name.toUpperCase())) return i;
+                            }
+                        }
+                        return -1;
+                    };
+                    
+                    const actColIdx = findColIndex(['ACTIVIDAD', 'DESCRIPCION', 'ACTIV', 'DESC']);
+                    const estColIdx = findColIndex(['ESTADO', 'STATUS', 'STATE']);
+                    const repColIdx = findColIndex(['REPORTE', 'REPORT', 'NUMERO', 'NUMBER', 'N°', 'NO.']);
+                    const notColIdx = findColIndex(['NOTAS', 'NOTES', 'NOTA', 'NOTE']);
+                    
+                    if(actColIdx === -1) {
+                        showToast('No se encontró columna de Actividad', 'error');
+                        return;
+                    }
+                    
+                    const allActs = getData('actividades');
+                    let maxOrd = Math.max(0, ...allActs.filter(a => a.cotizacion_id == selectedCotizacion).map(a => a.orden));
+                    
+                    // Importar desde la fila 2 (índice 1) saltando headers
+                    for(let i = 1; i < rows.length; i++) {
+                        const row = rows[i] || [];
+                        const descripcion = String(row[actColIdx] || '').trim();
+                        
+                        if(!descripcion) continue;
+                        
+                        maxOrd++;
+                        allActs.push({
+                            id: getNextId('actividades'),
+                            cotizacion_id: selectedCotizacion,
+                            descripcion: descripcion,
+                            estado: estColIdx >= 0 ? String(row[estColIdx] || 'Pendiente').trim() : 'Pendiente',
+                            numero_reporte: repColIdx >= 0 ? String(row[repColIdx] || '').trim() : '',
+                            notas: notColIdx >= 0 ? String(row[notColIdx] || '').trim() : '',
+                            orden: maxOrd
+                        });
+                    }
+                    
+                    setData('actividades', allActs);
+                    document.getElementById('actsBody').innerHTML = renderActs(selectedCotizacion);
+                    showToast(`${rows.length - 1} actividades importadas`);
+                } catch(err) {
+                    console.error(err);
+                    showToast('Error al importar: ' + err.message, 'error');
+                }
+            };
+            reader.readAsArrayBuffer(file); 
+            evt.target.value = '';
+        }
+
+        function openProyectoModal(p=null) { const cli=getData('clientes'); editingId=p?p.id:null; openModal(`<div class="modal-header proyectos">${p?'✏️ Editar':'➕ Nuevo'} Proyecto<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="form-group"><label class="required">Cliente</label><select id="pCli"><option value="">Seleccionar</option>${cli.map(c=>`<option value="${c.id}" ${p?.cliente_id==c.id?'selected':''}>${c.nombre}</option>`).join('')}</select></div><div class="form-group"><label class="required">Nombre</label><input type="text" id="pNom" value="${p?.nombre||''}"></div><div class="form-group"><label>Descripción</label><textarea id="pDesc">${p?.descripcion||''}</textarea></div><div class="form-row"><div class="form-group"><label>Fecha Inicio</label><input type="date" id="pIni" value="${p?.fecha_inicio||''}"></div><div class="form-group"><label>Fecha Fin</label><input type="date" id="pFin" value="${p?.fecha_fin||''}"></div></div><div class="form-group"><label>Estado</label><select id="pEst"><option value="Pendiente" ${p?.estado==='Pendiente'?'selected':''}>Pendiente</option><option value="En proceso" ${p?.estado==='En proceso'?'selected':''}>En proceso</option><option value="Completado" ${p?.estado==='Completado'?'selected':''}>Completado</option><option value="Cancelado" ${p?.estado==='Cancelado'?'selected':''}>Cancelado</option></select></div><div class="form-group"><label>Notas</label><textarea id="pNotas">${p?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-proyectos" onclick="saveProyecto()">Guardar</button></div>`); }
+        function editProyecto(id) { const p=getData('proyectos').find(x=>x.id==id); if(p) openProyectoModal(p); }
+        function saveProyecto() {
+            const cid=document.getElementById('pCli').value,nom=document.getElementById('pNom').value.trim();
+            if(!cid||!nom) { showToast('Complete los campos','error'); return; }
+            const proy=getData('proyectos');
+            const data={cliente_id:parseInt(cid),nombre:nom,descripcion:document.getElementById('pDesc').value,fecha_inicio:document.getElementById('pIni').value,fecha_fin:document.getElementById('pFin').value,estado:document.getElementById('pEst').value,notas:document.getElementById('pNotas').value};
+            if(editingId) { data.id=editingId; const idx=proy.findIndex(x=>x.id==editingId); proy[idx]=data; } else { data.id=getNextId('proyectos'); proy.push(data); }
+            setData('proyectos',proy); closeModal(); showToast(editingId?'Actualizado':'Creado'); renderProyectos(document.getElementById('mainContent'));
+        }
+        function deleteProyecto(id) {
+            showConfirm('¿Eliminar proyecto y sus cotizaciones?',()=>{
+                const cots=getData('cotizaciones').filter(x=>x.proyecto_id!=id);
+                const acts=getData('actividades').filter(a=>{const cs=getData('cotizaciones').filter(x=>x.proyecto_id==id).map(x=>x.id);return!cs.includes(a.cotizacion_id);});
+                setData('proyectos',getData('proyectos').filter(x=>x.id!=id));
+                setData('cotizaciones',cots); setData('actividades',acts);
+                if(selectedProyecto==id) selectedProyecto=null;
+                renderProyectos(document.getElementById('mainContent')); showToast('Eliminado','warning');
+            });
+        }
+
+        function openCotizacionModal(c=null) { if(!selectedProyecto){showToast('Seleccione proyecto','warning');return;} editingId=c?c.id:null; openModal(`<div class="modal-header proyectos">${c?'✏️ Editar':'➕ Nueva'} Cotización<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="form-group"><label class="required">Número</label><input type="text" id="cotNum" value="${c?.numero||''}"></div><div class="form-group"><label>Descripción</label><textarea id="cotDesc">${c?.descripcion||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-proyectos" onclick="saveCotizacion()">Guardar</button></div>`); }
+        function editCotizacion(id) { const c=getData('cotizaciones').find(x=>x.id==id); if(c) openCotizacionModal(c); }
+        function saveCotizacion() {
+            const num=document.getElementById('cotNum').value.trim();
+            if(!num) { showToast('El número es requerido','error'); return; }
+            const cots=getData('cotizaciones');
+            const data={proyecto_id:selectedProyecto,numero:num,descripcion:document.getElementById('cotDesc').value};
+            if(editingId) { data.id=editingId; const idx=cots.findIndex(x=>x.id==editingId); cots[idx]=data; } else { data.id=getNextId('cotizaciones'); cots.push(data); }
+            setData('cotizaciones',cots); closeModal(); showToast(editingId?'Actualizado':'Creado'); renderProyectos(document.getElementById('mainContent'));
+        }
+        function deleteCotizacion(id) { showConfirm('¿Eliminar cotización y actividades?',()=>{setData('cotizaciones',getData('cotizaciones').filter(x=>x.id!=id));setData('actividades',getData('actividades').filter(a=>a.cotizacion_id!=id));if(selectedCotizacion==id)selectedCotizacion=null;renderProyectos(document.getElementById('mainContent'));showToast('Eliminado','warning');}); }
+
+        function openActividadModal(a=null) { if(!selectedCotizacion){showToast('Seleccione cotización','warning');return;} editingId=a?a.id:null; openModal(`<div class="modal-header proyectos">${a?'✏️ Editar':'➕ Nueva'} Actividad<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="form-group"><label class="required">Actividad</label><textarea id="aDesc">${a?.descripcion||''}</textarea></div><div class="form-row"><div class="form-group"><label>N° Reporte</label><input type="text" id="aRep" value="${a?.numero_reporte||''}"></div><div class="form-group"><label>Estado</label><select id="aEst">${ESTADOS_ACTIVIDAD.map(e=>`<option value="${e}" ${a?.estado===e?'selected':''}>${e}</option>`).join('')}</select></div></div><div class="form-group"><label>Notas</label><textarea id="aNotas">${a?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-proyectos" onclick="saveActividad()">Guardar</button></div>`); }
+        function editActividad(id) { const a=getData('actividades').find(x=>x.id==id); if(a) openActividadModal(a); }
+        function saveActividad() {
+            const desc=document.getElementById('aDesc').value.trim();
+            if(!desc) { showToast('La descripción es requerida','error'); return; }
+            const acts=getData('actividades');
+            const data={cotizacion_id:selectedCotizacion,descripcion:desc,numero_reporte:document.getElementById('aRep').value,estado:document.getElementById('aEst').value,notas:document.getElementById('aNotas').value};
+            if(editingId) { data.id=editingId; data.orden=acts.find(x=>x.id==editingId).orden; const idx=acts.findIndex(x=>x.id==editingId); acts[idx]=data; } else { data.orden=acts.filter(x=>x.cotizacion_id==selectedCotizacion).length+1; data.id=getNextId('actividades'); acts.push(data); }
+            setData('actividades',acts); closeModal(); showToast(editingId?'Actualizado':'Creado'); document.getElementById('actsBody').innerHTML=renderActs(selectedCotizacion);
+        }
+        function deleteActividad(id) { showConfirm('¿Eliminar?',()=>{let acts=getData('actividades').filter(x=>x.id!=id); acts=acts.map((a,i)=>{const ac=acts.filter(x=>x.cotizacion_id==a.cotizacion_id);const oi=ac.findIndex(x=>x.id===a.id);if(oi!==-1)a.orden=oi+1;return a;});setData('actividades',acts);selectedActividades.delete(id);document.getElementById('actsBody').innerHTML=renderActs(selectedCotizacion);updateBulkUI();showToast('Eliminado','warning');}); }
+
+        let selectedCotizacionesHistorial = new Set();
+        let selectedProyectoHistorial = null;
+
+        function renderHistorial(c) {
+            const proy = getData('proyectos');
+            const cli = getData('clientes');
+            
+            c.innerHTML = `
+                <div class="toolbar historial">
+                    <h2>📜 Historial</h2>
+                    <div style="flex:1"></div>
+                    <input type="text" id="searchProyHist" class="search-input" placeholder="Buscar proyecto..." oninput="filtrarProyectosHistorial()">
+                </div>
+                
+                <div id="historialProyectos">
+                    <div class="table-container" style="margin-bottom:20px;">
+                        <table class="data-table" id="tblProyHist">
+                            <thead><tr><th>ID</th><th>Cliente</th><th>Nombre del Proyecto</th><th>Fecha Inicio</th><th>Fecha Fin</th><th>Estado</th><th>Cotizaciones</th></tr></thead>
+                            <tbody>
+                                ${proy.map(p => {
+                                    const cots = getData('cotizaciones').filter(x => x.proyecto_id == p.id);
+                                    return `<tr onclick="selProyHistorial(${p.id})" style="cursor:pointer" class="${selectedProyectoHistorial==p.id?'selected':''}" data-id="${p.id}">
+                                        <td>${p.id}</td>
+                                        <td>${getClienteNombre(p.cliente_id)}</td>
+                                        <td><strong>${p.nombre}</strong></td>
+                                        <td>${formatDate(p.fecha_inicio)}</td>
+                                        <td>${formatDate(p.fecha_fin)}</td>
+                                        <td><span class="status-badge status-${p.estado==='Completado'?'completado':p.estado==='En proceso'?'proceso':p.estado==='Cancelado'?'inactivo':'pendiente'}">${p.estado}</span></td>
+                                        <td>${cots.length}</td>
+                                    </tr>`;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="historialCotizaciones" class="${selectedProyectoHistorial?' ':'hidden'}">
+                    <div class="sub-panel">
+                        <div class="sub-panel-title">
+                            📋 Cotizaciones del Proyecto
+                            <div style="flex:1"></div>
+                            <button class="btn btn-success" onclick="seleccionarTodasCotsHistorial()">☑️ Seleccionar Todas</button>
+                            <button class="btn btn-secondary" onclick="deseleccionarTodasCotsHistorial()">❎ Deseleccionar</button>
+                            <button class="btn btn-historial" onclick="exportarPDFCotizacionesSeleccionadas()" ${selectedCotizacionesHistorial.size===0?'disabled':''}>📄 Exportar PDF</button>
+                        </div>
+                        
+                        <div class="bulk-actions ${selectedCotizacionesHistorial.size>0?'':'hidden'}" id="bulkCotActions">
+                            <span><span class="badge-selected">${selectedCotizacionesHistorial.size}</span> cotizaciones seleccionadas</span>
+                            <button class="btn btn-danger" onclick="exportarPDFCotizacionesSeleccionadas()">📄 Exportar PDF Seleccionadas</button>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table class="data-table" id="tblCotsHistorial">
+                                <thead><tr><th class="checkbox-cell"><input type="checkbox" id="selAllCots" onchange="toggleSelectAllCotsHistorial()"></th><th>Número</th><th>Descripción</th><th>Cant. Actividades</th><th>Completadas</th><th>Progreso</th></tr></thead>
+                                <tbody id="cotsHistorialBody">
+                                    ${selectedProyectoHistorial?renderCotizacionesHistorial(selectedProyectoHistorial):''}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function filtrarProyectosHistorial() {
+            const search = document.getElementById('searchProyHist').value.toLowerCase();
+            document.querySelectorAll('#tblProyHist tbody tr').forEach(r => {
+                r.style.display = r.textContent.toLowerCase().includes(search) ? '' : 'none';
+            });
+        }
+
+        function selProyHistorial(proyId) {
+            selectedProyectoHistorial = proyId;
+            selectedCotizacionesHistorial.clear();
+            document.getElementById('historialCotizaciones').classList.remove('hidden');
+            document.getElementById('cotsHistorialBody').innerHTML = renderCotizacionesHistorial(proyId);
+            document.querySelectorAll('#tblProyHist tbody tr').forEach(r => {
+                r.classList.toggle('selected', parseInt(r.dataset.id) === proyId);
+            });
+            updateBulkCotUI();
+        }
+
+        function renderCotizacionesHistorial(proyId) {
+            const cots = getData('cotizaciones').filter(x => x.proyecto_id == proyId);
+            const acts = getData('actividades');
+            
+            if(cots.length === 0) return '<tr><td colspan="6" class="empty-state">No hay cotizaciones en este proyecto</td></tr>';
+            
+            return cots.map(cot => {
+                const actsCot = acts.filter(a => a.cotizacion_id == cot.id);
+                const completadas = actsCot.filter(a => a.estado === 'Completado').length;
+                const progreso = actsCot.length > 0 ? Math.round((completadas / actsCot.length) * 100) : 0;
+                const isSelected = selectedCotizacionesHistorial.has(cot.id);
+                
+                return `<tr class="selectable-row${isSelected?' selected':''}" data-cot-id="${cot.id}">
+                    <td class="checkbox-cell"><input type="checkbox" class="row-checkbox" ${isSelected?'checked':''} onclick="toggleCotHistorial(${cot.id})"></td>
+                    <td><strong>${cot.numero}</strong></td>
+                    <td>${cot.descripcion}</td>
+                    <td>${actsCot.length}</td>
+                    <td>${completadas}</td>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <div class="progress-bar" style="width:80px;"><div class="progress-fill" style="width:${progreso}%"></div></div>
+                            <span style="font-size:12px;">${progreso}%</span>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        function toggleCotHistorial(cotId) {
+            if(selectedCotizacionesHistorial.has(cotId)) {
+                selectedCotizacionesHistorial.delete(cotId);
+            } else {
+                selectedCotizacionesHistorial.add(cotId);
+            }
+            
+            // Actualizar checkbox y fila
+            const row = document.querySelector(`tr[data-cot-id="${cotId}"]`);
+            if(row) {
+                const checkbox = row.querySelector('.row-checkbox');
+                checkbox.checked = selectedCotizacionesHistorial.has(cotId);
+                row.classList.toggle('selected', selectedCotizacionesHistorial.has(cotId));
+            }
+            
+            updateBulkCotUI();
+        }
+
+        function toggleSelectAllCotsHistorial() {
+            const selAll = document.getElementById('selAllCots').checked;
+            const cots = getData('cotizaciones').filter(x => x.proyecto_id == selectedProyectoHistorial);
+            
+            if(selAll) {
+                cots.forEach(c => selectedCotizacionesHistorial.add(c.id));
+            } else {
+                selectedCotizacionesHistorial.clear();
+            }
+            
+            document.querySelectorAll('#tblCotsHistorial tbody tr').forEach(r => {
+                const checkbox = r.querySelector('.row-checkbox');
+                if(checkbox) {
+                    checkbox.checked = selAll;
+                    r.classList.toggle('selected', selAll);
+                }
+            });
+            
+            updateBulkCotUI();
+        }
+
+        function seleccionarTodasCotsHistorial() {
+            document.getElementById('selAllCots').checked = true;
+            toggleSelectAllCotsHistorial();
+        }
+
+        function deseleccionarTodasCotsHistorial() {
+            document.getElementById('selAllCots').checked = false;
+            toggleSelectAllCotsHistorial();
+        }
+
+        function updateBulkCotUI() {
+            const bulkDiv = document.getElementById('bulkCotActions');
+            const exportBtn = document.querySelector('#historialCotizaciones .btn-historial');
+            
+            if(selectedCotizacionesHistorial.size === 0) {
+                if(bulkDiv) bulkDiv.classList.add('hidden');
+                if(exportBtn) exportBtn.disabled = true;
+            } else {
+                if(bulkDiv) {
+                    bulkDiv.classList.remove('hidden');
+                    const badge = bulkDiv.querySelector('.badge-selected');
+                    if(badge) badge.textContent = selectedCotizacionesHistorial.size;
+                }
+                if(exportBtn) exportBtn.disabled = false;
+            }
+        }
+
+        function exportarPDFCotizacionesSeleccionadas() {
+            if(selectedCotizacionesHistorial.size === 0) {
+                showToast('Seleccione al menos una cotización', 'warning');
+                return;
+            }
+            
+            closeModal();
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(20);
+            doc.setTextColor(229, 57, 53);
+            doc.text('FireTrace', 105, 20, { align: 'center' });
+            doc.setFontSize(14);
+            doc.setTextColor(26, 28, 35);
+            doc.text('Reporte de Cotizaciones', 105, 28, { align: 'center' });
+            doc.setFontSize(10);
+            doc.setTextColor(90, 96, 112);
+            doc.text(`Fecha: ${new Date().toLocaleDateString('es-ES')}`, 105, 35, { align: 'center' });
+            
+            let y = 50;
+            
+            selectedCotizacionesHistorial.forEach(cotId => {
+                const cot = getData('cotizaciones').find(x => x.id === cotId);
+                if(!cot) return;
+                
+                const proy = getData('proyectos').find(p => p.id === cot.proyecto_id);
+                const cliente = proy ? getData('clientes').find(c => c.id === proy.cliente_id) : null;
+                const acts = getData('actividades').filter(a => a.cotizacion_id === cot.id).sort((a, b) => a.orden - b.orden);
+                
+                if(y > 230) {
+                    doc.addPage();
+                    y = 20;
+                }
+                
+                // Información de la cotización
+                doc.setFontSize(12);
+                doc.setTextColor(139, 69, 19);
+                doc.text(`Cotización: ${cot.numero}`, 20, y);
+                y += 6;
+                
+                if(cliente) {
+                    doc.setFontSize(9);
+                    doc.setTextColor(90, 96, 112);
+                    doc.text(`Cliente: ${cliente.nombre}`, 25, y);
+                    y += 5;
+                }
+                
+                if(proy) {
+                    doc.text(`Proyecto: ${proy.nombre}`, 25, y);
+                    y += 5;
+                }
+                
+                doc.text(`Descripción: ${cot.descripcion}`, 25, y);
+                y += 8;
+                
+                // Tabla de actividades
+                if(acts.length > 0) {
+                    doc.autoTable({
+                        startY: y,
+                        head: [['#', 'Actividad', 'Estado', 'N° Reporte', 'Notas']],
+                        body: acts.map(a => [a.orden, a.descripcion, a.estado || 'Pendiente', a.numero_reporte || '-', a.notas || '-']),
+                        theme: 'striped',
+                        headStyles: { fillColor: [139, 69, 19] },
+                        margin: { left: 25, right: 20 },
+                        styles: { fontSize: 8 },
+                        columnStyles: {
+                            0: { cellWidth: 10 },
+                            1: { cellWidth: 60 },
+                            2: { cellWidth: 30 },
+                            3: { cellWidth: 30 },
+                            4: { cellWidth: 40 }
+                        },
+                        didParseCell: function(data) {
+                            if(data.column.index === 2 && data.section === 'body') {
+                                if(data.cell.raw === 'Completado') {
+                                    data.cell.styles.textColor = [67, 160, 71];
+                                } else if(data.cell.raw === 'En proceso') {
+                                    data.cell.styles.textColor = [3, 155, 229];
+                                } else if(data.cell.raw === 'Pausado') {
+                                    data.cell.styles.textColor = [251, 140, 0];
+                                }
+                            }
+                        }
+                    });
+                    y = doc.lastAutoTable.finalY + 15;
+                } else {
+                    doc.setFontSize(9);
+                    doc.setTextColor(154, 160, 174);
+                    doc.text('Sin actividades registradas', 25, y);
+                    y += 15;
+                }
+                
+                // Línea separadora
+                if(y > 220) {
+                    doc.addPage();
+                    y = 20;
+                }
+            });
+            
+            // Pie de página
+            const pageCount = doc.internal.getNumberOfPages();
+            for(let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setTextColor(154, 160, 174);
+                doc.text(`Página ${i} de ${pageCount}`, 105, 290, { align: 'center' });
+                doc.text(`Generado: ${new Date().toLocaleString()} - FireTrace`, 20, 290);
+            }
+            
+            const filename = selectedCotizacionesHistorial.size === 1 
+                ? `FireTrace_Cotizacion_${getData('cotizaciones').find(x => x.id === [...selectedCotizacionesHistorial][0])?.numero || 'export'}.pdf`
+                : `FireTrace_Cotizaciones_${getDateDaysAgo(0)}.pdf`;
+            
+            doc.save(filename);
+            showToast(`PDF exportado con ${selectedCotizacionesHistorial.size} cotización(es)`);
+        }
+
+        function verDetalleInt(id) {
+            const i = getData('intervenciones').find(x => x.id == id);
+            const eq2 = getData('equipos').find(x => x.id == i.equipo_id);
+            openModal(`<div class="modal-header historial">🔍 Detalle Intervención #${i.id}<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><table style="width:100%;border-collapse:collapse;">${[['Fecha', formatDate(i.fecha)], ['Cliente', getClienteNombre(i.cliente_id)], ['Equipo', eq2 ? `${eq2.tipo} - ${eq2.numero_serie}` : 'N/A'], ['Tipo', i.tipo], ['Tipo Falla', i.tipo_falla || '-'], ['Técnico', i.tecnico], ['Tiempo', `${i.tiempo_minutos} minutos`], ['Estado', `<span class="status-badge status-${i.estado==='Completado'?'completado':'pendiente'}">${i.estado}</span>`], ['Descripción Falla', i.descripcion_falla || '-'], ['Acción Tomada', i.accion_tomada || '-'], ['Materiales', i.materiales || '-'], ['Observaciones', i.observaciones || '-']].map(([label, val]) => `<tr style="border-bottom:1px solid var(--border-color);"><td style="padding:8px;color:var(--text-secondary);">${label}:</td><td style="padding:8px;">${val}</td></tr>`).join('')}</table></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cerrar</button></div>`);
+        }
+        function exportarCSV() {
+            if(selectedCotizacionesHistorial.size === 0) {
+                showToast('Seleccione cotizaciones primero', 'warning');
+                return;
+            }
+            
+            const headers = ['Cotización', 'Cliente', 'Proyecto', '#', 'Actividad', 'Estado', 'N° Reporte', 'Notas'];
+            const rows = [headers.join(',')];
+            
+            selectedCotizacionesHistorial.forEach(cotId => {
+                const cot = getData('cotizaciones').find(x => x.id === cotId);
+                if(!cot) return;
+                
+                const proy = getData('proyectos').find(p => p.id === cot.proyecto_id);
+                const cliente = proy ? getClienteNombre(proy.cliente_id) : '';
+                const acts = getData('actividades').filter(a => a.cotizacion_id === cot.id).sort((a, b) => a.orden - b.orden);
+                
+                if(acts.length === 0) {
+                    rows.push([cot.numero, cliente, proy?.nombre || '', '', '', '', '', ''].join(','));
+                } else {
+                    acts.forEach((a, idx) => {
+                        if(idx === 0) {
+                            rows.push([cot.numero, cliente, proy?.nombre || '', a.orden, a.descripcion, a.estado || 'Pendiente', a.numero_reporte || '', a.notas || ''].join(','));
+                        } else {
+                            rows.push(['', '', '', a.orden, a.descripcion, a.estado || 'Pendiente', a.numero_reporte || '', a.notas || ''].join(','));
+                        }
+                    });
+                }
+            });
+            
+            const csv = rows.join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `FireTrace_Cotizaciones_${getDateDaysAgo(0)}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('CSV exportado');
+        }
+        function exportarPDF() {
+            showToast('Seleccione un proyecto y sus cotizaciones', 'info');
+        }
+
+        document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>navigateTo(i.dataset.module)));
+        document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('modalOverlay'))closeModal();});
+        checkSession();
+    </script>
+</body>
+</html>
