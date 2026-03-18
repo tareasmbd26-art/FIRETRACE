@@ -978,27 +978,27 @@
             const doc = new jsPDF('p', 'mm', 'a4');
             const pageWidth = doc.internal.pageSize.getWidth();
             
+            // === P脕GINA 1: RESUMEN GENERAL ===
             doc.setFontSize(20);
             doc.setTextColor(229, 57, 53);
             doc.text('FireTrace', pageWidth / 2, 15, { align: 'center' });
-            doc.setFontSize(14);
+            doc.setFontSize(16);
             doc.setTextColor(26, 28, 35);
-            doc.text('Reporte de Cotizaciones', pageWidth / 2, 23, { align: 'center' });
+            doc.text('Resumen de Cotizaciones', pageWidth / 2, 24, { align: 'center' });
             doc.setFontSize(10);
             doc.setTextColor(90, 96, 112);
-            doc.text(`Fecha: ${new Date().toLocaleDateString('es-ES')}`, pageWidth / 2, 30, { align: 'center' });
+            doc.text(`Fecha: ${new Date().toLocaleDateString('es-ES')}`, pageWidth / 2, 32, { align: 'center' });
             
-            let y = 40;
-            
+            // Preparar datos del resumen
+            const resumenData = [];
             selectedCotizacionesHistorial.forEach(cotId => {
                 const cot = getData('cotizaciones').find(x => x.id === cotId);
                 if(!cot) return;
                 
                 const proy = getData('proyectos').find(p => p.id === cot.proyecto_id);
                 const cliente = proy ? getData('clientes').find(c => c.id === proy.cliente_id) : null;
-                const acts = getData('actividades').filter(a => a.cotizacion_id === cot.id).sort((a, b) => a.orden - b.orden);
+                const acts = getData('actividades').filter(a => a.cotizacion_id === cot.id);
                 
-                // Calcular resumen
                 const totalActividades = acts.length;
                 const completadas = acts.filter(a => a.estado === 'Completado').length;
                 const enProceso = acts.filter(a => a.estado === 'En proceso').length;
@@ -1006,135 +1006,172 @@
                 const pendientes = acts.filter(a => !a.estado || a.estado === 'Pendiente' || a.estado === '').length;
                 const progreso = totalActividades > 0 ? Math.round((completadas / totalActividades) * 100) : 0;
                 
-                if(y > 200) {
-                    doc.addPage();
-                    y = 20;
+                resumenData.push({
+                    cotizacion: cot.numero,
+                    cliente: cliente ? cliente.nombre : '-',
+                    proyecto: proy ? proy.nombre : '-',
+                    total: totalActividades,
+                    completadas: completadas,
+                    enProceso: enProceso,
+                    pausadas: pausadas,
+                    pendientes: pendientes,
+                    progreso: progreso,
+                    cotId: cotId,
+                    acts: acts.sort((a, b) => a.orden - b.orden)
+                });
+            });
+            
+            // Tabla de resumen general
+            doc.autoTable({
+                startY: 42,
+                head: [['Cotizaci贸n', 'Cliente', 'Total', 'Comp.', 'Proceso', 'Ptes.', 'Paus.', 'Progreso']],
+                body: resumenData.map(r => [
+                    r.cotizacion,
+                    r.cliente,
+                    r.total,
+                    r.completadas,
+                    r.enProceso,
+                    r.pendientes,
+                    r.pausadas,
+                    r.progreso + '%'
+                ]),
+                theme: 'grid',
+                headStyles: { 
+                    fillColor: [139, 69, 19],
+                    textColor: [255, 255, 255],
+                    fontSize: 9,
+                    fontStyle: 'bold',
+                    halign: 'center'
+                },
+                bodyStyles: { fontSize: 8 },
+                margin: { left: 15, right: 15 },
+                columnStyles: {
+                    0: { cellWidth: 25, fontStyle: 'bold' },
+                    1: { cellWidth: 40 },
+                    2: { cellWidth: 15, halign: 'center' },
+                    3: { cellWidth: 15, halign: 'center', textColor: [67, 160, 71] },
+                    4: { cellWidth: 15, halign: 'center', textColor: [3, 155, 229] },
+                    5: { cellWidth: 15, halign: 'center', textColor: [251, 140, 0] },
+                    6: { cellWidth: 15, halign: 'center', textColor: [156, 136, 255] },
+                    7: { cellWidth: 20, halign: 'center', fontStyle: 'bold' }
+                },
+                didParseCell: function(data) {
+                    // Color para el progreso seg煤n %
+                    if(data.column.index === 7 && data.section === 'body') {
+                        const val = parseInt(data.cell.raw);
+                        if(val === 100) {
+                            data.cell.styles.textColor = [67, 160, 71];
+                        } else if(val >= 50) {
+                            data.cell.styles.textColor = [3, 155, 229];
+                        } else if(val > 0) {
+                            data.cell.styles.textColor = [251, 140, 0];
+                        } else {
+                            data.cell.styles.textColor = [154, 160, 174];
+                        }
+                    }
                 }
+            });
+            
+            let y = doc.lastAutoTable.finalY + 10;
+            
+            // Estad铆sticas generales
+            const totalGeneral = resumenData.reduce((sum, r) => sum + r.total, 0);
+            const completadasGeneral = resumenData.reduce((sum, r) => sum + r.completadas, 0);
+            const progresoGeneral = totalGeneral > 0 ? Math.round((completadasGeneral / totalGeneral) * 100) : 0;
+            
+            doc.setFontSize(11);
+            doc.setTextColor(26, 28, 35);
+            doc.text(`Total de Actividades: ${totalGeneral}`, 15, y);
+            doc.setTextColor(67, 160, 71);
+            doc.text(`Completadas: ${completadasGeneral}`, 70, y);
+            doc.setTextColor(26, 28, 35);
+            doc.text(`Progreso General: ${progresoGeneral}%`, 120, y);
+            
+            // === P脕GINAS SIGUIENTES: DETALLES POR COTIZACI脫N ===
+            resumenData.forEach((r, index) => {
+                doc.addPage();
+                y = 20;
                 
-                // === CAJA DE RESUMEN DE COTIZACI脫N ===
+                // T铆tulo de la cotizaci贸n
+                doc.setFontSize(14);
+                doc.setTextColor(139, 69, 19);
+                doc.text(`Cotizaci贸n: ${r.cotizacion}`, 15, y);
+                y += 8;
+                
+                // Informaci贸n
+                doc.setFontSize(9);
+                doc.setTextColor(90, 96, 112);
+                doc.text(`Cliente: ${r.cliente}`, 15, y);
+                doc.text(`Proyecto: ${r.proyecto}`, 90, y);
+                y += 6;
+                doc.text(`Descripci贸n: ${getData('cotizaciones').find(x => x.id === r.cotId)?.descripcion || '-'}`, 15, y);
+                y += 10;
+                
+                // Resumen mini de esta cotizaci贸n
                 const boxX = 15;
                 const boxWidth = pageWidth - 30;
                 
-                // Fondo de la caja
                 doc.setFillColor(247, 248, 250);
-                doc.roundedRect(boxX, y, boxWidth, 55, 3, 3, 'F');
+                doc.roundedRect(boxX, y, boxWidth, 20, 2, 2, 'F');
                 
-                // Borde de la caja
-                doc.setDrawColor(139, 69, 19);
-                doc.setLineWidth(0.5);
-                doc.roundedRect(boxX, y, boxWidth, 55, 3, 3, 'S');
-                
-                // T铆tulo de la cotizaci贸n
-                doc.setFontSize(12);
-                doc.setTextColor(139, 69, 19);
-                doc.text(`COTIZACI脫N: ${cot.numero}`, boxX + 5, y + 8);
-                
-                // Descripci贸n
-                doc.setFontSize(9);
+                doc.setFontSize(18);
                 doc.setTextColor(26, 28, 35);
-                doc.text(cot.descripcion, boxX + 5, y + 15);
-                
-                // Cliente y Proyecto
-                doc.setTextColor(90, 96, 112);
-                doc.setFontSize(8);
-                if(cliente) {
-                    doc.text(`Cliente: ${cliente.nombre}`, boxX + 5, y + 22);
-                }
-                if(proy) {
-                    doc.text(`Proyecto: ${proy.nombre}`, boxX + 80, y + 22);
-                }
-                
-                // L铆nea separadora
-                doc.setDrawColor(220, 220, 220);
-                doc.setLineWidth(0.3);
-                doc.line(boxX + 5, y + 26, boxX + boxWidth - 5, y + 26);
-                
-                // === RESUMEN ESTAD脥STICO ===
-                const resumenY = y + 32;
-                const statWidth = (boxWidth - 20) / 5;
-                
-                // Total
-                doc.setFontSize(16);
-                doc.setTextColor(26, 28, 35);
-                doc.text(`${totalActividades}`, boxX + 5 + statWidth * 0, resumenY);
+                doc.text(`${r.total}`, boxX + 10, y + 10);
                 doc.setFontSize(7);
                 doc.setTextColor(90, 96, 112);
-                doc.text('TOTAL', boxX + 5 + statWidth * 0, resumenY + 4);
+                doc.text('Total', boxX + 10, y + 16);
                 
-                // Completadas (verde)
-                doc.setFontSize(16);
+                doc.setFontSize(18);
                 doc.setTextColor(67, 160, 71);
-                doc.text(`${completadas}`, boxX + 5 + statWidth * 1, resumenY);
+                doc.text(`${r.completadas}`, boxX + 45, y + 10);
                 doc.setFontSize(7);
                 doc.setTextColor(90, 96, 112);
-                doc.text('Completadas', boxX + 5 + statWidth * 1 - 3, resumenY + 4);
+                doc.text('Comp.', boxX + 45, y + 16);
                 
-                // En Proceso (azul)
-                doc.setFontSize(16);
+                doc.setFontSize(18);
                 doc.setTextColor(3, 155, 229);
-                doc.text(`${enProceso}`, boxX + 5 + statWidth * 2, resumenY);
+                doc.text(`${r.enProceso}`, boxX + 80, y + 10);
                 doc.setFontSize(7);
                 doc.setTextColor(90, 96, 112);
-                doc.text('En Proceso', boxX + 5 + statWidth * 2 - 3, resumenY + 4);
+                doc.text('Proceso', boxX + 80, y + 16);
                 
-                // Pendientes (naranja)
-                doc.setFontSize(16);
+                doc.setFontSize(18);
                 doc.setTextColor(251, 140, 0);
-                doc.text(`${pendientes}`, boxX + 5 + statWidth * 3, resumenY);
+                doc.text(`${r.pendientes}`, boxX + 115, y + 10);
                 doc.setFontSize(7);
                 doc.setTextColor(90, 96, 112);
-                doc.text('Pendientes', boxX + 5 + statWidth * 3 - 2, resumenY + 4);
+                doc.text('Ptes.', boxX + 115, y + 16);
                 
-                // Pausadas
-                doc.setFontSize(16);
-                doc.setTextColor(156, 136, 255);
-                doc.text(`${pausadas}`, boxX + 5 + statWidth * 4, resumenY);
+                doc.setFontSize(18);
+                doc.setTextColor(139, 69, 19);
+                doc.text(`${r.progreso}%`, boxX + 150, y + 10);
                 doc.setFontSize(7);
                 doc.setTextColor(90, 96, 112);
-                doc.text('Pausadas', boxX + 5 + statWidth * 4 - 2, resumenY + 4);
+                doc.text('Progreso', boxX + 150, y + 16);
                 
-                // Barra de progreso
-                const progressY = y + 48;
-                const progressWidth = boxWidth - 40;
+                y += 25;
                 
-                // Fondo de progreso
-                doc.setFillColor(230, 230, 230);
-                doc.roundedRect(boxX + 30, progressY, progressWidth, 5, 2, 2, 'F');
-                
-                // Progreso completado
-                if(progreso > 0) {
-                    doc.setFillColor(67, 160, 71);
-                    doc.roundedRect(boxX + 30, progressY, progressWidth * (progreso / 100), 5, 2, 2, 'F');
-                }
-                
-                // Porcentaje
-                doc.setFontSize(9);
-                doc.setTextColor(26, 28, 35);
-                doc.text(`${progreso}%`, boxX + 30 + progressWidth + 5, progressY + 4);
-                
-                y += 60;
-                
-                // === TABLA DE ACTIVIDADES ===
-                if(acts.length > 0) {
+                // Tabla de actividades detalladas
+                if(r.acts.length > 0) {
                     doc.autoTable({
                         startY: y,
                         head: [['#', 'Actividad', 'Estado', 'N掳 Reporte', 'Notas']],
-                        body: acts.map(a => [a.orden, a.descripcion, a.estado || 'Pendiente', a.numero_reporte || '-', a.notas || '-']),
+                        body: r.acts.map(a => [a.orden, a.descripcion, a.estado || 'Pendiente', a.numero_reporte || '-', a.notas || '-']),
                         theme: 'striped',
                         headStyles: { 
                             fillColor: [139, 69, 19],
                             textColor: [255, 255, 255],
-                            fontSize: 8,
+                            fontSize: 9,
                             fontStyle: 'bold'
                         },
                         margin: { left: 15, right: 15 },
-                        styles: { fontSize: 7, cellPadding: 2 },
+                        styles: { fontSize: 8, cellPadding: 3 },
                         columnStyles: {
                             0: { cellWidth: 12, halign: 'center' },
-                            1: { cellWidth: 70 },
-                            2: { cellWidth: 25 },
-                            3: { cellWidth: 25 },
-                            4: { cellWidth: 38 }
+                            1: { cellWidth: 80 },
+                            2: { cellWidth: 28 },
+                            3: { cellWidth: 28 },
+                            4: { cellWidth: 32 }
                         },
                         didParseCell: function(data) {
                             if(data.column.index === 2 && data.section === 'body') {
@@ -1145,37 +1182,32 @@
                                     data.cell.styles.textColor = [3, 155, 229];
                                 } else if(data.cell.raw === 'Pausado') {
                                     data.cell.styles.textColor = [251, 140, 0];
-                                } else if(data.cell.raw === 'Pendiente' || data.cell.raw === '') {
+                                } else {
                                     data.cell.styles.textColor = [154, 160, 174];
                                 }
                             }
                         }
                     });
-                    y = doc.lastAutoTable.finalY + 10;
                 } else {
-                    doc.setFontSize(9);
+                    doc.setFontSize(10);
                     doc.setTextColor(154, 160, 174);
                     doc.text('Sin actividades registradas', 15, y);
-                    y += 15;
                 }
-                
-                // Espacio entre cotizaciones
-                y += 5;
             });
             
-            // Pie de p谩gina
+            // Pie de p谩gina en todas las p谩ginas
             const pageCount = doc.internal.getNumberOfPages();
             for(let i = 1; i <= pageCount; i++) {
                 doc.setPage(i);
                 doc.setFontSize(8);
                 doc.setTextColor(154, 160, 174);
                 doc.text(`P谩gina ${i} de ${pageCount}`, pageWidth / 2, 290, { align: 'center' });
-                doc.text(`Generado: ${new Date().toLocaleString()} - FireTrace`, 15, 290);
+                doc.text(`FireTrace - Generado: ${new Date().toLocaleString()}`, 15, 290);
             }
             
             const filename = selectedCotizacionesHistorial.size === 1 
-                ? `FireTrace_Cotizacion_${getData('cotizaciones').find(x => x.id === [...selectedCotizacionesHistorial][0])?.numero || 'export'}.pdf`
-                : `FireTrace_Cotizaciones_${getDateDaysAgo(0)}.pdf`;
+                ? `FireTrace_${resumenData[0]?.cotizacion || 'export'}.pdf`
+                : `FireTrace_Cotizaciones_Resumen_${getDateDaysAgo(0)}.pdf`;
             
             doc.save(filename);
             showToast(`PDF exportado con ${selectedCotizacionesHistorial.size} cotizaci贸n(es)`);
