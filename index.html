@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 FireTrace</title>
+    <title>馃敟 FireTrace</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
@@ -195,7 +195,7 @@
 <body>
     <div class="app" id="app">
         <aside class="sidebar" id="sidebar">
-            <div class="logo">🔥 Fire<span>Trace</span></div>
+            <div class="logo">馃敟 Fire<span>Trace</span></div>
             <div class="user-info" id="userInfo" style="display:none;">
                 <div class="user-avatar" id="userAvatar">--</div>
                 <div>
@@ -204,28 +204,28 @@
                 </div>
             </div>
             <nav class="nav-menu" id="navMenu">
-                <div class="nav-item dashboard active" data-module="dashboard"><div class="accent"></div>📊 Dashboard</div>
-                <div class="nav-item clientes" data-module="clientes"><div class="accent"></div>👥 Clientes</div>
-                <div class="nav-item intervenciones" data-module="intervenciones"><div class="accent"></div>🔧 Intervenciones</div>
-                <div class="nav-item correctivos" data-module="correctivos"><div class="accent"></div>⚠️ Correctivos</div>
-                <div class="nav-item agenda" data-module="agenda"><div class="accent"></div>📅 Agenda</div>
-                <div class="nav-item proyectos" data-module="proyectos"><div class="accent"></div>📁 Proyectos</div>
-                <div class="nav-item historial" data-module="historial"><div class="accent"></div>📜 Historial</div>
+                <div class="nav-item dashboard active" data-module="dashboard"><div class="accent"></div>馃搳 Dashboard</div>
+                <div class="nav-item clientes" data-module="clientes"><div class="accent"></div>馃懃 Clientes</div>
+                <div class="nav-item intervenciones" data-module="intervenciones"><div class="accent"></div>馃敡 Intervenciones</div>
+                <div class="nav-item correctivos" data-module="correctivos"><div class="accent"></div>鈿狅笍 Correctivos</div>
+                <div class="nav-item agenda" data-module="agenda"><div class="accent"></div>馃搮 Agenda</div>
+                <div class="nav-item proyectos" data-module="proyectos"><div class="accent"></div>馃搧 Proyectos</div>
+                <div class="nav-item historial" data-module="historial"><div class="accent"></div>馃摐 Historial</div>
             </nav>
-            <div class="settings-btn" onclick="openSettingsModal()">⚙️ Opciones</div>
+            <div class="settings-btn" onclick="openSettingsModal()">鈿欙笍 Opciones</div>
         </aside>
         <main class="main-content" id="mainContent"></main>
     </div>
 
     <div class="locked-screen" id="lockedScreen">
-        <div class="logo">🔥 Fire<span>Trace</span></div>
-        <div style="font-size:64px;margin-bottom:20px;">🔒</div>
+        <div class="logo">馃敟 Fire<span>Trace</span></div>
+        <div style="font-size:64px;margin-bottom:20px;">馃敀</div>
         <div class="locked-form">
-            <h2>Iniciar Sesión</h2>
+            <h2>Iniciar Sesi贸n</h2>
             <input type="text" id="loginNombre" placeholder="Nombre">
             <input type="text" id="loginApellido" placeholder="Apellido">
-            <button class="btn btn-clientes" onclick="iniciarSesion()">Iniciar Sesión</button>
-            <button class="btn btn-secondary" onclick="document.getElementById('loadBackup').click()" style="margin-top:10px;">📂 Cargar Respaldo</button>
+            <button class="btn btn-clientes" onclick="iniciarSesion()">Iniciar Sesi贸n</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('loadBackup').click()" style="margin-top:10px;">馃搨 Cargar Respaldo</button>
             <input type="file" id="loadBackup" accept=".json" style="display:none" onchange="cargarRespaldo(event)">
         </div>
     </div>
@@ -236,7 +236,7 @@
 
     <div class="modal-overlay confirm-modal" id="confirmModal">
         <div class="modal">
-            <div class="modal-header">⚠️ Confirmar</div>
+            <div class="modal-header">鈿狅笍 Confirmar</div>
             <div class="modal-body" id="confirmMessage"></div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeConfirmModal()">Cancelar</button>
@@ -256,10 +256,10 @@
             counters: 'firtrace_counters', session: 'firtrace_session', theme: 'firtrace_theme'
         };
 
-        const TIPOS_EQUIPO = ["Detector de humo","Detector de calor","Detector de llama","Central de detección","Panel de alarma","Módulo de control","Módulo de monitoreo","Rociador","Supresor","Lazo/Nodo","Otro"];
-        const TIPOS_FALLA = ["Falla eléctrica","Falla de sensor","Falla de comunicación","Falla de software/firmware","Daño físico","Suciedad/obstrucción","Falsa alarma recurrente","Sin alimentación","Batería agotada","Corrosión","Humedad/agua","Falla de zona","Otro"];
-        const TIPOS_INTERVENCION = ["Correctivo","Preventivo","Inspección","Instalación","Diagnóstico"];
-        const ESTADOS_EQUIPO = ["Operativo","En falla","Pendiente revisión","Fuera de servicio","Reemplazado"];
+        const TIPOS_EQUIPO = ["Detector de humo","Detector de calor","Detector de llama","Central de detecci贸n","Panel de alarma","M贸dulo de control","M贸dulo de monitoreo","Rociador","Supresor","Lazo/Nodo","Otro"];
+        const TIPOS_FALLA = ["Falla el茅ctrica","Falla de sensor","Falla de comunicaci贸n","Falla de software/firmware","Da帽o f铆sico","Suciedad/obstrucci贸n","Falsa alarma recurrente","Sin alimentaci贸n","Bater铆a agotada","Corrosi贸n","Humedad/agua","Falla de zona","Otro"];
+        const TIPOS_INTERVENCION = ["Correctivo","Preventivo","Inspecci贸n","Instalaci贸n","Diagn贸stico"];
+        const ESTADOS_EQUIPO = ["Operativo","En falla","Pendiente revisi贸n","Fuera de servicio","Reemplazado"];
         const PRIORIDADES = ["Alta","Media","Baja"];
         const ESTADOS_CORRECTIVO = ["Pendiente","En proceso","Cerrado"];
         const ESTADOS_AGENDA = ["Pendiente","Confirmado","Completado","Cancelado"];
@@ -284,7 +284,7 @@
 
         function openModal(html) { document.getElementById('modalContent').innerHTML = html; document.getElementById('modalOverlay').classList.add('active'); }
         function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); editingId = null; }
-        function showConfirm(msg, cb) { document.getElementById('confirmMessage').innerHTML = msg + '<br><br><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;"><input type="checkbox" id="saveSessionCheck"> Guardar sesión antes de cerrar</label>'; confirmCallback = cb; document.getElementById('confirmModal').classList.add('active'); }
+        function showConfirm(msg, cb) { document.getElementById('confirmMessage').innerHTML = msg + '<br><br><label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;"><input type="checkbox" id="saveSessionCheck"> Guardar sesi贸n antes de cerrar</label>'; confirmCallback = cb; document.getElementById('confirmModal').classList.add('active'); }
         function closeConfirmModal() { document.getElementById('confirmModal').classList.remove('active'); confirmCallback = null; }
         function confirmAction() { if(confirmCallback) confirmCallback(); closeConfirmModal(); }
         function getClienteNombre(id) { const c = getData('clientes').find(x => x.id==id); return c ? c.nombre : 'N/A'; }
@@ -299,12 +299,12 @@
         function openSettingsModal() {
             const ct = localStorage.getItem(STORAGE_KEYS.theme) || 'system';
             openModal(`
-                <div class="modal-header settings">⚙️ Opciones<button class="modal-close" onclick="closeModal()">✕</button></div>
+                <div class="modal-header settings">鈿欙笍 Opciones<button class="modal-close" onclick="closeModal()">鉁?/button></div>
                 <div class="modal-body">
-                    ${currentUser ? `<div class="settings-section"><h3>👤 Usuario</h3><div style="display:flex;align-items:center;gap:15px;padding:10px 0;"><div class="user-avatar" style="width:50px;height:50px;font-size:20px;">${currentUser.nombre[0]}${currentUser.apellido[0]}</div><div><div style="font-weight:600;font-size:16px;">${currentUser.nombre} ${currentUser.apellido}</div><div style="color:var(--text-muted);font-size:13px;">Conectado</div></div></div><button class="btn btn-danger" onclick="cerrarSesion()">🚪 Cerrar Sesión</button></div>` : ''}
-                    <div class="settings-section"><h3>🎨 Tema Visual</h3><div class="theme-options"><div class="theme-option ${ct==='light'?'active':''}" onclick="setTheme('light')"><div class="theme-icon light"></div><span>Claro</span></div><div class="theme-option ${ct==='dark'?'active':''}" onclick="setTheme('dark')"><div class="theme-icon dark"></div><span>Oscuro</span></div><div class="theme-option ${ct==='system'?'active':''}" onclick="setTheme('system')"><div class="theme-icon system"></div><span>Sistema</span></div></div></div>
-                    <div class="settings-section"><h3>💾 Respaldo</h3><button class="btn btn-success" onclick="guardarRespaldo()">💾 Descargar .json</button><button class="btn btn-secondary" onclick="document.getElementById('loadBackupSettings').click()" style="margin-left:10px;">📂 Cargar</button><input type="file" id="loadBackupSettings" accept=".json" style="display:none" onchange="cargarRespaldoSettings(event)"></div>
-                    <div class="settings-section"><h3>⚠️ Zona de Peligro</h3><button class="btn btn-danger" onclick="showConfirm('¿Eliminar TODOS los datos?',()=>{Object.keys(STORAGE_KEYS).forEach(k=>{if(k!=='session'&&k!=='theme')localStorage.removeItem(STORAGE_KEYS[k])});renderModule(currentModule);showToast('Datos eliminados','warning');})">🗑️ Eliminar Todo</button></div>
+                    ${currentUser ? `<div class="settings-section"><h3>馃懁 Usuario</h3><div style="display:flex;align-items:center;gap:15px;padding:10px 0;"><div class="user-avatar" style="width:50px;height:50px;font-size:20px;">${currentUser.nombre[0]}${currentUser.apellido[0]}</div><div><div style="font-weight:600;font-size:16px;">${currentUser.nombre} ${currentUser.apellido}</div><div style="color:var(--text-muted);font-size:13px;">Conectado</div></div></div><button class="btn btn-danger" onclick="cerrarSesion()">馃毆 Cerrar Sesi贸n</button></div>` : ''}
+                    <div class="settings-section"><h3>馃帹 Tema Visual</h3><div class="theme-options"><div class="theme-option ${ct==='light'?'active':''}" onclick="setTheme('light')"><div class="theme-icon light"></div><span>Claro</span></div><div class="theme-option ${ct==='dark'?'active':''}" onclick="setTheme('dark')"><div class="theme-icon dark"></div><span>Oscuro</span></div><div class="theme-option ${ct==='system'?'active':''}" onclick="setTheme('system')"><div class="theme-icon system"></div><span>Sistema</span></div></div></div>
+                    <div class="settings-section"><h3>馃捑 Respaldo</h3><button class="btn btn-success" onclick="guardarRespaldo()">馃捑 Descargar .json</button><button class="btn btn-secondary" onclick="document.getElementById('loadBackupSettings').click()" style="margin-left:10px;">馃搨 Cargar</button><input type="file" id="loadBackupSettings" accept=".json" style="display:none" onchange="cargarRespaldoSettings(event)"></div>
+                    <div class="settings-section"><h3>鈿狅笍 Zona de Peligro</h3><button class="btn btn-danger" onclick="showConfirm('驴Eliminar TODOS los datos?',()=>{Object.keys(STORAGE_KEYS).forEach(k=>{if(k!=='session'&&k!=='theme')localStorage.removeItem(STORAGE_KEYS[k])});renderModule(currentModule);showToast('Datos eliminados','warning');})">馃棏锔?Eliminar Todo</button></div>
                 </div>`);
         }
         function setTheme(t) { localStorage.setItem(STORAGE_KEYS.theme,t); applyTheme(t); openSettingsModal(); }
@@ -361,7 +361,7 @@
         }
 
         function cerrarSesion() {
-            showConfirm('¿Desea guardar la sesión antes de cerrar?', () => {
+            showConfirm('驴Desea guardar la sesi贸n antes de cerrar?', () => {
                 guardarRespaldo();
                 doLogout();
             });
@@ -376,19 +376,19 @@
             document.getElementById('loginNombre').value = '';
             document.getElementById('loginApellido').value = '';
             closeModal();
-            showToast('Sesión cerrada');
+            showToast('Sesi贸n cerrada');
         }
 
         function generarDatosIniciales() {
             if(getData('clientes').length > 0) return;
-            const cli = [{id:1,nombre:'Hospital Central',contacto:'Dr. García',telefono:'555-0101',email:'contacto@hospitalcentral.com',direccion:'Av. Principal 123',notas:'Cliente prioritario 24/7',activo:true,creado:'2024-01-15'},{id:2,nombre:'Centro Comercial Norte',contacto:'Sra. López',telefono:'555-0102',email:'seguridad@nortecentro.com',direccion:'Blvd. Norte 456',notas:'Sistema ampliado',activo:true,creado:'2024-02-20'},{id:3,nombre:'Fábrica Tech',contacto:'Ing. Martínez',telefono:'555-0103',email:'mantenimiento@techfab.com',direccion:'Zona Industrial Lote 12',notas:'Inspección trimestral',activo:true,creado:'2024-03-10'},{id:4,nombre:'Hotel Majestic',contacto:'Gerente Pérez',telefono:'555-0104',email:'admin@hotelmajestic.com',direccion:'Calle Turística 789',notas:'Sistema de rociadores',activo:true,creado:'2024-04-05'}];
-            const eq = [{id:1,cliente_id:1,tipo:'Central de detección',marca:'Notifier',modelo:'NFS-320',numero_serie:'N320-2024-001',ubicacion:'Sala de control',zona:'A',lazo:'1',nodo:'01',estado:'Operativo',fecha_instalacion:'2022-05-15',notas:''},{id:2,cliente_id:1,tipo:'Detector de humo',marca:'System Sensor',modelo:'1551',numero_serie:'SS1551-001',ubicacion:'Piso 2',zona:'B',lazo:'2',nodo:'05',estado:'Operativo',fecha_instalacion:'2022-05-15',notas:''},{id:3,cliente_id:2,tipo:'Panel de alarma',marca:'Honeywell',modelo:'Notifier NFS-640',numero_serie:'N640-2023-015',ubicacion:'Cuarto eléctrico',zona:'Principal',lazo:'1',nodo:'01',estado:'En falla',fecha_instalacion:'2023-08-20',notas:'Falla intermitente'},{id:4,cliente_id:2,tipo:'Detector de calor',marca:'System Sensor',modelo:'5601',numero_serie:'SS5601-003',ubicacion:'Restaurantes',zona:'C',lazo:'3',nodo:'02',estado:'Operativo',fecha_instalacion:'2023-08-20',notas:''},{id:5,cliente_id:3,tipo:'Rociador',marca:'Tyco',modelo:'TY3501',numero_serie:'TY3501-007',ubicacion:'Nave producción',zona:'A',lazo:'1',nodo:'03',estado:'Operativo',fecha_instalacion:'2021-03-10',notas:''},{id:6,cliente_id:3,tipo:'Módulo de control',marca:'Silent Knight',modelo:'SK-555',numero_serie:'SK555-010',ubicacion:'Oficina',zona:'B',lazo:'2',nodo:'01',estado:'Pendiente revisión',fecha_instalacion:'2023-01-15',notas:''},{id:7,cliente_id:4,tipo:'Detector de humo',marca:'Hochiki',modelo:'SLK-62',numero_serie:'HK62-004',ubicacion:'Pisos 3-8',zona:'Hoteles',lazo:'4',nodo:'06',estado:'Operativo',fecha_instalacion:'2024-01-20',notas:''},{id:8,cliente_id:4,tipo:'Supresor',marca:'Kidde',modelo:'KN-400',numero_serie:'KD400-002',ubicacion:'Cocina',zona:'C',lazo:'5',nodo:'01',estado:'Operativo',fecha_instalacion:'2024-01-20',notas:''}];
-            const ints = [{id:1,equipo_id:3,cliente_id:2,fecha:getDateDaysAgo(2),tipo:'Correctivo',tipo_falla:'Falla de comunicación',descripcion_falla:'Panel no comunica',accion_tomada:'Reemplazo de tarjeta',materiales:'Tarjeta COM-232',tiempo_minutos:120,tecnico:'Juan Pérez',estado:'Completado',observaciones:'Problema resuelto',creado:getDateDaysAgo(2)},{id:2,equipo_id:6,cliente_id:3,fecha:getDateDaysAgo(5),tipo:'Preventivo',tipo_falla:'',descripcion_falla:'',accion_tomada:'Inspección y limpieza',materiales:'',tiempo_minutos:60,tecnico:'Carlos López',estado:'Completado',observaciones:'Equipo OK',creado:getDateDaysAgo(5)},{id:3,equipo_id:2,cliente_id:1,fecha:getDateDaysAgo(10),tipo:'Inspección',tipo_falla:'',descripcion_falla:'',accion_tomada:'Prueba de sensibilidad',materiales:'',tiempo_minutos:45,tecnico:'Juan Pérez',estado:'Completado',observaciones:'Detector operativo',creado:getDateDaysAgo(10)},{id:4,equipo_id:1,cliente_id:1,fecha:getDateDaysAgo(15),tipo:'Diagnóstico',tipo_falla:'',descripcion_falla:'Revisión general',accion_tomada:'Pruebas de lazos',materiales:'',tiempo_minutos:90,tecnico:'Carlos López',estado:'Completado',observaciones:'Sistema OK',creado:getDateDaysAgo(15)},{id:5,equipo_id:5,cliente_id:3,fecha:getDateDaysAgo(20),tipo:'Correctivo',tipo_falla:'Falla de zona',descripcion_falla:'Zona 3 sin respuesta',accion_tomada:'Reemplazo de rociador',materiales:'Rociador repuesto',tiempo_minutos:150,tecnico:'Juan Pérez',estado:'Completado',observaciones:'Zona restaurada',creado:getDateDaysAgo(20)}];
-            const corr = [{id:1,equipo_id:3,cliente_id:2,fecha_apertura:getDateDaysAgo(7),fecha_cierre:getDateDaysAgo(2),prioridad:'Alta',descripcion:'Panel sin comunicación',estado:'Cerrado',tecnico_asignado:'Juan Pérez',notas:'Resuelto'},{id:2,equipo_id:6,cliente_id:3,fecha_apertura:getDateDaysAgo(3),fecha_cierre:'',prioridad:'Media',descripcion:'Módulo requiere revisión',estado:'En proceso',tecnico_asignado:'Carlos López',notas:'Pendiente repuesto'},{id:3,equipo_id:4,cliente_id:2,fecha_apertura:getDateDaysAgo(1),fecha_cierre:'',prioridad:'Baja',descripcion:'Detector con sensibilidad baja',estado:'Pendiente',tecnico_asignado:'Juan Pérez',notas:''}];
-            const age = [{id:1,cliente_id:1,fecha:getDateDaysAgo(-1),hora:'09:00',tipo:'Inspección',descripcion:'Inspección trimestral',estado:'Pendiente',notas:''},{id:2,cliente_id:2,fecha:getDateDaysAgo(-2),hora:'14:00',tipo:'Mantenimiento',descripcion:'Mantenimiento preventivo',estado:'Confirmado',notas:''},{id:3,cliente_id:3,fecha:getDateDaysAgo(-3),hora:'10:00',tipo:'Reparación',descripcion:'Revisión módulo',estado:'Pendiente',notas:'Traer repuesto'},{id:4,cliente_id:4,fecha:getDateDaysAgo(0),hora:'11:00',tipo:'Inspección',descripcion:'Inspección anual',estado:'Confirmado',notas:''},{id:5,cliente_id:1,fecha:getDateDaysAgo(5),hora:'15:00',tipo:'Capacitación',descripcion:'Capacitación personal',estado:'Pendiente',notas:''}];
-            const proy = [{id:1,cliente_id:1,nombre:'Ampliación Sistema Hospital',descripcion:'Instalación 20 detectores',fecha_inicio:'2024-06-01',fecha_fin:'2024-08-31',estado:'En proceso',notas:'Proyecto prioritario'},{id:2,cliente_id:2,nombre:'Modernización Centro Comercial',descripcion:'Reemplazo de panel',fecha_inicio:'2024-09-01',fecha_fin:'2024-12-31',estado:'Pendiente',notas:''}];
-            const cots = [{id:1,proyecto_id:1,numero:'COT-001',descripcion:'Materiales y equipos'},{id:2,proyecto_id:1,numero:'COT-002',descripcion:'Mano de obra'},{id:3,proyecto_id:1,numero:'COT-003',descripcion:'Pruebas y certificación'},{id:4,proyecto_id:2,numero:'COT-001',descripcion:'Evaluación y diseño'}];
-            const acts = [{id:1,cotizacion_id:1,descripcion:'Compra de detectores',estado:'Completado',numero_reporte:'R-001',notas:'',orden:1},{id:2,cotizacion_id:1,descripcion:'Instalación cableado',estado:'Completado',numero_reporte:'R-002',notas:'',orden:2},{id:3,cotizacion_id:1,descripcion:'Colocación detectores',estado:'En proceso',numero_reporte:'',notas:'En curso',orden:3},{id:4,cotizacion_id:2,descripcion:'Contratación técnicos',estado:'Completado',numero_reporte:'R-003',notas:'',orden:1},{id:5,cotizacion_id:2,descripcion:'Instalación física',estado:'Pendiente',numero_reporte:'',notas:'',orden:2},{id:6,cotizacion_id:3,descripcion:'Pruebas funcionamiento',estado:'Pendiente',numero_reporte:'',notas:'',orden:1},{id:7,cotizacion_id:3,descripcion:'Certificación',estado:'Pendiente',numero_reporte:'',notas:'',orden:2}];
+            const cli = [{id:1,nombre:'Hospital Central',contacto:'Dr. Garc铆a',telefono:'555-0101',email:'contacto@hospitalcentral.com',direccion:'Av. Principal 123',notas:'Cliente prioritario 24/7',activo:true,creado:'2024-01-15'},{id:2,nombre:'Centro Comercial Norte',contacto:'Sra. L贸pez',telefono:'555-0102',email:'seguridad@nortecentro.com',direccion:'Blvd. Norte 456',notas:'Sistema ampliado',activo:true,creado:'2024-02-20'},{id:3,nombre:'F谩brica Tech',contacto:'Ing. Mart铆nez',telefono:'555-0103',email:'mantenimiento@techfab.com',direccion:'Zona Industrial Lote 12',notas:'Inspecci贸n trimestral',activo:true,creado:'2024-03-10'},{id:4,nombre:'Hotel Majestic',contacto:'Gerente P茅rez',telefono:'555-0104',email:'admin@hotelmajestic.com',direccion:'Calle Tur铆stica 789',notas:'Sistema de rociadores',activo:true,creado:'2024-04-05'}];
+            const eq = [{id:1,cliente_id:1,tipo:'Central de detecci贸n',marca:'Notifier',modelo:'NFS-320',numero_serie:'N320-2024-001',ubicacion:'Sala de control',zona:'A',lazo:'1',nodo:'01',estado:'Operativo',fecha_instalacion:'2022-05-15',notas:''},{id:2,cliente_id:1,tipo:'Detector de humo',marca:'System Sensor',modelo:'1551',numero_serie:'SS1551-001',ubicacion:'Piso 2',zona:'B',lazo:'2',nodo:'05',estado:'Operativo',fecha_instalacion:'2022-05-15',notas:''},{id:3,cliente_id:2,tipo:'Panel de alarma',marca:'Honeywell',modelo:'Notifier NFS-640',numero_serie:'N640-2023-015',ubicacion:'Cuarto el茅ctrico',zona:'Principal',lazo:'1',nodo:'01',estado:'En falla',fecha_instalacion:'2023-08-20',notas:'Falla intermitente'},{id:4,cliente_id:2,tipo:'Detector de calor',marca:'System Sensor',modelo:'5601',numero_serie:'SS5601-003',ubicacion:'Restaurantes',zona:'C',lazo:'3',nodo:'02',estado:'Operativo',fecha_instalacion:'2023-08-20',notas:''},{id:5,cliente_id:3,tipo:'Rociador',marca:'Tyco',modelo:'TY3501',numero_serie:'TY3501-007',ubicacion:'Nave producci贸n',zona:'A',lazo:'1',nodo:'03',estado:'Operativo',fecha_instalacion:'2021-03-10',notas:''},{id:6,cliente_id:3,tipo:'M贸dulo de control',marca:'Silent Knight',modelo:'SK-555',numero_serie:'SK555-010',ubicacion:'Oficina',zona:'B',lazo:'2',nodo:'01',estado:'Pendiente revisi贸n',fecha_instalacion:'2023-01-15',notas:''},{id:7,cliente_id:4,tipo:'Detector de humo',marca:'Hochiki',modelo:'SLK-62',numero_serie:'HK62-004',ubicacion:'Pisos 3-8',zona:'Hoteles',lazo:'4',nodo:'06',estado:'Operativo',fecha_instalacion:'2024-01-20',notas:''},{id:8,cliente_id:4,tipo:'Supresor',marca:'Kidde',modelo:'KN-400',numero_serie:'KD400-002',ubicacion:'Cocina',zona:'C',lazo:'5',nodo:'01',estado:'Operativo',fecha_instalacion:'2024-01-20',notas:''}];
+            const ints = [{id:1,equipo_id:3,cliente_id:2,fecha:getDateDaysAgo(2),tipo:'Correctivo',tipo_falla:'Falla de comunicaci贸n',descripcion_falla:'Panel no comunica',accion_tomada:'Reemplazo de tarjeta',materiales:'Tarjeta COM-232',tiempo_minutos:120,tecnico:'Juan P茅rez',estado:'Completado',observaciones:'Problema resuelto',creado:getDateDaysAgo(2)},{id:2,equipo_id:6,cliente_id:3,fecha:getDateDaysAgo(5),tipo:'Preventivo',tipo_falla:'',descripcion_falla:'',accion_tomada:'Inspecci贸n y limpieza',materiales:'',tiempo_minutos:60,tecnico:'Carlos L贸pez',estado:'Completado',observaciones:'Equipo OK',creado:getDateDaysAgo(5)},{id:3,equipo_id:2,cliente_id:1,fecha:getDateDaysAgo(10),tipo:'Inspecci贸n',tipo_falla:'',descripcion_falla:'',accion_tomada:'Prueba de sensibilidad',materiales:'',tiempo_minutos:45,tecnico:'Juan P茅rez',estado:'Completado',observaciones:'Detector operativo',creado:getDateDaysAgo(10)},{id:4,equipo_id:1,cliente_id:1,fecha:getDateDaysAgo(15),tipo:'Diagn贸stico',tipo_falla:'',descripcion_falla:'Revisi贸n general',accion_tomada:'Pruebas de lazos',materiales:'',tiempo_minutos:90,tecnico:'Carlos L贸pez',estado:'Completado',observaciones:'Sistema OK',creado:getDateDaysAgo(15)},{id:5,equipo_id:5,cliente_id:3,fecha:getDateDaysAgo(20),tipo:'Correctivo',tipo_falla:'Falla de zona',descripcion_falla:'Zona 3 sin respuesta',accion_tomada:'Reemplazo de rociador',materiales:'Rociador repuesto',tiempo_minutos:150,tecnico:'Juan P茅rez',estado:'Completado',observaciones:'Zona restaurada',creado:getDateDaysAgo(20)}];
+            const corr = [{id:1,equipo_id:3,cliente_id:2,fecha_apertura:getDateDaysAgo(7),fecha_cierre:getDateDaysAgo(2),prioridad:'Alta',descripcion:'Panel sin comunicaci贸n',estado:'Cerrado',tecnico_asignado:'Juan P茅rez',notas:'Resuelto'},{id:2,equipo_id:6,cliente_id:3,fecha_apertura:getDateDaysAgo(3),fecha_cierre:'',prioridad:'Media',descripcion:'M贸dulo requiere revisi贸n',estado:'En proceso',tecnico_asignado:'Carlos L贸pez',notas:'Pendiente repuesto'},{id:3,equipo_id:4,cliente_id:2,fecha_apertura:getDateDaysAgo(1),fecha_cierre:'',prioridad:'Baja',descripcion:'Detector con sensibilidad baja',estado:'Pendiente',tecnico_asignado:'Juan P茅rez',notas:''}];
+            const age = [{id:1,cliente_id:1,fecha:getDateDaysAgo(-1),hora:'09:00',tipo:'Inspecci贸n',descripcion:'Inspecci贸n trimestral',estado:'Pendiente',notas:''},{id:2,cliente_id:2,fecha:getDateDaysAgo(-2),hora:'14:00',tipo:'Mantenimiento',descripcion:'Mantenimiento preventivo',estado:'Confirmado',notas:''},{id:3,cliente_id:3,fecha:getDateDaysAgo(-3),hora:'10:00',tipo:'Reparaci贸n',descripcion:'Revisi贸n m贸dulo',estado:'Pendiente',notas:'Traer repuesto'},{id:4,cliente_id:4,fecha:getDateDaysAgo(0),hora:'11:00',tipo:'Inspecci贸n',descripcion:'Inspecci贸n anual',estado:'Confirmado',notas:''},{id:5,cliente_id:1,fecha:getDateDaysAgo(5),hora:'15:00',tipo:'Capacitaci贸n',descripcion:'Capacitaci贸n personal',estado:'Pendiente',notas:''}];
+            const proy = [{id:1,cliente_id:1,nombre:'Ampliaci贸n Sistema Hospital',descripcion:'Instalaci贸n 20 detectores',fecha_inicio:'2024-06-01',fecha_fin:'2024-08-31',estado:'En proceso',notas:'Proyecto prioritario'},{id:2,cliente_id:2,nombre:'Modernizaci贸n Centro Comercial',descripcion:'Reemplazo de panel',fecha_inicio:'2024-09-01',fecha_fin:'2024-12-31',estado:'Pendiente',notas:''}];
+            const cots = [{id:1,proyecto_id:1,numero:'COT-001',descripcion:'Materiales y equipos'},{id:2,proyecto_id:1,numero:'COT-002',descripcion:'Mano de obra'},{id:3,proyecto_id:1,numero:'COT-003',descripcion:'Pruebas y certificaci贸n'},{id:4,proyecto_id:2,numero:'COT-001',descripcion:'Evaluaci贸n y dise帽o'}];
+            const acts = [{id:1,cotizacion_id:1,descripcion:'Compra de detectores',estado:'Completado',numero_reporte:'R-001',notas:'',orden:1},{id:2,cotizacion_id:1,descripcion:'Instalaci贸n cableado',estado:'Completado',numero_reporte:'R-002',notas:'',orden:2},{id:3,cotizacion_id:1,descripcion:'Colocaci贸n detectores',estado:'En proceso',numero_reporte:'',notas:'En curso',orden:3},{id:4,cotizacion_id:2,descripcion:'Contrataci贸n t茅cnicos',estado:'Completado',numero_reporte:'R-003',notas:'',orden:1},{id:5,cotizacion_id:2,descripcion:'Instalaci贸n f铆sica',estado:'Pendiente',numero_reporte:'',notas:'',orden:2},{id:6,cotizacion_id:3,descripcion:'Pruebas funcionamiento',estado:'Pendiente',numero_reporte:'',notas:'',orden:1},{id:7,cotizacion_id:3,descripcion:'Certificaci贸n',estado:'Pendiente',numero_reporte:'',notas:'',orden:2}];
             setData('clientes',cli); setData('equipos',eq); setData('intervenciones',ints); setData('correctivos',corr); setData('agenda',age); setData('proyectos',proy); setData('cotizaciones',cots); setData('actividades',acts); setData('counters',{clientes:4,equipos:8,intervenciones:5,correctivos:3,agenda:5,proyectos:2,cotizaciones:4,actividades:7});
         }
 
@@ -424,19 +424,19 @@
             const ultInts = [...ints].sort((a,b) => b.fecha.localeCompare(a.fecha)).slice(0,5);
             const mesesL = [], intsPM = [];
             for(let i=5;i>=0;i--){const d=new Date();d.setMonth(d.getMonth()-i);mesesL.push(d.toLocaleDateString('es-ES',{month:'short'}));intsPM.push(ints.filter(x=>new Date(x.fecha).getMonth()===d.getMonth()&&new Date(x.fecha).getFullYear()===d.getFullYear()).length);}
-            c.innerHTML = `<div class="toolbar dashboard"><h2>📊 Dashboard</h2></div><div class="cards-grid"><div class="card dashboard"><div class="card-label">Total Clientes</div><div class="card-value">${cli.length}</div></div><div class="card dashboard"><div class="card-label">Total Equipos</div><div class="card-value">${eq.length}</div></div><div class="card dashboard"><div class="card-label">Intervenciones del Mes</div><div class="card-value">${intsMes}</div></div><div class="card dashboard"><div class="card-label">Correctivos Abiertos</div><div class="card-value">${corrAb}</div></div><div class="card dashboard"><div class="card-label">Eventos de Hoy</div><div class="card-value">${evtHoy}</div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;"><div><div class="table-container" style="margin-bottom:20px;"><h3 style="padding:15px;border-bottom:1px solid var(--border-color);">📅 Próximos Eventos</h3><table class="data-table"><thead><tr><th>Fecha</th><th>Cliente</th><th>Descripción</th><th>Estado</th></tr></thead><tbody>${proxEvt.length?proxEvt.map(e=>`<tr><td>${formatDate(e.fecha)}</td><td>${getClienteNombre(e.cliente_id)}</td><td>${e.descripcion}</td><td><span class="status-badge status-${e.estado==='Completado'?'completado':e.estado==='Confirmado'?'proceso':'pendiente'}">${e.estado}</span></td></tr>`).join(''):'<tr><td colspan="4" class="empty-state">Sin eventos</td></tr>'}</tbody></table></div><div class="table-container"><h3 style="padding:15px;border-bottom:1px solid var(--border-color);">⚠️ Correctivos Abiertos</h3><table class="data-table"><thead><tr><th>Fecha</th><th>Cliente</th><th>Descripción</th><th>Prioridad</th></tr></thead><tbody>${corrAbiert.length?corrAbiert.map(co=>`<tr class="priority-${co.prioridad.toLowerCase()}"><td>${formatDate(co.fecha_apertura)}</td><td>${getClienteNombre(co.cliente_id)}</td><td>${co.descripcion.substring(0,30)}...</td><td><span class="status-badge status-${co.prioridad.toLowerCase()}">${co.prioridad}</span></td></tr>`).join(''):'<tr><td colspan="4" class="empty-state">Sin correctivos</td></tr>'}</tbody></table></div></div><div><div class="table-container" style="margin-bottom:20px;"><h3 style="padding:15px;border-bottom:1px solid var(--border-color);">🔧 Últimas Intervenciones</h3><table class="data-table"><thead><tr><th>Fecha</th><th>Cliente</th><th>Tipo</th><th>Técnico</th></tr></thead><tbody>${ultInts.map(i=>`<tr><td>${formatDate(i.fecha)}</td><td>${getClienteNombre(i.cliente_id)}</td><td>${i.tipo}</td><td>${i.tecnico}</td></tr>`).join('')}</tbody></table></div><div class="chart-container"><div class="chart-title">Intervenciones por Mes</div><canvas id="chartIntervenciones" height="200"></canvas></div></div></div>`;
+            c.innerHTML = `<div class="toolbar dashboard"><h2>馃搳 Dashboard</h2></div><div class="cards-grid"><div class="card dashboard"><div class="card-label">Total Clientes</div><div class="card-value">${cli.length}</div></div><div class="card dashboard"><div class="card-label">Total Equipos</div><div class="card-value">${eq.length}</div></div><div class="card dashboard"><div class="card-label">Intervenciones del Mes</div><div class="card-value">${intsMes}</div></div><div class="card dashboard"><div class="card-label">Correctivos Abiertos</div><div class="card-value">${corrAb}</div></div><div class="card dashboard"><div class="card-label">Eventos de Hoy</div><div class="card-value">${evtHoy}</div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;"><div><div class="table-container" style="margin-bottom:20px;"><h3 style="padding:15px;border-bottom:1px solid var(--border-color);">馃搮 Pr贸ximos Eventos</h3><table class="data-table"><thead><tr><th>Fecha</th><th>Cliente</th><th>Descripci贸n</th><th>Estado</th></tr></thead><tbody>${proxEvt.length?proxEvt.map(e=>`<tr><td>${formatDate(e.fecha)}</td><td>${getClienteNombre(e.cliente_id)}</td><td>${e.descripcion}</td><td><span class="status-badge status-${e.estado==='Completado'?'completado':e.estado==='Confirmado'?'proceso':'pendiente'}">${e.estado}</span></td></tr>`).join(''):'<tr><td colspan="4" class="empty-state">Sin eventos</td></tr>'}</tbody></table></div><div class="table-container"><h3 style="padding:15px;border-bottom:1px solid var(--border-color);">鈿狅笍 Correctivos Abiertos</h3><table class="data-table"><thead><tr><th>Fecha</th><th>Cliente</th><th>Descripci贸n</th><th>Prioridad</th></tr></thead><tbody>${corrAbiert.length?corrAbiert.map(co=>`<tr class="priority-${co.prioridad.toLowerCase()}"><td>${formatDate(co.fecha_apertura)}</td><td>${getClienteNombre(co.cliente_id)}</td><td>${co.descripcion.substring(0,30)}...</td><td><span class="status-badge status-${co.prioridad.toLowerCase()}">${co.prioridad}</span></td></tr>`).join(''):'<tr><td colspan="4" class="empty-state">Sin correctivos</td></tr>'}</tbody></table></div></div><div><div class="table-container" style="margin-bottom:20px;"><h3 style="padding:15px;border-bottom:1px solid var(--border-color);">馃敡 脷ltimas Intervenciones</h3><table class="data-table"><thead><tr><th>Fecha</th><th>Cliente</th><th>Tipo</th><th>T茅cnico</th></tr></thead><tbody>${ultInts.map(i=>`<tr><td>${formatDate(i.fecha)}</td><td>${getClienteNombre(i.cliente_id)}</td><td>${i.tipo}</td><td>${i.tecnico}</td></tr>`).join('')}</tbody></table></div><div class="chart-container"><div class="chart-title">Intervenciones por Mes</div><canvas id="chartIntervenciones" height="200"></canvas></div></div></div>`;
             setTimeout(() => { new Chart(document.getElementById('chartIntervenciones'),{type:'bar',data:{labels:mesesL,datasets:[{label:'Intervenciones',data:intsPM,backgroundColor:'#5c6bc0',borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}}}}); }, 100);
         }
 
         function renderClientes(c) {
             const cli = getData('clientes'), eq = getData('equipos');
-            c.innerHTML = `<div class="toolbar clientes"><h2>👥 Clientes</h2><div style="flex:1"></div><input type="text" class="search-input" id="searchCli" placeholder="Buscar..."><button class="btn btn-clientes" onclick="openClienteModal()">+ Nuevo</button></div><div class="table-container"><table class="data-table" id="tblCli"><thead><tr><th>ID</th><th>Nombre</th><th>Contacto</th><th>Teléfono</th><th>Email</th><th>Equipos</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>${cli.map(c=>`<tr><td>${c.id}</td><td><strong>${c.nombre}</strong></td><td>${c.contacto}</td><td>${c.telefono}</td><td>${c.email}</td><td>${eq.filter(e=>e.cliente_id==c.id).length}</td><td><span class="status-badge status-${c.activo?'activo':'inactivo'}">${c.activo?'Activo':'Inactivo'}</span></td><td class="action-btns"><button class="btn btn-secondary" onclick="editCliente(${c.id})">✏️</button><button class="btn btn-danger" onclick="deleteCliente(${c.id})">🗑️</button><button class="btn btn-clientes" onclick="openEquiposModal(${c.id})">🔧</button><button class="btn btn-historial" onclick="openHistorialClienteModal(${c.id})">📋</button></td></tr>`).join('')}</tbody></table></div>`;
+            c.innerHTML = `<div class="toolbar clientes"><h2>馃懃 Clientes</h2><div style="flex:1"></div><input type="text" class="search-input" id="searchCli" placeholder="Buscar..."><button class="btn btn-clientes" onclick="openClienteModal()">+ Nuevo</button></div><div class="table-container"><table class="data-table" id="tblCli"><thead><tr><th>ID</th><th>Nombre</th><th>Contacto</th><th>Tel茅fono</th><th>Email</th><th>Equipos</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>${cli.map(c=>`<tr><td>${c.id}</td><td><strong>${c.nombre}</strong></td><td>${c.contacto}</td><td>${c.telefono}</td><td>${c.email}</td><td>${eq.filter(e=>e.cliente_id==c.id).length}</td><td><span class="status-badge status-${c.activo?'activo':'inactivo'}">${c.activo?'Activo':'Inactivo'}</span></td><td class="action-btns"><button class="btn btn-secondary" onclick="editCliente(${c.id})">鉁忥笍</button><button class="btn btn-danger" onclick="deleteCliente(${c.id})">馃棏锔?/button><button class="btn btn-clientes" onclick="openEquiposModal(${c.id})">馃敡</button><button class="btn btn-historial" onclick="openHistorialClienteModal(${c.id})">馃搵</button></td></tr>`).join('')}</tbody></table></div>`;
             document.getElementById('searchCli').addEventListener('input', e => { document.querySelectorAll('#tblCli tbody tr').forEach(r => r.style.display = r.textContent.toLowerCase().includes(e.target.value.toLowerCase()) ? '' : 'none'); });
         }
 
         function openClienteModal(cli=null) {
             editingId = cli ? cli.id : null;
-            openModal(`<div class="modal-header clientes">${cli?'✏️ Editar':'➕ Nuevo'} Cliente<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="form-group"><label class="required">Nombre</label><input type="text" id="cliNombre" value="${cli?.nombre||''}"></div><div class="form-row"><div class="form-group"><label>Contacto</label><input type="text" id="cliContacto" value="${cli?.contacto||''}"></div><div class="form-group"><label>Teléfono</label><input type="text" id="cliTelefono" value="${cli?.telefono||''}"></div></div><div class="form-row"><div class="form-group"><label>Email</label><input type="email" id="cliEmail" value="${cli?.email||''}"></div><div class="form-group"><label>Estado</label><select id="cliActivo"><option value="true" ${cli?.activo!==false?'selected':''}>Activo</option><option value="false" ${cli?.activo===false?'selected':''}>Inactivo</option></select></div></div><div class="form-group"><label>Dirección</label><input type="text" id="cliDireccion" value="${cli?.direccion||''}"></div><div class="form-group"><label>Notas</label><textarea id="cliNotas">${cli?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-clientes" onclick="saveCliente()">Guardar</button></div>`);
+            openModal(`<div class="modal-header clientes">${cli?'鉁忥笍 Editar':'鉃?Nuevo'} Cliente<button class="modal-close" onclick="closeModal()">鉁?/button></div><div class="modal-body"><div class="form-group"><label class="required">Nombre</label><input type="text" id="cliNombre" value="${cli?.nombre||''}"></div><div class="form-row"><div class="form-group"><label>Contacto</label><input type="text" id="cliContacto" value="${cli?.contacto||''}"></div><div class="form-group"><label>Tel茅fono</label><input type="text" id="cliTelefono" value="${cli?.telefono||''}"></div></div><div class="form-row"><div class="form-group"><label>Email</label><input type="email" id="cliEmail" value="${cli?.email||''}"></div><div class="form-group"><label>Estado</label><select id="cliActivo"><option value="true" ${cli?.activo!==false?'selected':''}>Activo</option><option value="false" ${cli?.activo===false?'selected':''}>Inactivo</option></select></div></div><div class="form-group"><label>Direcci贸n</label><input type="text" id="cliDireccion" value="${cli?.direccion||''}"></div><div class="form-group"><label>Notas</label><textarea id="cliNotas">${cli?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-clientes" onclick="saveCliente()">Guardar</button></div>`);
         }
         function editCliente(id) { const c = getData('clientes').find(x=>x.id==id); if(c) openClienteModal(c); }
         function saveCliente() {
@@ -448,7 +448,7 @@
             setData('clientes',cli); closeModal(); showToast(editingId?'Cliente actualizado':'Cliente creado'); renderClientes(document.getElementById('mainContent'));
         }
         function deleteCliente(id) {
-            showConfirm('¿Eliminar este cliente y todos sus datos?', () => {
+            showConfirm('驴Eliminar este cliente y todos sus datos?', () => {
                 ['clientes','equipos','intervenciones','correctivos','agenda','proyectos'].forEach(k => { if(k==='clientes') setData(k,getData(k).filter(x=>x.id!=id)); else setData(k,getData(k).filter(x=>x.cliente_id!=id)); });
                 showToast('Cliente eliminado','warning'); renderClientes(document.getElementById('mainContent'));
             });
@@ -457,10 +457,10 @@
         function openEquiposModal(clienteId) {
             const cliente = getData('clientes').find(x=>x.id==clienteId);
             const eqs = getData('equipos').filter(e=>e.cliente_id==clienteId);
-            openModal(`<div class="modal-header clientes">🔧 Equipos de ${cliente.nombre}<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div style="margin-bottom:15px;"><button class="btn btn-clientes" onclick="openEquipoModal(null,${clienteId})">+ Nuevo Equipo</button></div><table class="data-table"><thead><tr><th>ID</th><th>Tipo</th><th>Marca/Modelo</th><th>Serie</th><th>Ubicación</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>${eqs.length?eqs.map(e=>`<tr><td>${e.id}</td><td>${e.tipo}</td><td>${e.marca} ${e.modelo}</td><td>${e.numero_serie}</td><td>${e.ubicacion}</td><td><span class="status-badge status-${e.estado==='Operativo'?'operativo':e.estado==='En falla'?'en-falla':'pendiente'}">${e.estado}</span></td><td class="action-btns"><button class="btn btn-secondary" onclick="editEquipo(${e.id},${clienteId})">✏️</button><button class="btn btn-danger" onclick="deleteEquipo(${e.id},${clienteId})">🗑️</button></td></tr>`).join(''):'<tr><td colspan="7" class="empty-state">Sin equipos</td></tr>'}</tbody></table></div>`);
+            openModal(`<div class="modal-header clientes">馃敡 Equipos de ${cliente.nombre}<button class="modal-close" onclick="closeModal()">鉁?/button></div><div class="modal-body"><div style="margin-bottom:15px;"><button class="btn btn-clientes" onclick="openEquipoModal(null,${clienteId})">+ Nuevo Equipo</button></div><table class="data-table"><thead><tr><th>ID</th><th>Tipo</th><th>Marca/Modelo</th><th>Serie</th><th>Ubicaci贸n</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>${eqs.length?eqs.map(e=>`<tr><td>${e.id}</td><td>${e.tipo}</td><td>${e.marca} ${e.modelo}</td><td>${e.numero_serie}</td><td>${e.ubicacion}</td><td><span class="status-badge status-${e.estado==='Operativo'?'operativo':e.estado==='En falla'?'en-falla':'pendiente'}">${e.estado}</span></td><td class="action-btns"><button class="btn btn-secondary" onclick="editEquipo(${e.id},${clienteId})">鉁忥笍</button><button class="btn btn-danger" onclick="deleteEquipo(${e.id},${clienteId})">馃棏锔?/button></td></tr>`).join(''):'<tr><td colspan="7" class="empty-state">Sin equipos</td></tr>'}</tbody></table></div>`);
         }
         function openEquipoModal(eq=null, clienteId) {
-            openModal(`<div class="modal-header clientes">${eq?'✏️ Editar':'➕ Nuevo'} Equipo<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="form-row"><div class="form-group"><label>Tipo</label><select id="eqTipo">${TIPOS_EQUIPO.map(t=>`<option value="${t}" ${eq?.tipo===t?'selected':''}>${t}</option>`).join('')}</select></div><div class="form-group"><label>Marca</label><input type="text" id="eqMarca" value="${eq?.marca||''}"></div></div><div class="form-row"><div class="form-group"><label>Modelo</label><input type="text" id="eqModelo" value="${eq?.modelo||''}"></div><div class="form-group"><label>Nº Serie</label><input type="text" id="eqSerie" value="${eq?.numero_serie||''}"></div></div><div class="form-row"><div class="form-group"><label>Ubicación</label><input type="text" id="eqUbicacion" value="${eq?.ubicacion||''}"></div><div class="form-group"><label>Zona</label><input type="text" id="eqZona" value="${eq?.zona||''}"></div></div><div class="form-row"><div class="form-group"><label>Estado</label><select id="eqEstado">${ESTADOS_EQUIPO.map(e=>`<option value="${e}" ${eq?.estado===e?'selected':''}>${e}</option>`).join('')}</select></div><div class="form-group"><label>Fecha Instalación</label><input type="date" id="eqFecha" value="${eq?.fecha_instalacion||''}"></div></div><div class="form-group"><label>Notas</label><textarea id="eqNotas">${eq?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-clientes" onclick="saveEquipo(${clienteId})">Guardar</button></div>`);
+            openModal(`<div class="modal-header clientes">${eq?'鉁忥笍 Editar':'鉃?Nuevo'} Equipo<button class="modal-close" onclick="closeModal()">鉁?/button></div><div class="modal-body"><div class="form-row"><div class="form-group"><label>Tipo</label><select id="eqTipo">${TIPOS_EQUIPO.map(t=>`<option value="${t}" ${eq?.tipo===t?'selected':''}>${t}</option>`).join('')}</select></div><div class="form-group"><label>Marca</label><input type="text" id="eqMarca" value="${eq?.marca||''}"></div></div><div class="form-row"><div class="form-group"><label>Modelo</label><input type="text" id="eqModelo" value="${eq?.modelo||''}"></div><div class="form-group"><label>N潞 Serie</label><input type="text" id="eqSerie" value="${eq?.numero_serie||''}"></div></div><div class="form-row"><div class="form-group"><label>Ubicaci贸n</label><input type="text" id="eqUbicacion" value="${eq?.ubicacion||''}"></div><div class="form-group"><label>Zona</label><input type="text" id="eqZona" value="${eq?.zona||''}"></div></div><div class="form-row"><div class="form-group"><label>Estado</label><select id="eqEstado">${ESTADOS_EQUIPO.map(e=>`<option value="${e}" ${eq?.estado===e?'selected':''}>${e}</option>`).join('')}</select></div><div class="form-group"><label>Fecha Instalaci贸n</label><input type="date" id="eqFecha" value="${eq?.fecha_instalacion||''}"></div></div><div class="form-group"><label>Notas</label><textarea id="eqNotas">${eq?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-clientes" onclick="saveEquipo(${clienteId})">Guardar</button></div>`);
         }
         function editEquipo(id,clienteId) { const eq=getData('equipos').find(x=>x.id==id); if(eq) openEquipoModal(eq,clienteId); }
         function saveEquipo(clienteId) {
@@ -469,17 +469,17 @@
             if(editingId) { data.id=editingId; const idx=eqs.findIndex(x=>x.id==editingId); eqs[idx]=data; } else { data.id=getNextId('equipos'); eqs.push(data); }
             setData('equipos',eqs); closeModal(); showToast(editingId?'Equipo actualizado':'Equipo creado'); openEquiposModal(clienteId);
         }
-        function deleteEquipo(id,clienteId) { showConfirm('¿Eliminar?',()=>{setData('equipos',getData('equipos').filter(x=>x.id!=id));openEquiposModal(clienteId);showToast('Eliminado','warning');}); }
+        function deleteEquipo(id,clienteId) { showConfirm('驴Eliminar?',()=>{setData('equipos',getData('equipos').filter(x=>x.id!=id));openEquiposModal(clienteId);showToast('Eliminado','warning');}); }
 
         function openHistorialClienteModal(clienteId) {
             const cliente = getData('clientes').find(x=>x.id==clienteId);
             const ints = getData('intervenciones').filter(i=>i.cliente_id==clienteId);
-            openModal(`<div class="modal-header clientes">📋 Historial de ${cliente.nombre}<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body">${ints.length?`<table class="data-table"><thead><tr><th>Fecha</th><th>Tipo</th><th>Técnico</th><th>Estado</th><th>Observaciones</th></tr></thead><tbody>${ints.map(i=>`<tr><td>${formatDate(i.fecha)}</td><td>${i.tipo}</td><td>${i.tecnico}</td><td><span class="status-badge status-${i.estado==='Completado'?'completado':'pendiente'}">${i.estado}</span></td><td>${i.observaciones||'-'}</td></tr>`).join('')}</tbody></table>`:'<div class="empty-state">Sin intervenciones</div>'}</div>`);
+            openModal(`<div class="modal-header clientes">馃搵 Historial de ${cliente.nombre}<button class="modal-close" onclick="closeModal()">鉁?/button></div><div class="modal-body">${ints.length?`<table class="data-table"><thead><tr><th>Fecha</th><th>Tipo</th><th>T茅cnico</th><th>Estado</th><th>Observaciones</th></tr></thead><tbody>${ints.map(i=>`<tr><td>${formatDate(i.fecha)}</td><td>${i.tipo}</td><td>${i.tecnico}</td><td><span class="status-badge status-${i.estado==='Completado'?'completado':'pendiente'}">${i.estado}</span></td><td>${i.observaciones||'-'}</td></tr>`).join('')}</tbody></table>`:'<div class="empty-state">Sin intervenciones</div>'}</div>`);
         }
 
         function renderIntervenciones(c) {
             const ints = getData('intervenciones'), cli = getData('clientes'), eq = getData('equipos');
-            c.innerHTML = `<div class="toolbar intervenciones"><h2>🔧 Intervenciones</h2><div style="flex:1"></div><select id="fCl"><option value="">Todos</option>${cli.map(c=>`<option value="${c.id}">${c.nombre}</option>`).join('')}</select><select id="fTi"><option value="">Tipos</option>${TIPOS_INTERVENCION.map(t=>`<option value="${t}">${t}</option>`).join('')}</select><input type="text" class="search-input" id="sInt" placeholder="Buscar..."><button class="btn btn-intervenciones" onclick="openIntervencionModal()">+ Nueva</button></div><div class="table-container"><table class="data-table" id="tblInt"><thead><tr><th>ID</th><th>Fecha</th><th>Cliente</th><th>Tipo</th><th>Equipo</th><th>Técnico</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>${ints.map(i=>{const eq2=eq.find(x=>x.id==i.equipo_id);return`<tr><td>${i.id}</td><td>${formatDate(i.fecha)}</td><td>${getClienteNombre(i.cliente_id)}</td><td>${i.tipo}</td><td>${eq2?eq2.tipo:'N/A'}</td><td>${i.tecnico}</td><td><span class="status-badge status-${i.estado==='Completado'?'completado':'pendiente'}">${i.estado}</span></td><td class="action-btns"><button class="btn btn-secondary" onclick="editIntervencion(${i.id})">✏️</button><button class="btn btn-danger" onclick="deleteIntervencion(${i.id})">🗑️</button></td></tr>`;}).join('')}</tbody></table></div>`;
+            c.innerHTML = `<div class="toolbar intervenciones"><h2>馃敡 Intervenciones</h2><div style="flex:1"></div><select id="fCl"><option value="">Todos</option>${cli.map(c=>`<option value="${c.id}">${c.nombre}</option>`).join('')}</select><select id="fTi"><option value="">Tipos</option>${TIPOS_INTERVENCION.map(t=>`<option value="${t}">${t}</option>`).join('')}</select><input type="text" class="search-input" id="sInt" placeholder="Buscar..."><button class="btn btn-intervenciones" onclick="openIntervencionModal()">+ Nueva</button></div><div class="table-container"><table class="data-table" id="tblInt"><thead><tr><th>ID</th><th>Fecha</th><th>Cliente</th><th>Tipo</th><th>Equipo</th><th>T茅cnico</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>${ints.map(i=>{const eq2=eq.find(x=>x.id==i.equipo_id);return`<tr><td>${i.id}</td><td>${formatDate(i.fecha)}</td><td>${getClienteNombre(i.cliente_id)}</td><td>${i.tipo}</td><td>${eq2?eq2.tipo:'N/A'}</td><td>${i.tecnico}</td><td><span class="status-badge status-${i.estado==='Completado'?'completado':'pendiente'}">${i.estado}</span></td><td class="action-btns"><button class="btn btn-secondary" onclick="editIntervencion(${i.id})">鉁忥笍</button><button class="btn btn-danger" onclick="deleteIntervencion(${i.id})">馃棏锔?/button></td></tr>`;}).join('')}</tbody></table></div>`;
             document.getElementById('fCl').addEventListener('change',fInt); document.getElementById('fTi').addEventListener('change',fInt); document.getElementById('sInt').addEventListener('input',fInt);
         }
         function fInt() {
@@ -489,7 +489,7 @@
         function openIntervencionModal(i=null) {
             const cli=getData('clientes'), eq=getData('equipos'); editingId=i?i.id:null;
             const eqFilt = i?.cliente_id?eq.filter(e=>e.cliente_id==i.cliente_id):[];
-            openModal(`<div class="modal-header intervenciones">${i?'✏️ Editar':'➕ Nueva'} Intervención<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="form-row"><div class="form-group"><label class="required">Cliente</label><select id="iCli" onchange="fEqInt()"><option value="">Seleccionar</option>${cli.map(c=>`<option value="${c.id}" ${i?.cliente_id==c.id?'selected':''}>${c.nombre}</option>`).join('')}</select></div><div class="form-group"><label class="required">Equipo</label><select id="iEq"><option value="">Seleccionar</option>${eqFilt.map(e=>`<option value="${e.id}" ${i?.equipo_id==e.id?'selected':''}>${e.tipo} - ${e.numero_serie}</option>`).join('')}</select></div></div><div class="form-row"><div class="form-group"><label>Fecha</label><input type="date" id="iFecha" value="${i?.fecha||getDateDaysAgo(0)}"></div><div class="form-group"><label>Tipo</label><select id="iTipo">${TIPOS_INTERVENCION.map(t=>`<option value="${t}" ${i?.tipo===t?'selected':''}>${t}</option>`).join('')}</select></div></div><div class="form-row"><div class="form-group"><label>Técnico</label><input type="text" id="iTec" value="${i?.tecnico||''}"></div><div class="form-group"><label>Tipo Falla</label><select id="iFalla"><option value="">N/A</option>${TIPOS_FALLA.map(t=>`<option value="${t}" ${i?.tipo_falla===t?'selected':''}>${t}</option>`).join('')}</select></div></div><div class="form-group"><label>Descripción Falla</label><textarea id="iDesc">${i?.descripcion_falla||''}</textarea></div><div class="form-group"><label>Acción Tomada</label><textarea id="iAcc">${i?.accion_tomada||''}</textarea></div><div class="form-row"><div class="form-group"><label>Materiales</label><input type="text" id="iMat" value="${i?.materiales||''}"></div><div class="form-group"><label>Tiempo (min)</label><input type="number" id="iTiempo" value="${i?.tiempo_minutos||''}"></div></div><div class="form-row"><div class="form-group"><label>Estado</label><select id="iEst"><option value="Completado" ${i?.estado==='Completado'?'selected':''}>Completado</option><option value="En proceso" ${i?.estado==='En proceso'?'selected':''}>En proceso</option><option value="Pendiente" ${i?.estado==='Pendiente'?'selected':''}>Pendiente</option></select></div><div class="form-group"><label>Observaciones</label><input type="text" id="iObs" value="${i?.observaciones||''}"></div></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-intervenciones" onclick="saveIntervencion()">Guardar</button></div>`);
+            openModal(`<div class="modal-header intervenciones">${i?'鉁忥笍 Editar':'鉃?Nueva'} Intervenci贸n<button class="modal-close" onclick="closeModal()">鉁?/button></div><div class="modal-body"><div class="form-row"><div class="form-group"><label class="required">Cliente</label><select id="iCli" onchange="fEqInt()"><option value="">Seleccionar</option>${cli.map(c=>`<option value="${c.id}" ${i?.cliente_id==c.id?'selected':''}>${c.nombre}</option>`).join('')}</select></div><div class="form-group"><label class="required">Equipo</label><select id="iEq"><option value="">Seleccionar</option>${eqFilt.map(e=>`<option value="${e.id}" ${i?.equipo_id==e.id?'selected':''}>${e.tipo} - ${e.numero_serie}</option>`).join('')}</select></div></div><div class="form-row"><div class="form-group"><label>Fecha</label><input type="date" id="iFecha" value="${i?.fecha||getDateDaysAgo(0)}"></div><div class="form-group"><label>Tipo</label><select id="iTipo">${TIPOS_INTERVENCION.map(t=>`<option value="${t}" ${i?.tipo===t?'selected':''}>${t}</option>`).join('')}</select></div></div><div class="form-row"><div class="form-group"><label>T茅cnico</label><input type="text" id="iTec" value="${i?.tecnico||''}"></div><div class="form-group"><label>Tipo Falla</label><select id="iFalla"><option value="">N/A</option>${TIPOS_FALLA.map(t=>`<option value="${t}" ${i?.tipo_falla===t?'selected':''}>${t}</option>`).join('')}</select></div></div><div class="form-group"><label>Descripci贸n Falla</label><textarea id="iDesc">${i?.descripcion_falla||''}</textarea></div><div class="form-group"><label>Acci贸n Tomada</label><textarea id="iAcc">${i?.accion_tomada||''}</textarea></div><div class="form-row"><div class="form-group"><label>Materiales</label><input type="text" id="iMat" value="${i?.materiales||''}"></div><div class="form-group"><label>Tiempo (min)</label><input type="number" id="iTiempo" value="${i?.tiempo_minutos||''}"></div></div><div class="form-row"><div class="form-group"><label>Estado</label><select id="iEst"><option value="Completado" ${i?.estado==='Completado'?'selected':''}>Completado</option><option value="En proceso" ${i?.estado==='En proceso'?'selected':''}>En proceso</option><option value="Pendiente" ${i?.estado==='Pendiente'?'selected':''}>Pendiente</option></select></div><div class="form-group"><label>Observaciones</label><input type="text" id="iObs" value="${i?.observaciones||''}"></div></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-intervenciones" onclick="saveIntervencion()">Guardar</button></div>`);
         }
         function fEqInt() {
             const cid=document.getElementById('iCli').value,eq=getData('equipos');
@@ -504,11 +504,11 @@
             if(editingId) { data.id=editingId; const idx=ints.findIndex(x=>x.id==editingId); data.creado=ints[idx].creado; ints[idx]=data; } else { data.id=getNextId('intervenciones'); ints.push(data); }
             setData('intervenciones',ints); closeModal(); showToast(editingId?'Actualizado':'Creado'); renderIntervenciones(document.getElementById('mainContent'));
         }
-        function deleteIntervencion(id) { showConfirm('¿Eliminar?',()=>{setData('intervenciones',getData('intervenciones').filter(x=>x.id!=id));renderIntervenciones(document.getElementById('mainContent'));showToast('Eliminado','warning');}); }
+        function deleteIntervencion(id) { showConfirm('驴Eliminar?',()=>{setData('intervenciones',getData('intervenciones').filter(x=>x.id!=id));renderIntervenciones(document.getElementById('mainContent'));showToast('Eliminado','warning');}); }
 
         function renderCorrectivos(c) {
             const corr=getData('correctivos'), cli=getData('clientes'), eq=getData('equipos');
-            c.innerHTML = `<div class="toolbar correctivos"><h2>⚠️ Correctivos</h2><div style="flex:1"></div><select id="fCorrCli"><option value="">Clientes</option>${cli.map(c=>`<option value="${c.id}">${c.nombre}</option>`).join('')}</select><select id="fCorrPri"><option value="">Prioridades</option>${PRIORIDADES.map(p=>`<option value="${p}">${p}</option>`).join('')}</select><button class="btn btn-correctivos" onclick="openCorrectivoModal()">+ Nuevo</button></div><div class="table-container"><table class="data-table" id="tblCorr"><thead><tr><th>ID</th><th>Fecha</th><th>Cliente</th><th>Equipo</th><th>Prioridad</th><th>Estado</th><th>Días</th><th>Técnico</th><th>Acciones</th></tr></thead><tbody>${corr.map(co=>{const eq2=eq.find(x=>x.id==co.equipo_id);const dias=co.estado==='Cerrado'?'-':Math.ceil((new Date()-new Date(co.fecha_apertura))/(1000*60*60*24));return`<tr class="priority-${co.prioridad.toLowerCase()}"><td>${co.id}</td><td>${formatDate(co.fecha_apertura)}</td><td>${getClienteNombre(co.cliente_id)}</td><td>${eq2?eq2.tipo:'N/A'}</td><td><span class="status-badge status-${co.prioridad.toLowerCase()}">${co.prioridad}</span></td><td><span class="status-badge status-${co.estado==='Cerrado'?'completado':co.estado==='En proceso'?'proceso':'pendiente'}">${co.estado}</span></td><td>${dias}</td><td>${co.tecnico_asignado}</td><td class="action-btns"><button class="btn btn-secondary" onclick="editCorrectivo(${co.id})">✏️</button><button class="btn btn-danger" onclick="deleteCorrectivo(${co.id})">🗑️</button></td></tr>`;}).join('')}</tbody></table></div>`;
+            c.innerHTML = `<div class="toolbar correctivos"><h2>鈿狅笍 Correctivos</h2><div style="flex:1"></div><select id="fCorrCli"><option value="">Clientes</option>${cli.map(c=>`<option value="${c.id}">${c.nombre}</option>`).join('')}</select><select id="fCorrPri"><option value="">Prioridades</option>${PRIORIDADES.map(p=>`<option value="${p}">${p}</option>`).join('')}</select><button class="btn btn-correctivos" onclick="openCorrectivoModal()">+ Nuevo</button></div><div class="table-container"><table class="data-table" id="tblCorr"><thead><tr><th>ID</th><th>Fecha</th><th>Cliente</th><th>Equipo</th><th>Prioridad</th><th>Estado</th><th>D铆as</th><th>T茅cnico</th><th>Acciones</th></tr></thead><tbody>${corr.map(co=>{const eq2=eq.find(x=>x.id==co.equipo_id);const dias=co.estado==='Cerrado'?'-':Math.ceil((new Date()-new Date(co.fecha_apertura))/(1000*60*60*24));return`<tr class="priority-${co.prioridad.toLowerCase()}"><td>${co.id}</td><td>${formatDate(co.fecha_apertura)}</td><td>${getClienteNombre(co.cliente_id)}</td><td>${eq2?eq2.tipo:'N/A'}</td><td><span class="status-badge status-${co.prioridad.toLowerCase()}">${co.prioridad}</span></td><td><span class="status-badge status-${co.estado==='Cerrado'?'completado':co.estado==='En proceso'?'proceso':'pendiente'}">${co.estado}</span></td><td>${dias}</td><td>${co.tecnico_asignado}</td><td class="action-btns"><button class="btn btn-secondary" onclick="editCorrectivo(${co.id})">鉁忥笍</button><button class="btn btn-danger" onclick="deleteCorrectivo(${co.id})">馃棏锔?/button></td></tr>`;}).join('')}</tbody></table></div>`;
             document.getElementById('fCorrCli').addEventListener('change',fCorr); document.getElementById('fCorrPri').addEventListener('change',fCorr);
         }
         function fCorr() {
@@ -518,7 +518,7 @@
         function openCorrectivoModal(co=null) {
             const cli=getData('clientes'), eq=getData('equipos'); editingId=co?co.id:null;
             const eqFilt=co?.cliente_id?eq.filter(e=>e.cliente_id==co.cliente_id):[];
-            openModal(`<div class="modal-header correctivos">${co?'✏️ Editar':'➕ Nuevo'} Correctivo<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="form-row"><div class="form-group"><label class="required">Cliente</label><select id="cCli" onchange="fEqCorr()"><option value="">Seleccionar</option>${cli.map(c=>`<option value="${c.id}" ${co?.cliente_id==c.id?'selected':''}>${c.nombre}</option>`).join('')}</select></div><div class="form-group"><label class="required">Equipo</label><select id="cEq"><option value="">Seleccionar</option>${eqFilt.map(e=>`<option value="${e.id}" ${co?.equipo_id==e.id?'selected':''}>${e.tipo} - ${e.numero_serie}</option>`).join('')}</select></div></div><div class="form-row"><div class="form-group"><label>Fecha Apertura</label><input type="date" id="cFechA" value="${co?.fecha_apertura||getDateDaysAgo(0)}"></div><div class="form-group"><label>Fecha Cierre</label><input type="date" id="cFechC" value="${co?.fecha_cierre||''}"></div></div><div class="form-row"><div class="form-group"><label>Prioridad</label><select id="cPri">${PRIORIDADES.map(p=>`<option value="${p}" ${co?.prioridad===p?'selected':''}>${p}</option>`).join('')}</select></div><div class="form-group"><label>Estado</label><select id="cEst">${ESTADOS_CORRECTIVO.map(e=>`<option value="${e}" ${co?.estado===e?'selected':''}>${e}</option>`).join('')}</select></div></div><div class="form-group"><label>Técnico</label><input type="text" id="cTec" value="${co?.tecnico_asignado||''}"></div><div class="form-group"><label>Descripción</label><textarea id="cDesc">${co?.descripcion||''}</textarea></div><div class="form-group"><label>Notas</label><textarea id="cNotas">${co?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-correctivos" onclick="saveCorrectivo()">Guardar</button></div>`);
+            openModal(`<div class="modal-header correctivos">${co?'鉁忥笍 Editar':'鉃?Nuevo'} Correctivo<button class="modal-close" onclick="closeModal()">鉁?/button></div><div class="modal-body"><div class="form-row"><div class="form-group"><label class="required">Cliente</label><select id="cCli" onchange="fEqCorr()"><option value="">Seleccionar</option>${cli.map(c=>`<option value="${c.id}" ${co?.cliente_id==c.id?'selected':''}>${c.nombre}</option>`).join('')}</select></div><div class="form-group"><label class="required">Equipo</label><select id="cEq"><option value="">Seleccionar</option>${eqFilt.map(e=>`<option value="${e.id}" ${co?.equipo_id==e.id?'selected':''}>${e.tipo} - ${e.numero_serie}</option>`).join('')}</select></div></div><div class="form-row"><div class="form-group"><label>Fecha Apertura</label><input type="date" id="cFechA" value="${co?.fecha_apertura||getDateDaysAgo(0)}"></div><div class="form-group"><label>Fecha Cierre</label><input type="date" id="cFechC" value="${co?.fecha_cierre||''}"></div></div><div class="form-row"><div class="form-group"><label>Prioridad</label><select id="cPri">${PRIORIDADES.map(p=>`<option value="${p}" ${co?.prioridad===p?'selected':''}>${p}</option>`).join('')}</select></div><div class="form-group"><label>Estado</label><select id="cEst">${ESTADOS_CORRECTIVO.map(e=>`<option value="${e}" ${co?.estado===e?'selected':''}>${e}</option>`).join('')}</select></div></div><div class="form-group"><label>T茅cnico</label><input type="text" id="cTec" value="${co?.tecnico_asignado||''}"></div><div class="form-group"><label>Descripci贸n</label><textarea id="cDesc">${co?.descripcion||''}</textarea></div><div class="form-group"><label>Notas</label><textarea id="cNotas">${co?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-correctivos" onclick="saveCorrectivo()">Guardar</button></div>`);
         }
         function fEqCorr() { const cid=document.getElementById('cCli').value,eq=getData('equipos'); document.getElementById('cEq').innerHTML='<option value="">Seleccionar</option>'+eq.filter(e=>e.cliente_id==cid).map(e=>`<option value="${e.id}">${e.tipo} - ${e.numero_serie}</option>`).join(''); }
         function editCorrectivo(id) { const co=getData('correctivos').find(x=>x.id==id); if(co) openCorrectivoModal(co); }
@@ -530,11 +530,11 @@
             if(editingId) { data.id=editingId; const idx=corr.findIndex(x=>x.id==editingId); corr[idx]=data; } else { data.id=getNextId('correctivos'); corr.push(data); }
             setData('correctivos',corr); closeModal(); showToast(editingId?'Actualizado':'Creado'); renderCorrectivos(document.getElementById('mainContent'));
         }
-        function deleteCorrectivo(id) { showConfirm('¿Eliminar?',()=>{setData('correctivos',getData('correctivos').filter(x=>x.id!=id));renderCorrectivos(document.getElementById('mainContent'));showToast('Eliminado','warning');}); }
+        function deleteCorrectivo(id) { showConfirm('驴Eliminar?',()=>{setData('correctivos',getData('correctivos').filter(x=>x.id!=id));renderCorrectivos(document.getElementById('mainContent'));showToast('Eliminado','warning');}); }
 
         function renderAgenda(c) {
             const age=getData('agenda'), cli=getData('clientes'), today=getDateDaysAgo(0);
-            c.innerHTML = `<div class="toolbar agenda"><h2>📅 Agenda</h2><div style="flex:1"></div><input type="date" id="fAgeFecha" value="${today}"><select id="fAgeEst"><option value="">Estados</option>${ESTADOS_AGENDA.map(e=>`<option value="${e}">${e}</option>`).join('')}</select><button class="btn btn-agenda" onclick="openAgendaModal()">+ Nuevo</button></div><div class="table-container"><table class="data-table" id="tblAge"><thead><tr><th>ID</th><th>Fecha</th><th>Hora</th><th>Cliente</th><th>Tipo</th><th>Descripción</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>${age.map(a=>`<tr class="${a.fecha===today?'status-hoy':''}"><td>${a.id}</td><td><strong>${formatDate(a.fecha)}</strong>${a.fecha===today?' <span class="status-badge status-hoy">HOY</span>':''}</td><td>${a.hora||'-'}</td><td>${getClienteNombre(a.cliente_id)}</td><td>${a.tipo}</td><td>${a.descripcion}</td><td><span class="status-badge status-${a.estado==='Completado'?'completado':a.estado==='Confirmado'?'proceso':a.estado==='Cancelado'?'inactivo':'pendiente'}">${a.estado}</span></td><td class="action-btns"><button class="btn btn-secondary" onclick="editAgenda(${a.id})">✏️</button><button class="btn btn-danger" onclick="deleteAgenda(${a.id})">🗑️</button></td></tr>`).join('')}</tbody></table></div>`;
+            c.innerHTML = `<div class="toolbar agenda"><h2>馃搮 Agenda</h2><div style="flex:1"></div><input type="date" id="fAgeFecha" value="${today}"><select id="fAgeEst"><option value="">Estados</option>${ESTADOS_AGENDA.map(e=>`<option value="${e}">${e}</option>`).join('')}</select><button class="btn btn-agenda" onclick="openAgendaModal()">+ Nuevo</button></div><div class="table-container"><table class="data-table" id="tblAge"><thead><tr><th>ID</th><th>Fecha</th><th>Hora</th><th>Cliente</th><th>Tipo</th><th>Descripci贸n</th><th>Estado</th><th>Acciones</th></tr></thead><tbody>${age.map(a=>`<tr class="${a.fecha===today?'status-hoy':''}"><td>${a.id}</td><td><strong>${formatDate(a.fecha)}</strong>${a.fecha===today?' <span class="status-badge status-hoy">HOY</span>':''}</td><td>${a.hora||'-'}</td><td>${getClienteNombre(a.cliente_id)}</td><td>${a.tipo}</td><td>${a.descripcion}</td><td><span class="status-badge status-${a.estado==='Completado'?'completado':a.estado==='Confirmado'?'proceso':a.estado==='Cancelado'?'inactivo':'pendiente'}">${a.estado}</span></td><td class="action-btns"><button class="btn btn-secondary" onclick="editAgenda(${a.id})">鉁忥笍</button><button class="btn btn-danger" onclick="deleteAgenda(${a.id})">馃棏锔?/button></td></tr>`).join('')}</tbody></table></div>`;
             document.getElementById('fAgeFecha').addEventListener('change',fAge); document.getElementById('fAgeEst').addEventListener('change',fAge);
         }
         function fAge() {
@@ -543,7 +543,7 @@
         }
         function openAgendaModal(a=null) {
             const cli=getData('clientes'); editingId=a?a.id:null;
-            openModal(`<div class="modal-header agenda">${a?'✏️ Editar':'➕ Nuevo'} Evento<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="form-row"><div class="form-group"><label class="required">Cliente</label><select id="aCli"><option value="">Seleccionar</option>${cli.map(c=>`<option value="${c.id}" ${a?.cliente_id==c.id?'selected':''}>${c.nombre}</option>`).join('')}</select></div><div class="form-group"><label class="required">Fecha</label><input type="date" id="aFecha" value="${a?.fecha||getDateDaysAgo(0)}"></div></div><div class="form-row"><div class="form-group"><label>Hora</label><input type="time" id="aHora" value="${a?.hora||''}"></div><div class="form-group"><label>Tipo</label><select id="aTipo"><option value="Inspección" ${a?.tipo==='Inspección'?'selected':''}>Inspección</option><option value="Mantenimiento" ${a?.tipo==='Mantenimiento'?'selected':''}>Mantenimiento</option><option value="Reparación" ${a?.tipo==='Reparación'?'selected':''}>Reparación</option><option value="Capacitación" ${a?.tipo==='Capacitación'?'selected':''}>Capacitación</option><option value="Otro" ${a?.tipo==='Otro'?'selected':''}>Otro</option></select></div></div><div class="form-group"><label>Estado</label><select id="aEst">${ESTADOS_AGENDA.map(ee=>`<option value="${ee}" ${a?.estado===ee?'selected':''}>${ee}</option>`).join('')}</select></div><div class="form-group"><label>Descripción</label><textarea id="aDesc">${a?.descripcion||''}</textarea></div><div class="form-group"><label>Notas</label><textarea id="aNotas">${a?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-agenda" onclick="saveAgenda()">Guardar</button></div>`);
+            openModal(`<div class="modal-header agenda">${a?'鉁忥笍 Editar':'鉃?Nuevo'} Evento<button class="modal-close" onclick="closeModal()">鉁?/button></div><div class="modal-body"><div class="form-row"><div class="form-group"><label class="required">Cliente</label><select id="aCli"><option value="">Seleccionar</option>${cli.map(c=>`<option value="${c.id}" ${a?.cliente_id==c.id?'selected':''}>${c.nombre}</option>`).join('')}</select></div><div class="form-group"><label class="required">Fecha</label><input type="date" id="aFecha" value="${a?.fecha||getDateDaysAgo(0)}"></div></div><div class="form-row"><div class="form-group"><label>Hora</label><input type="time" id="aHora" value="${a?.hora||''}"></div><div class="form-group"><label>Tipo</label><select id="aTipo"><option value="Inspecci贸n" ${a?.tipo==='Inspecci贸n'?'selected':''}>Inspecci贸n</option><option value="Mantenimiento" ${a?.tipo==='Mantenimiento'?'selected':''}>Mantenimiento</option><option value="Reparaci贸n" ${a?.tipo==='Reparaci贸n'?'selected':''}>Reparaci贸n</option><option value="Capacitaci贸n" ${a?.tipo==='Capacitaci贸n'?'selected':''}>Capacitaci贸n</option><option value="Otro" ${a?.tipo==='Otro'?'selected':''}>Otro</option></select></div></div><div class="form-group"><label>Estado</label><select id="aEst">${ESTADOS_AGENDA.map(ee=>`<option value="${ee}" ${a?.estado===ee?'selected':''}>${ee}</option>`).join('')}</select></div><div class="form-group"><label>Descripci贸n</label><textarea id="aDesc">${a?.descripcion||''}</textarea></div><div class="form-group"><label>Notas</label><textarea id="aNotas">${a?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-agenda" onclick="saveAgenda()">Guardar</button></div>`);
         }
         function editAgenda(id) { const a=getData('agenda').find(x=>x.id==id); if(a) openAgendaModal(a); }
         function saveAgenda() {
@@ -554,24 +554,24 @@
             if(editingId) { data.id=editingId; const idx=age.findIndex(x=>x.id==editingId); age[idx]=data; } else { data.id=getNextId('agenda'); age.push(data); }
             setData('agenda',age); closeModal(); showToast(editingId?'Actualizado':'Creado'); renderAgenda(document.getElementById('mainContent'));
         }
-        function deleteAgenda(id) { showConfirm('¿Eliminar?',()=>{setData('agenda',getData('agenda').filter(x=>x.id!=id));renderAgenda(document.getElementById('mainContent'));showToast('Eliminado','warning');}); }
+        function deleteAgenda(id) { showConfirm('驴Eliminar?',()=>{setData('agenda',getData('agenda').filter(x=>x.id!=id));renderAgenda(document.getElementById('mainContent'));showToast('Eliminado','warning');}); }
 
         function renderProyectos(c) {
             const proy=getData('proyectos'), cli=getData('clientes'), cots=getData('cotizaciones'), acts=getData('actividades');
             const proyProgreso=proy.map(p=>{const cs=cots.filter(x=>x.proyecto_id==p.id);let tA=0,cA=0;cs.forEach(cot=>{const as=acts.filter(a=>a.cotizacion_id==cot.id);tA+=as.length;cA+=as.filter(a=>a.estado==='Completado').length;});const prog=tA>0?Math.round((cA/tA)*100):0;return{...p,progreso:prog};});
-            c.innerHTML=`<div class="toolbar proyectos"><h2>📁 Proyectos</h2><div style="flex:1"></div><button class="btn btn-proyectos" onclick="openProyectoModal()">+ Nuevo</button></div><div class="table-container" style="margin-bottom:20px;"><table class="data-table"><thead><tr><th>ID</th><th>Cliente</th><th>Nombre</th><th>Inicio</th><th>Fin</th><th>Estado</th><th>Progreso</th><th>Acciones</th></tr></thead><tbody>${proyProgreso.map(p=>`<tr onclick="selProy(${p.id})" style="cursor:pointer" class="${selectedProyecto==p.id?'selected':''}"><td>${p.id}</td><td>${getClienteNombre(p.cliente_id)}</td><td><strong>${p.nombre}</strong></td><td>${formatDate(p.fecha_inicio)}</td><td>${formatDate(p.fecha_fin)}</td><td><span class="status-badge status-${p.estado==='Completado'?'completado':p.estado==='En proceso'?'proceso':p.estado==='Cancelado'?'inactivo':'pendiente'}">${p.estado}</span></td><td><div style="display:flex;align-items:center;gap:10px;"><div class="progress-bar" style="width:100px;"><div class="progress-fill" style="width:${p.progreso}%"></div></div><span>${p.progreso}%</span></div></td><td class="action-btns"><button class="btn btn-secondary" onclick="event.stopPropagation();editProyecto(${p.id})">✏️</button><button class="btn btn-danger" onclick="event.stopPropagation();deleteProyecto(${p.id})">🗑️</button></td></tr>`).join('')}</tbody></table></div><div id="proyDetail" class="${selectedProyecto?'':'hidden'}"><div class="table-container"><div style="padding:15px;border-bottom:1px solid var(--border-color);"><strong>Cotizaciones</strong><button class="btn btn-proyectos" style="float:right;" onclick="openCotizacionModal()">+ Nueva Cotización</button></div><div id="cotsList" style="padding:15px;">${selectedProyecto?renderCots(selectedProyecto):''}</div></div><div id="actsDetail" class="${selectedCotizacion?'':'hidden'}"><div class="sub-panel"><div class="sub-panel-title">📋 Actividades: <span id="selCotLabel"></span><div style="flex:1"></div><button class="btn btn-success" onclick="document.getElementById('impExcel').click()">📥 Importar Excel</button><input type="file" id="impExcel" accept=".xlsx,.xls" style="display:none" onchange="importActsExcel(event)"><button class="btn btn-proyectos" onclick="openActividadModal()">+ Nueva</button></div><div class="bulk-actions ${selectedActividades.size>0?'':'hidden'}" id="bulkAct"><span><span class="badge-selected">${selectedActividades.size}</span> seleccionados</span><select id="bulkEst" onchange="applyBulkEst()"><option value="">Cambiar estado...</option>${ESTADOS_ACTIVIDAD.map(e=>`<option value="${e}">${e}</option>`).join('')}</select><button class="btn btn-secondary" onclick="clearSel()">Limpiar</button></div><div class="table-container"><table class="data-table" id="tblActs"><thead><tr><th class="checkbox-cell"><input type="checkbox" class="row-checkbox" id="selAll" onchange="toggleSelAll()"></th><th>ID</th><th>ACTIVIDAD</th><th>ESTADO</th><th>N° REPORTE</th><th>NOTAS</th><th>Acciones</th></tr></thead><tbody id="actsBody">${selectedCotizacion?renderActs(selectedCotizacion):''}</tbody></table></div></div></div></div>`;
+            c.innerHTML=`<div class="toolbar proyectos"><h2>馃搧 Proyectos</h2><div style="flex:1"></div><button class="btn btn-proyectos" onclick="openProyectoModal()">+ Nuevo</button></div><div class="table-container" style="margin-bottom:20px;"><table class="data-table"><thead><tr><th>ID</th><th>Cliente</th><th>Nombre</th><th>Inicio</th><th>Fin</th><th>Estado</th><th>Progreso</th><th>Acciones</th></tr></thead><tbody>${proyProgreso.map(p=>`<tr onclick="selProy(${p.id})" style="cursor:pointer" class="${selectedProyecto==p.id?'selected':''}"><td>${p.id}</td><td>${getClienteNombre(p.cliente_id)}</td><td><strong>${p.nombre}</strong></td><td>${formatDate(p.fecha_inicio)}</td><td>${formatDate(p.fecha_fin)}</td><td><span class="status-badge status-${p.estado==='Completado'?'completado':p.estado==='En proceso'?'proceso':p.estado==='Cancelado'?'inactivo':'pendiente'}">${p.estado}</span></td><td><div style="display:flex;align-items:center;gap:10px;"><div class="progress-bar" style="width:100px;"><div class="progress-fill" style="width:${p.progreso}%"></div></div><span>${p.progreso}%</span></div></td><td class="action-btns"><button class="btn btn-secondary" onclick="event.stopPropagation();editProyecto(${p.id})">鉁忥笍</button><button class="btn btn-danger" onclick="event.stopPropagation();deleteProyecto(${p.id})">馃棏锔?/button></td></tr>`).join('')}</tbody></table></div><div id="proyDetail" class="${selectedProyecto?'':'hidden'}"><div class="table-container"><div style="padding:15px;border-bottom:1px solid var(--border-color);"><strong>Cotizaciones</strong><button class="btn btn-proyectos" style="float:right;" onclick="openCotizacionModal()">+ Nueva Cotizaci贸n</button></div><div id="cotsList" style="padding:15px;">${selectedProyecto?renderCots(selectedProyecto):''}</div></div><div id="actsDetail" class="${selectedCotizacion?'':'hidden'}"><div class="sub-panel"><div class="sub-panel-title">馃搵 Actividades: <span id="selCotLabel"></span><div style="flex:1"></div><button class="btn btn-success" onclick="document.getElementById('impExcel').click()">馃摜 Importar Excel</button><input type="file" id="impExcel" accept=".xlsx,.xls" style="display:none" onchange="importActsExcel(event)"><button class="btn btn-proyectos" onclick="openActividadModal()">+ Nueva</button></div><div class="bulk-actions ${selectedActividades.size>0?'':'hidden'}" id="bulkAct"><span><span class="badge-selected">${selectedActividades.size}</span> seleccionados</span><select id="bulkEst" onchange="applyBulkEst()"><option value="">Cambiar estado...</option>${ESTADOS_ACTIVIDAD.map(e=>`<option value="${e}">${e}</option>`).join('')}</select><button class="btn btn-secondary" onclick="clearSel()">Limpiar</button></div><div class="table-container"><table class="data-table" id="tblActs"><thead><tr><th class="checkbox-cell"><input type="checkbox" class="row-checkbox" id="selAll" onchange="toggleSelAll()"></th><th>ID</th><th>ACTIVIDAD</th><th>ESTADO</th><th>N掳 REPORTE</th><th>NOTAS</th><th>Acciones</th></tr></thead><tbody id="actsBody">${selectedCotizacion?renderActs(selectedCotizacion):''}</tbody></table></div></div></div></div>`;
         }
 
         function renderCots(proyId) {
             const cots=getData('cotizaciones').filter(x=>x.proyecto_id==proyId), acts=getData('actividades');
             if(!cots.length) return '<div class="empty-state">Sin cotizaciones</div>';
-            return cots.map(cot=>{const as=acts.filter(a=>a.cotizacion_id==cot.id);const comp=as.filter(a=>a.estado==='Completado').length;const prog=as.length?Math.round((comp/as.length)*100):0;return`<div style="padding:10px;margin-bottom:10px;background:var(--bg-panel);border-radius:6px;cursor:pointer;" onclick="selCot(${cot.id})" class="${selectedCotizacion==cot.id?'selected':''}"><div style="display:flex;justify-content:space-between;align-items:center;"><div><strong>${cot.numero}</strong> - ${cot.descripcion}<span style="color:var(--text-muted);margin-left:10px;">(${as.length} actividades)</span></div><div class="action-btns"><button class="btn btn-secondary" onclick="event.stopPropagation();editCotizacion(${cot.id})">✏️</button><button class="btn btn-danger" onclick="event.stopPropagation();deleteCotizacion(${cot.id})">🗑️</button></div></div><div style="margin-top:8px;"><div class="progress-bar"><div class="progress-fill" style="width:${prog}%"></div></div><span style="font-size:12px;color:var(--text-muted);">${prog}% completado</span></div></div>`;}).join('');
+            return cots.map(cot=>{const as=acts.filter(a=>a.cotizacion_id==cot.id);const comp=as.filter(a=>a.estado==='Completado').length;const prog=as.length?Math.round((comp/as.length)*100):0;return`<div style="padding:10px;margin-bottom:10px;background:var(--bg-panel);border-radius:6px;cursor:pointer;" onclick="selCot(${cot.id})" class="${selectedCotizacion==cot.id?'selected':''}"><div style="display:flex;justify-content:space-between;align-items:center;"><div><strong>${cot.numero}</strong> - ${cot.descripcion}<span style="color:var(--text-muted);margin-left:10px;">(${as.length} actividades)</span></div><div class="action-btns"><button class="btn btn-secondary" onclick="event.stopPropagation();editCotizacion(${cot.id})">鉁忥笍</button><button class="btn btn-danger" onclick="event.stopPropagation();deleteCotizacion(${cot.id})">馃棏锔?/button></div></div><div style="margin-top:8px;"><div class="progress-bar"><div class="progress-fill" style="width:${prog}%"></div></div><span style="font-size:12px;color:var(--text-muted);">${prog}% completado</span></div></div>`;}).join('');
         }
 
         function renderActs(cotId) {
             const acts=getData('actividades').filter(a=>a.cotizacion_id==cotId).sort((a,b)=>a.orden-b.orden);
             if(!acts.length) return '<tr><td colspan="7" class="empty-state">Sin actividades</td></tr>';
-            return acts.map(a=>`<tr class="selectable-row${selectedActividades.has(a.id)?' selected':''}" data-row-id="${a.id}"><td class="checkbox-cell"><input type="checkbox" class="row-checkbox" ${selectedActividades.has(a.id)?'checked':''} onclick="toggleSel(${a.id})"></td><td>${a.id}</td><td>${a.descripcion}</td><td><div class="editable-cell"><select onchange="updateAct(${a.id},'estado',this.value)" style="width:100%;">${ESTADOS_ACTIVIDAD.map(e=>`<option value="${e}" ${a.estado===e?'selected':''}>${e}</option>`).join('')}</select></div></td><td><div class="editable-cell" onclick="startEdit(this,${a.id},'numero_reporte')">${a.numero_reporte||'-'}</div></td><td><div class="editable-cell" onclick="startEdit(this,${a.id},'notas')">${a.notas||'-'}</div></td><td class="action-btns"><button class="btn btn-secondary" onclick="editActividad(${a.id})">✏️</button><button class="btn btn-danger" onclick="deleteActividad(${a.id})">🗑️</button></td></tr>`).join('');
+            return acts.map(a=>`<tr class="selectable-row${selectedActividades.has(a.id)?' selected':''}" data-row-id="${a.id}"><td class="checkbox-cell"><input type="checkbox" class="row-checkbox" ${selectedActividades.has(a.id)?'checked':''} onclick="toggleSel(${a.id})"></td><td>${a.id}</td><td>${a.descripcion}</td><td><div class="editable-cell"><select onchange="updateAct(${a.id},'estado',this.value)" style="width:100%;">${ESTADOS_ACTIVIDAD.map(e=>`<option value="${e}" ${a.estado===e?'selected':''}>${e}</option>`).join('')}</select></div></td><td><div class="editable-cell" onclick="startEdit(this,${a.id},'numero_reporte')">${a.numero_reporte||'-'}</div></td><td><div class="editable-cell" onclick="startEdit(this,${a.id},'notas')">${a.notas||'-'}</div></td><td class="action-btns"><button class="btn btn-secondary" onclick="editActividad(${a.id})">鉁忥笍</button><button class="btn btn-danger" onclick="deleteActividad(${a.id})">馃棏锔?/button></td></tr>`).join('');
         }
 
         function toggleSel(id,evt) { 
@@ -651,7 +651,7 @@
             const selAll = document.getElementById('selAll');
             if(selAll) selAll.checked = false;
             updateBulkUI(); 
-            showToast('Selección limpiada');
+            showToast('Selecci贸n limpiada');
         }
 
         function startEdit(cell,id,campo) {
@@ -690,7 +690,7 @@
                     // Obtener headers (primera fila)
                     const headers = rows[0] || [];
                     
-                    // Buscar índices de columnas (buscar por nombre exacto o parcial)
+                    // Buscar 铆ndices de columnas (buscar por nombre exacto o parcial)
                     const findColIndex = (names) => {
                         for(let i = 0; i < headers.length; i++) {
                             const h = String(headers[i] || '').toUpperCase().trim();
@@ -703,18 +703,18 @@
                     
                     const actColIdx = findColIndex(['ACTIVIDAD', 'DESCRIPCION', 'ACTIV', 'DESC']);
                     const estColIdx = findColIndex(['ESTADO', 'STATUS', 'STATE']);
-                    const repColIdx = findColIndex(['REPORTE', 'REPORT', 'NUMERO', 'NUMBER', 'N°', 'NO.']);
+                    const repColIdx = findColIndex(['REPORTE', 'REPORT', 'NUMERO', 'NUMBER', 'N掳', 'NO.']);
                     const notColIdx = findColIndex(['NOTAS', 'NOTES', 'NOTA', 'NOTE']);
                     
                     if(actColIdx === -1) {
-                        showToast('No se encontró columna de Actividad', 'error');
+                        showToast('No se encontr贸 columna de Actividad', 'error');
                         return;
                     }
                     
                     const allActs = getData('actividades');
                     let maxOrd = Math.max(0, ...allActs.filter(a => a.cotizacion_id == selectedCotizacion).map(a => a.orden));
                     
-                    // Importar desde la fila 2 (índice 1) saltando headers
+                    // Importar desde la fila 2 (铆ndice 1) saltando headers
                     for(let i = 1; i < rows.length; i++) {
                         const row = rows[i] || [];
                         const descripcion = String(row[actColIdx] || '').trim();
@@ -745,7 +745,7 @@
             evt.target.value = '';
         }
 
-        function openProyectoModal(p=null) { const cli=getData('clientes'); editingId=p?p.id:null; openModal(`<div class="modal-header proyectos">${p?'✏️ Editar':'➕ Nuevo'} Proyecto<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="form-group"><label class="required">Cliente</label><select id="pCli"><option value="">Seleccionar</option>${cli.map(c=>`<option value="${c.id}" ${p?.cliente_id==c.id?'selected':''}>${c.nombre}</option>`).join('')}</select></div><div class="form-group"><label class="required">Nombre</label><input type="text" id="pNom" value="${p?.nombre||''}"></div><div class="form-group"><label>Descripción</label><textarea id="pDesc">${p?.descripcion||''}</textarea></div><div class="form-row"><div class="form-group"><label>Fecha Inicio</label><input type="date" id="pIni" value="${p?.fecha_inicio||''}"></div><div class="form-group"><label>Fecha Fin</label><input type="date" id="pFin" value="${p?.fecha_fin||''}"></div></div><div class="form-group"><label>Estado</label><select id="pEst"><option value="Pendiente" ${p?.estado==='Pendiente'?'selected':''}>Pendiente</option><option value="En proceso" ${p?.estado==='En proceso'?'selected':''}>En proceso</option><option value="Completado" ${p?.estado==='Completado'?'selected':''}>Completado</option><option value="Cancelado" ${p?.estado==='Cancelado'?'selected':''}>Cancelado</option></select></div><div class="form-group"><label>Notas</label><textarea id="pNotas">${p?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-proyectos" onclick="saveProyecto()">Guardar</button></div>`); }
+        function openProyectoModal(p=null) { const cli=getData('clientes'); editingId=p?p.id:null; openModal(`<div class="modal-header proyectos">${p?'鉁忥笍 Editar':'鉃?Nuevo'} Proyecto<button class="modal-close" onclick="closeModal()">鉁?/button></div><div class="modal-body"><div class="form-group"><label class="required">Cliente</label><select id="pCli"><option value="">Seleccionar</option>${cli.map(c=>`<option value="${c.id}" ${p?.cliente_id==c.id?'selected':''}>${c.nombre}</option>`).join('')}</select></div><div class="form-group"><label class="required">Nombre</label><input type="text" id="pNom" value="${p?.nombre||''}"></div><div class="form-group"><label>Descripci贸n</label><textarea id="pDesc">${p?.descripcion||''}</textarea></div><div class="form-row"><div class="form-group"><label>Fecha Inicio</label><input type="date" id="pIni" value="${p?.fecha_inicio||''}"></div><div class="form-group"><label>Fecha Fin</label><input type="date" id="pFin" value="${p?.fecha_fin||''}"></div></div><div class="form-group"><label>Estado</label><select id="pEst"><option value="Pendiente" ${p?.estado==='Pendiente'?'selected':''}>Pendiente</option><option value="En proceso" ${p?.estado==='En proceso'?'selected':''}>En proceso</option><option value="Completado" ${p?.estado==='Completado'?'selected':''}>Completado</option><option value="Cancelado" ${p?.estado==='Cancelado'?'selected':''}>Cancelado</option></select></div><div class="form-group"><label>Notas</label><textarea id="pNotas">${p?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-proyectos" onclick="saveProyecto()">Guardar</button></div>`); }
         function editProyecto(id) { const p=getData('proyectos').find(x=>x.id==id); if(p) openProyectoModal(p); }
         function saveProyecto() {
             const cid=document.getElementById('pCli').value,nom=document.getElementById('pNom').value.trim();
@@ -756,7 +756,7 @@
             setData('proyectos',proy); closeModal(); showToast(editingId?'Actualizado':'Creado'); renderProyectos(document.getElementById('mainContent'));
         }
         function deleteProyecto(id) {
-            showConfirm('¿Eliminar proyecto y sus cotizaciones?',()=>{
+            showConfirm('驴Eliminar proyecto y sus cotizaciones?',()=>{
                 const cots=getData('cotizaciones').filter(x=>x.proyecto_id!=id);
                 const acts=getData('actividades').filter(a=>{const cs=getData('cotizaciones').filter(x=>x.proyecto_id==id).map(x=>x.id);return!cs.includes(a.cotizacion_id);});
                 setData('proyectos',getData('proyectos').filter(x=>x.id!=id));
@@ -766,29 +766,29 @@
             });
         }
 
-        function openCotizacionModal(c=null) { if(!selectedProyecto){showToast('Seleccione proyecto','warning');return;} editingId=c?c.id:null; openModal(`<div class="modal-header proyectos">${c?'✏️ Editar':'➕ Nueva'} Cotización<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="form-group"><label class="required">Número</label><input type="text" id="cotNum" value="${c?.numero||''}"></div><div class="form-group"><label>Descripción</label><textarea id="cotDesc">${c?.descripcion||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-proyectos" onclick="saveCotizacion()">Guardar</button></div>`); }
+        function openCotizacionModal(c=null) { if(!selectedProyecto){showToast('Seleccione proyecto','warning');return;} editingId=c?c.id:null; openModal(`<div class="modal-header proyectos">${c?'鉁忥笍 Editar':'鉃?Nueva'} Cotizaci贸n<button class="modal-close" onclick="closeModal()">鉁?/button></div><div class="modal-body"><div class="form-group"><label class="required">N煤mero</label><input type="text" id="cotNum" value="${c?.numero||''}"></div><div class="form-group"><label>Descripci贸n</label><textarea id="cotDesc">${c?.descripcion||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-proyectos" onclick="saveCotizacion()">Guardar</button></div>`); }
         function editCotizacion(id) { const c=getData('cotizaciones').find(x=>x.id==id); if(c) openCotizacionModal(c); }
         function saveCotizacion() {
             const num=document.getElementById('cotNum').value.trim();
-            if(!num) { showToast('El número es requerido','error'); return; }
+            if(!num) { showToast('El n煤mero es requerido','error'); return; }
             const cots=getData('cotizaciones');
             const data={proyecto_id:selectedProyecto,numero:num,descripcion:document.getElementById('cotDesc').value};
             if(editingId) { data.id=editingId; const idx=cots.findIndex(x=>x.id==editingId); cots[idx]=data; } else { data.id=getNextId('cotizaciones'); cots.push(data); }
             setData('cotizaciones',cots); closeModal(); showToast(editingId?'Actualizado':'Creado'); renderProyectos(document.getElementById('mainContent'));
         }
-        function deleteCotizacion(id) { showConfirm('¿Eliminar cotización y actividades?',()=>{setData('cotizaciones',getData('cotizaciones').filter(x=>x.id!=id));setData('actividades',getData('actividades').filter(a=>a.cotizacion_id!=id));if(selectedCotizacion==id)selectedCotizacion=null;renderProyectos(document.getElementById('mainContent'));showToast('Eliminado','warning');}); }
+        function deleteCotizacion(id) { showConfirm('驴Eliminar cotizaci贸n y actividades?',()=>{setData('cotizaciones',getData('cotizaciones').filter(x=>x.id!=id));setData('actividades',getData('actividades').filter(a=>a.cotizacion_id!=id));if(selectedCotizacion==id)selectedCotizacion=null;renderProyectos(document.getElementById('mainContent'));showToast('Eliminado','warning');}); }
 
-        function openActividadModal(a=null) { if(!selectedCotizacion){showToast('Seleccione cotización','warning');return;} editingId=a?a.id:null; openModal(`<div class="modal-header proyectos">${a?'✏️ Editar':'➕ Nueva'} Actividad<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><div class="form-group"><label class="required">Actividad</label><textarea id="aDesc">${a?.descripcion||''}</textarea></div><div class="form-row"><div class="form-group"><label>N° Reporte</label><input type="text" id="aRep" value="${a?.numero_reporte||''}"></div><div class="form-group"><label>Estado</label><select id="aEst">${ESTADOS_ACTIVIDAD.map(e=>`<option value="${e}" ${a?.estado===e?'selected':''}>${e}</option>`).join('')}</select></div></div><div class="form-group"><label>Notas</label><textarea id="aNotas">${a?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-proyectos" onclick="saveActividad()">Guardar</button></div>`); }
+        function openActividadModal(a=null) { if(!selectedCotizacion){showToast('Seleccione cotizaci贸n','warning');return;} editingId=a?a.id:null; openModal(`<div class="modal-header proyectos">${a?'鉁忥笍 Editar':'鉃?Nueva'} Actividad<button class="modal-close" onclick="closeModal()">鉁?/button></div><div class="modal-body"><div class="form-group"><label class="required">Actividad</label><textarea id="aDesc">${a?.descripcion||''}</textarea></div><div class="form-row"><div class="form-group"><label>N掳 Reporte</label><input type="text" id="aRep" value="${a?.numero_reporte||''}"></div><div class="form-group"><label>Estado</label><select id="aEst">${ESTADOS_ACTIVIDAD.map(e=>`<option value="${e}" ${a?.estado===e?'selected':''}>${e}</option>`).join('')}</select></div></div><div class="form-group"><label>Notas</label><textarea id="aNotas">${a?.notas||''}</textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cancelar</button><button class="btn btn-proyectos" onclick="saveActividad()">Guardar</button></div>`); }
         function editActividad(id) { const a=getData('actividades').find(x=>x.id==id); if(a) openActividadModal(a); }
         function saveActividad() {
             const desc=document.getElementById('aDesc').value.trim();
-            if(!desc) { showToast('La descripción es requerida','error'); return; }
+            if(!desc) { showToast('La descripci贸n es requerida','error'); return; }
             const acts=getData('actividades');
             const data={cotizacion_id:selectedCotizacion,descripcion:desc,numero_reporte:document.getElementById('aRep').value,estado:document.getElementById('aEst').value,notas:document.getElementById('aNotas').value};
             if(editingId) { data.id=editingId; data.orden=acts.find(x=>x.id==editingId).orden; const idx=acts.findIndex(x=>x.id==editingId); acts[idx]=data; } else { data.orden=acts.filter(x=>x.cotizacion_id==selectedCotizacion).length+1; data.id=getNextId('actividades'); acts.push(data); }
             setData('actividades',acts); closeModal(); showToast(editingId?'Actualizado':'Creado'); document.getElementById('actsBody').innerHTML=renderActs(selectedCotizacion);
         }
-        function deleteActividad(id) { showConfirm('¿Eliminar?',()=>{let acts=getData('actividades').filter(x=>x.id!=id); acts=acts.map((a,i)=>{const ac=acts.filter(x=>x.cotizacion_id==a.cotizacion_id);const oi=ac.findIndex(x=>x.id===a.id);if(oi!==-1)a.orden=oi+1;return a;});setData('actividades',acts);selectedActividades.delete(id);document.getElementById('actsBody').innerHTML=renderActs(selectedCotizacion);updateBulkUI();showToast('Eliminado','warning');}); }
+        function deleteActividad(id) { showConfirm('驴Eliminar?',()=>{let acts=getData('actividades').filter(x=>x.id!=id); acts=acts.map((a,i)=>{const ac=acts.filter(x=>x.cotizacion_id==a.cotizacion_id);const oi=ac.findIndex(x=>x.id===a.id);if(oi!==-1)a.orden=oi+1;return a;});setData('actividades',acts);selectedActividades.delete(id);document.getElementById('actsBody').innerHTML=renderActs(selectedCotizacion);updateBulkUI();showToast('Eliminado','warning');}); }
 
         let selectedCotizacionesHistorial = new Set();
         let selectedProyectoHistorial = null;
@@ -799,7 +799,7 @@
             
             c.innerHTML = `
                 <div class="toolbar historial">
-                    <h2>📜 Historial</h2>
+                    <h2>馃摐 Historial</h2>
                     <div style="flex:1"></div>
                     <input type="text" id="searchProyHist" class="search-input" placeholder="Buscar proyecto..." oninput="filtrarProyectosHistorial()">
                 </div>
@@ -829,21 +829,21 @@
                 <div id="historialCotizaciones" class="${selectedProyectoHistorial?' ':'hidden'}">
                     <div class="sub-panel">
                         <div class="sub-panel-title">
-                            📋 Cotizaciones del Proyecto
+                            馃搵 Cotizaciones del Proyecto
                             <div style="flex:1"></div>
-                            <button class="btn btn-success" onclick="seleccionarTodasCotsHistorial()">☑️ Seleccionar Todas</button>
-                            <button class="btn btn-secondary" onclick="deseleccionarTodasCotsHistorial()">❎ Deseleccionar</button>
-                            <button class="btn btn-historial" onclick="exportarPDFCotizacionesSeleccionadas()" ${selectedCotizacionesHistorial.size===0?'disabled':''}>📄 Exportar PDF</button>
+                            <button class="btn btn-success" onclick="seleccionarTodasCotsHistorial()">鈽戯笍 Seleccionar Todas</button>
+                            <button class="btn btn-secondary" onclick="deseleccionarTodasCotsHistorial()">鉂?Deseleccionar</button>
+                            <button class="btn btn-historial" onclick="exportarPDFCotizacionesSeleccionadas()" ${selectedCotizacionesHistorial.size===0?'disabled':''}>馃搫 Exportar PDF</button>
                         </div>
                         
                         <div class="bulk-actions ${selectedCotizacionesHistorial.size>0?'':'hidden'}" id="bulkCotActions">
                             <span><span class="badge-selected">${selectedCotizacionesHistorial.size}</span> cotizaciones seleccionadas</span>
-                            <button class="btn btn-danger" onclick="exportarPDFCotizacionesSeleccionadas()">📄 Exportar PDF Seleccionadas</button>
+                            <button class="btn btn-danger" onclick="exportarPDFCotizacionesSeleccionadas()">馃搫 Exportar PDF Seleccionadas</button>
                         </div>
                         
                         <div class="table-container">
                             <table class="data-table" id="tblCotsHistorial">
-                                <thead><tr><th class="checkbox-cell"><input type="checkbox" id="selAllCots" onchange="toggleSelectAllCotsHistorial()"></th><th>Número</th><th>Descripción</th><th>Cant. Actividades</th><th>Completadas</th><th>Progreso</th></tr></thead>
+                                <thead><tr><th class="checkbox-cell"><input type="checkbox" id="selAllCots" onchange="toggleSelectAllCotsHistorial()"></th><th>N煤mero</th><th>Descripci贸n</th><th>Cant. Actividades</th><th>Completadas</th><th>Progreso</th></tr></thead>
                                 <tbody id="cotsHistorialBody">
                                     ${selectedProyectoHistorial?renderCotizacionesHistorial(selectedProyectoHistorial):''}
                                 </tbody>
@@ -968,26 +968,27 @@
 
         function exportarPDFCotizacionesSeleccionadas() {
             if(selectedCotizacionesHistorial.size === 0) {
-                showToast('Seleccione al menos una cotización', 'warning');
+                showToast('Seleccione al menos una cotizaci贸n', 'warning');
                 return;
             }
             
             closeModal();
             
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const pageWidth = doc.internal.pageSize.getWidth();
             
             doc.setFontSize(20);
             doc.setTextColor(229, 57, 53);
-            doc.text('FireTrace', 105, 20, { align: 'center' });
+            doc.text('FireTrace', pageWidth / 2, 15, { align: 'center' });
             doc.setFontSize(14);
             doc.setTextColor(26, 28, 35);
-            doc.text('Reporte de Cotizaciones', 105, 28, { align: 'center' });
+            doc.text('Reporte de Cotizaciones', pageWidth / 2, 23, { align: 'center' });
             doc.setFontSize(10);
             doc.setTextColor(90, 96, 112);
-            doc.text(`Fecha: ${new Date().toLocaleDateString('es-ES')}`, 105, 35, { align: 'center' });
+            doc.text(`Fecha: ${new Date().toLocaleDateString('es-ES')}`, pageWidth / 2, 30, { align: 'center' });
             
-            let y = 50;
+            let y = 40;
             
             selectedCotizacionesHistorial.forEach(cotId => {
                 const cot = getData('cotizaciones').find(x => x.id === cotId);
@@ -997,84 +998,179 @@
                 const cliente = proy ? getData('clientes').find(c => c.id === proy.cliente_id) : null;
                 const acts = getData('actividades').filter(a => a.cotizacion_id === cot.id).sort((a, b) => a.orden - b.orden);
                 
-                if(y > 230) {
+                // Calcular resumen
+                const totalActividades = acts.length;
+                const completadas = acts.filter(a => a.estado === 'Completado').length;
+                const enProceso = acts.filter(a => a.estado === 'En proceso').length;
+                const pausadas = acts.filter(a => a.estado === 'Pausado').length;
+                const pendientes = acts.filter(a => !a.estado || a.estado === 'Pendiente' || a.estado === '').length;
+                const progreso = totalActividades > 0 ? Math.round((completadas / totalActividades) * 100) : 0;
+                
+                if(y > 200) {
                     doc.addPage();
                     y = 20;
                 }
                 
-                // Información de la cotización
+                // === CAJA DE RESUMEN DE COTIZACI脫N ===
+                const boxX = 15;
+                const boxWidth = pageWidth - 30;
+                
+                // Fondo de la caja
+                doc.setFillColor(247, 248, 250);
+                doc.roundedRect(boxX, y, boxWidth, 55, 3, 3, 'F');
+                
+                // Borde de la caja
+                doc.setDrawColor(139, 69, 19);
+                doc.setLineWidth(0.5);
+                doc.roundedRect(boxX, y, boxWidth, 55, 3, 3, 'S');
+                
+                // T铆tulo de la cotizaci贸n
                 doc.setFontSize(12);
                 doc.setTextColor(139, 69, 19);
-                doc.text(`Cotización: ${cot.numero}`, 20, y);
-                y += 6;
+                doc.text(`COTIZACI脫N: ${cot.numero}`, boxX + 5, y + 8);
                 
+                // Descripci贸n
+                doc.setFontSize(9);
+                doc.setTextColor(26, 28, 35);
+                doc.text(cot.descripcion, boxX + 5, y + 15);
+                
+                // Cliente y Proyecto
+                doc.setTextColor(90, 96, 112);
+                doc.setFontSize(8);
                 if(cliente) {
-                    doc.setFontSize(9);
-                    doc.setTextColor(90, 96, 112);
-                    doc.text(`Cliente: ${cliente.nombre}`, 25, y);
-                    y += 5;
+                    doc.text(`Cliente: ${cliente.nombre}`, boxX + 5, y + 22);
                 }
-                
                 if(proy) {
-                    doc.text(`Proyecto: ${proy.nombre}`, 25, y);
-                    y += 5;
+                    doc.text(`Proyecto: ${proy.nombre}`, boxX + 80, y + 22);
                 }
                 
-                doc.text(`Descripción: ${cot.descripcion}`, 25, y);
-                y += 8;
+                // L铆nea separadora
+                doc.setDrawColor(220, 220, 220);
+                doc.setLineWidth(0.3);
+                doc.line(boxX + 5, y + 26, boxX + boxWidth - 5, y + 26);
                 
-                // Tabla de actividades
+                // === RESUMEN ESTAD脥STICO ===
+                const resumenY = y + 32;
+                const statWidth = (boxWidth - 20) / 5;
+                
+                // Total
+                doc.setFontSize(16);
+                doc.setTextColor(26, 28, 35);
+                doc.text(`${totalActividades}`, boxX + 5 + statWidth * 0, resumenY);
+                doc.setFontSize(7);
+                doc.setTextColor(90, 96, 112);
+                doc.text('TOTAL', boxX + 5 + statWidth * 0, resumenY + 4);
+                
+                // Completadas (verde)
+                doc.setFontSize(16);
+                doc.setTextColor(67, 160, 71);
+                doc.text(`${completadas}`, boxX + 5 + statWidth * 1, resumenY);
+                doc.setFontSize(7);
+                doc.setTextColor(90, 96, 112);
+                doc.text('Completadas', boxX + 5 + statWidth * 1 - 3, resumenY + 4);
+                
+                // En Proceso (azul)
+                doc.setFontSize(16);
+                doc.setTextColor(3, 155, 229);
+                doc.text(`${enProceso}`, boxX + 5 + statWidth * 2, resumenY);
+                doc.setFontSize(7);
+                doc.setTextColor(90, 96, 112);
+                doc.text('En Proceso', boxX + 5 + statWidth * 2 - 3, resumenY + 4);
+                
+                // Pendientes (naranja)
+                doc.setFontSize(16);
+                doc.setTextColor(251, 140, 0);
+                doc.text(`${pendientes}`, boxX + 5 + statWidth * 3, resumenY);
+                doc.setFontSize(7);
+                doc.setTextColor(90, 96, 112);
+                doc.text('Pendientes', boxX + 5 + statWidth * 3 - 2, resumenY + 4);
+                
+                // Pausadas
+                doc.setFontSize(16);
+                doc.setTextColor(156, 136, 255);
+                doc.text(`${pausadas}`, boxX + 5 + statWidth * 4, resumenY);
+                doc.setFontSize(7);
+                doc.setTextColor(90, 96, 112);
+                doc.text('Pausadas', boxX + 5 + statWidth * 4 - 2, resumenY + 4);
+                
+                // Barra de progreso
+                const progressY = y + 48;
+                const progressWidth = boxWidth - 40;
+                
+                // Fondo de progreso
+                doc.setFillColor(230, 230, 230);
+                doc.roundedRect(boxX + 30, progressY, progressWidth, 5, 2, 2, 'F');
+                
+                // Progreso completado
+                if(progreso > 0) {
+                    doc.setFillColor(67, 160, 71);
+                    doc.roundedRect(boxX + 30, progressY, progressWidth * (progreso / 100), 5, 2, 2, 'F');
+                }
+                
+                // Porcentaje
+                doc.setFontSize(9);
+                doc.setTextColor(26, 28, 35);
+                doc.text(`${progreso}%`, boxX + 30 + progressWidth + 5, progressY + 4);
+                
+                y += 60;
+                
+                // === TABLA DE ACTIVIDADES ===
                 if(acts.length > 0) {
                     doc.autoTable({
                         startY: y,
-                        head: [['#', 'Actividad', 'Estado', 'N° Reporte', 'Notas']],
+                        head: [['#', 'Actividad', 'Estado', 'N掳 Reporte', 'Notas']],
                         body: acts.map(a => [a.orden, a.descripcion, a.estado || 'Pendiente', a.numero_reporte || '-', a.notas || '-']),
                         theme: 'striped',
-                        headStyles: { fillColor: [139, 69, 19] },
-                        margin: { left: 25, right: 20 },
-                        styles: { fontSize: 8 },
+                        headStyles: { 
+                            fillColor: [139, 69, 19],
+                            textColor: [255, 255, 255],
+                            fontSize: 8,
+                            fontStyle: 'bold'
+                        },
+                        margin: { left: 15, right: 15 },
+                        styles: { fontSize: 7, cellPadding: 2 },
                         columnStyles: {
-                            0: { cellWidth: 10 },
-                            1: { cellWidth: 60 },
-                            2: { cellWidth: 30 },
-                            3: { cellWidth: 30 },
-                            4: { cellWidth: 40 }
+                            0: { cellWidth: 12, halign: 'center' },
+                            1: { cellWidth: 70 },
+                            2: { cellWidth: 25 },
+                            3: { cellWidth: 25 },
+                            4: { cellWidth: 38 }
                         },
                         didParseCell: function(data) {
                             if(data.column.index === 2 && data.section === 'body') {
                                 if(data.cell.raw === 'Completado') {
                                     data.cell.styles.textColor = [67, 160, 71];
+                                    data.cell.styles.fontStyle = 'bold';
                                 } else if(data.cell.raw === 'En proceso') {
                                     data.cell.styles.textColor = [3, 155, 229];
                                 } else if(data.cell.raw === 'Pausado') {
                                     data.cell.styles.textColor = [251, 140, 0];
+                                } else if(data.cell.raw === 'Pendiente' || data.cell.raw === '') {
+                                    data.cell.styles.textColor = [154, 160, 174];
                                 }
                             }
                         }
                     });
-                    y = doc.lastAutoTable.finalY + 15;
+                    y = doc.lastAutoTable.finalY + 10;
                 } else {
                     doc.setFontSize(9);
                     doc.setTextColor(154, 160, 174);
-                    doc.text('Sin actividades registradas', 25, y);
+                    doc.text('Sin actividades registradas', 15, y);
                     y += 15;
                 }
                 
-                // Línea separadora
-                if(y > 220) {
-                    doc.addPage();
-                    y = 20;
-                }
+                // Espacio entre cotizaciones
+                y += 5;
             });
             
-            // Pie de página
+            // Pie de p谩gina
             const pageCount = doc.internal.getNumberOfPages();
             for(let i = 1; i <= pageCount; i++) {
                 doc.setPage(i);
                 doc.setFontSize(8);
                 doc.setTextColor(154, 160, 174);
-                doc.text(`Página ${i} de ${pageCount}`, 105, 290, { align: 'center' });
-                doc.text(`Generado: ${new Date().toLocaleString()} - FireTrace`, 20, 290);
+                doc.text(`P谩gina ${i} de ${pageCount}`, pageWidth / 2, 290, { align: 'center' });
+                doc.text(`Generado: ${new Date().toLocaleString()} - FireTrace`, 15, 290);
             }
             
             const filename = selectedCotizacionesHistorial.size === 1 
@@ -1082,13 +1178,13 @@
                 : `FireTrace_Cotizaciones_${getDateDaysAgo(0)}.pdf`;
             
             doc.save(filename);
-            showToast(`PDF exportado con ${selectedCotizacionesHistorial.size} cotización(es)`);
+            showToast(`PDF exportado con ${selectedCotizacionesHistorial.size} cotizaci贸n(es)`);
         }
 
         function verDetalleInt(id) {
             const i = getData('intervenciones').find(x => x.id == id);
             const eq2 = getData('equipos').find(x => x.id == i.equipo_id);
-            openModal(`<div class="modal-header historial">🔍 Detalle Intervención #${i.id}<button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body"><table style="width:100%;border-collapse:collapse;">${[['Fecha', formatDate(i.fecha)], ['Cliente', getClienteNombre(i.cliente_id)], ['Equipo', eq2 ? `${eq2.tipo} - ${eq2.numero_serie}` : 'N/A'], ['Tipo', i.tipo], ['Tipo Falla', i.tipo_falla || '-'], ['Técnico', i.tecnico], ['Tiempo', `${i.tiempo_minutos} minutos`], ['Estado', `<span class="status-badge status-${i.estado==='Completado'?'completado':'pendiente'}">${i.estado}</span>`], ['Descripción Falla', i.descripcion_falla || '-'], ['Acción Tomada', i.accion_tomada || '-'], ['Materiales', i.materiales || '-'], ['Observaciones', i.observaciones || '-']].map(([label, val]) => `<tr style="border-bottom:1px solid var(--border-color);"><td style="padding:8px;color:var(--text-secondary);">${label}:</td><td style="padding:8px;">${val}</td></tr>`).join('')}</table></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cerrar</button></div>`);
+            openModal(`<div class="modal-header historial">馃攳 Detalle Intervenci贸n #${i.id}<button class="modal-close" onclick="closeModal()">鉁?/button></div><div class="modal-body"><table style="width:100%;border-collapse:collapse;">${[['Fecha', formatDate(i.fecha)], ['Cliente', getClienteNombre(i.cliente_id)], ['Equipo', eq2 ? `${eq2.tipo} - ${eq2.numero_serie}` : 'N/A'], ['Tipo', i.tipo], ['Tipo Falla', i.tipo_falla || '-'], ['T茅cnico', i.tecnico], ['Tiempo', `${i.tiempo_minutos} minutos`], ['Estado', `<span class="status-badge status-${i.estado==='Completado'?'completado':'pendiente'}">${i.estado}</span>`], ['Descripci贸n Falla', i.descripcion_falla || '-'], ['Acci贸n Tomada', i.accion_tomada || '-'], ['Materiales', i.materiales || '-'], ['Observaciones', i.observaciones || '-']].map(([label, val]) => `<tr style="border-bottom:1px solid var(--border-color);"><td style="padding:8px;color:var(--text-secondary);">${label}:</td><td style="padding:8px;">${val}</td></tr>`).join('')}</table></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal()">Cerrar</button></div>`);
         }
         function exportarCSV() {
             if(selectedCotizacionesHistorial.size === 0) {
@@ -1096,7 +1192,7 @@
                 return;
             }
             
-            const headers = ['Cotización', 'Cliente', 'Proyecto', '#', 'Actividad', 'Estado', 'N° Reporte', 'Notas'];
+            const headers = ['Cotizaci贸n', 'Cliente', 'Proyecto', '#', 'Actividad', 'Estado', 'N掳 Reporte', 'Notas'];
             const rows = [headers.join(',')];
             
             selectedCotizacionesHistorial.forEach(cotId => {
